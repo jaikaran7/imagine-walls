@@ -67,7 +67,7 @@ model Quotation {
 
 model Invoice {
   id           String   @id
-  quotationId  String   @map("quotation_id")
+  quotationId  String   @default("") @map("quotation_id")
   clientName   String   @map("client_name")
   clientPhone  String   @map("client_phone")
   clientEmail  String   @default("") @map("client_email")

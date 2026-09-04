@@ -14,13 +14,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  if (!body.quotationId) {
-    return NextResponse.json({ error: "Quotation is required." }, { status: 422 });
+  const clientName = String(body.clientName || "").trim();
+  if (!clientName) {
+    return NextResponse.json({ error: "Client name is required." }, { status: 422 });
   }
 
   const invoice = await addInvoice({
-    quotationId: String(body.quotationId),
-    clientName: String(body.clientName || "").trim(),
+    quotationId: String(body.quotationId || "").trim(),
+    clientName,
     clientPhone: String(body.clientPhone || "").trim(),
     clientEmail: String(body.clientEmail || "").trim(),
     projectTitle: String(body.projectTitle || "").trim(),

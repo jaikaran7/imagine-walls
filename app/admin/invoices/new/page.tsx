@@ -17,7 +17,7 @@ export default async function NewInvoicePage({
     <>
       <AdminPageHeader
         title="Create invoice"
-        description="Select a finalized quotation and set the invoice total. Add payments after creation."
+        description="Create a direct invoice, or generate one from a finalized quotation. Add payments after creation."
       />
       <AdminContent>
         <NewInvoiceClient quotations={quotations} preselectedId={quotationId || ""} />
