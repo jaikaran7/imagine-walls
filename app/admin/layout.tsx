@@ -1,5 +1,7 @@
 import { DM_Sans } from "next/font/google";
+import { AdminMissingDatabase } from "@/components/admin/admin-missing-database";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { hasDatabaseUrl } from "@/lib/db";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -17,6 +19,8 @@ export const metadata = {
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const configured = hasDatabaseUrl();
+
   return (
     <div
       className={`${dmSans.variable} admin-root font-admin`}
@@ -35,7 +39,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         } as React.CSSProperties
       }
     >
-      <AdminShell>{children}</AdminShell>
+      <AdminShell>{configured ? children : <AdminMissingDatabase />}</AdminShell>
     </div>
   );
 }
