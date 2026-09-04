@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 export function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [id, setId] = useState("Admin");
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
