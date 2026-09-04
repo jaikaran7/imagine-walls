@@ -113,7 +113,7 @@ export function AdminSidebar() {
   }
 
   const nav = (
-    <aside className="flex h-full w-[17.5rem] shrink-0 flex-col bg-[#0b1220] text-white">
+    <aside className="flex h-full min-h-dvh w-[17.5rem] shrink-0 flex-col bg-[#0b1220] text-white">
       <div className="border-b border-white/10 px-5 py-6">
         <Link
           href="/admin"
@@ -199,7 +199,7 @@ export function AdminSidebar() {
         />
       </div>
 
-      <div className="hidden md:flex">{nav}</div>
+      <div className="hidden h-full md:flex">{nav}</div>
 
       <div
         className={clsx(
@@ -218,7 +218,7 @@ export function AdminSidebar() {
         />
         <div
           className={clsx(
-            "absolute inset-y-0 left-0 transition-transform duration-200 ease-out",
+            "absolute inset-y-0 left-0 h-full transition-transform duration-200 ease-out",
             mobileOpen ? "translate-x-0" : "-translate-x-full",
           )}
         >

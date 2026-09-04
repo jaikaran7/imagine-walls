@@ -31,8 +31,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
   return (
     <AdminNavProvider>
-      <div className="fixed inset-0 z-[100] flex overflow-hidden bg-[#eef1f6] font-admin text-[16px] font-medium text-[#0f172a] antialiased print:static print:h-auto print:min-h-0 print:overflow-visible print:bg-white">
-        <div className="print:hidden">
+      <div className="fixed inset-0 z-[100] flex h-dvh overflow-hidden bg-[#eef1f6] font-admin text-[16px] font-medium text-[#0f172a] antialiased print:static print:h-auto print:min-h-0 print:overflow-visible print:bg-white">
+        <div className="print:hidden h-full shrink-0">
           <AdminSidebar />
         </div>
         <AdminMain>{children}</AdminMain>
