@@ -331,7 +331,7 @@ export type InvoiceScalarWhereWithAggregatesInput = {
 
 export type InvoiceCreateInput = {
   id: string
-  quotationId: string
+  quotationId?: string
   clientName: string
   clientPhone: string
   clientEmail?: string
@@ -345,7 +345,7 @@ export type InvoiceCreateInput = {
 
 export type InvoiceUncheckedCreateInput = {
   id: string
-  quotationId: string
+  quotationId?: string
   clientName: string
   clientPhone: string
   clientEmail?: string
@@ -387,7 +387,7 @@ export type InvoiceUncheckedUpdateInput = {
 
 export type InvoiceCreateManyInput = {
   id: string
-  quotationId: string
+  quotationId?: string
   clientName: string
   clientPhone: string
   clientEmail?: string
