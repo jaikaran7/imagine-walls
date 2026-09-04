@@ -296,3 +296,42 @@ body[data-showcase-active="true"] #site-nav {
   opacity: 0;
   pointer-events: none;
 }
+
+/* Quotation print — A4-friendly document only */
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  html,
+  body {
+    background: white !important;
+    color: black !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .admin-root {
+    background: white !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .quotation-print {
+    max-width: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .quotation-print table {
+    break-inside: auto;
+  }
+
+  .quotation-print tr {
+    break-inside: avoid;
+    break-after: auto;
+  }
+}

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { Prisma } from "@/src/generated/prisma/client";
+import { normalizeQuotationSections } from "./format";
 import { generateId } from "./id";
 import type {
   AdminProject,
@@ -32,7 +33,7 @@ function asProjectImages(value: unknown): AdminProjectImage[] {
 }
 
 function asQuotationSections(value: unknown): QuotationSection[] {
-  return Array.isArray(value) ? (value as QuotationSection[]) : [];
+  return normalizeQuotationSections(value);
 }
 
 function asPayments(value: unknown): PaymentRecord[] {

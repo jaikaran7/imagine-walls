@@ -28,7 +28,7 @@ export function AdminPageHeader({
 }
 
 export function AdminContent({ children }: { children: React.ReactNode }) {
-  return <div className="px-4 py-5 sm:px-6 md:px-8 md:py-7">{children}</div>;
+  return <div className="px-4 py-5 sm:px-6 md:px-8 md:py-7 print:p-0">{children}</div>;
 }
 
 export function AdminButton({

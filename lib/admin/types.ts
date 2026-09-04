@@ -62,11 +62,23 @@ export type QuotationStatus = "draft" | "finalized";
 
 export interface QuotationLineItem {
   id: string;
+  /** Product / unit name (e.g. TV unit, Carcass, Loft) */
+  product: string;
+  /** Materials / construction details */
   description: string;
-  brand: string;
-  quality: string;
-  quantity: string;
+  /** Rate per square foot */
+  ratePerSft: number;
+  /** Total square feet */
+  totalSft: number;
+  /**
+   * Final line price. Prefer ratePerSft × totalSft when both are set;
+   * otherwise use this stored amount (legacy / override).
+   */
   price: number;
+  /** @deprecated legacy fields kept for reading old quotations */
+  brand?: string;
+  quality?: string;
+  quantity?: string;
 }
 
 export interface QuotationSection {

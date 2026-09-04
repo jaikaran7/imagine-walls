@@ -16,10 +16,12 @@ export default async function QuotationDetailPage({
 
   return (
     <>
-      <AdminPageHeader
-        title={quotation.status === "draft" ? "Edit quotation" : "Quotation"}
-        description={quotation.projectTitle || quotation.clientName || "Untitled"}
-      />
+      <div className="print:hidden">
+        <AdminPageHeader
+          title={quotation.status === "draft" ? "Edit quotation" : "Quotation"}
+          description={quotation.projectTitle || quotation.clientName || "Untitled"}
+        />
+      </div>
       <AdminContent>
         <QuotationDetailClient quotation={quotation} />
       </AdminContent>
