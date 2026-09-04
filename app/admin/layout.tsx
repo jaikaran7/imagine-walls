@@ -1,5 +1,5 @@
 import { DM_Sans } from "next/font/google";
-import { AdminMissingDatabase } from "@/components/admin/admin-missing-database";
+import { AdminDbGate } from "@/components/admin/admin-db-gate";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { hasDatabaseUrl } from "@/lib/db";
 
@@ -27,7 +27,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       data-admin="true"
       style={
         {
-          // Force light admin palette even when the public site is in dark mode
           ["--paper" as string]: "#eef1f6",
           ["--surface" as string]: "#ffffff",
           ["--ink" as string]: "#0f172a",
@@ -39,7 +38,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         } as React.CSSProperties
       }
     >
-      <AdminShell>{configured ? children : <AdminMissingDatabase />}</AdminShell>
+      <AdminShell>
+        <AdminDbGate configured={configured}>{children}</AdminDbGate>
+      </AdminShell>
     </div>
   );
 }

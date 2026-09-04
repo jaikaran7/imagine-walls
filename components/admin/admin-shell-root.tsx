@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { AdminNavProvider, useAdminNav } from "./admin-nav-context";
 import { AdminMobileTopBar, AdminSidebar } from "./admin-sidebar";
 
@@ -21,6 +22,13 @@ function AdminMain({ children }: { children: React.ReactNode }) {
 }
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isLogin = pathname === "/admin/login";
+
+  if (isLogin) {
+    return <>{children}</>;
+  }
+
   return (
     <AdminNavProvider>
       <div className="fixed inset-0 z-[100] flex overflow-hidden bg-[#eef1f6] font-admin text-[16px] font-medium text-[#0f172a] antialiased print:static print:h-auto print:min-h-0 print:overflow-visible print:bg-white">

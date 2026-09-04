@@ -6,19 +6,73 @@ import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { useAdminNav } from "./admin-nav-context";
 
-const navItems = [
-  { href: "/admin", label: "Overview", exact: true },
-  { href: "/admin/leads", label: "Leads" },
-  { href: "/admin/projects", label: "Projects" },
-  { href: "/admin/quotations", label: "Quotations" },
-  { href: "/admin/invoices", label: "Invoices" },
+type NavItem = { href: string; label: string; exact?: boolean; icon: string };
+
+const overviewItems: NavItem[] = [{ href: "/admin", label: "Overview", exact: true, icon: "◆" }];
+
+const crmItems: NavItem[] = [{ href: "/admin/leads", label: "Leads", icon: "◎" }];
+
+const portfolioItems: NavItem[] = [{ href: "/admin/projects", label: "Projects", icon: "▣" }];
+
+const billingItems: NavItem[] = [
+  { href: "/admin/quotations", label: "Quotations", icon: "▤" },
+  { href: "/admin/invoices", label: "Invoices", icon: "▦" },
 ];
+
+const quickActions = [
+  { href: "/admin/quotations/new", label: "New quotation" },
+  { href: "/admin/projects/new", label: "New project" },
+  { href: "/admin/invoices/new", label: "New invoice" },
+];
+
+function NavSection({ title, items, pathname, navigate }: {
+  title: string;
+  items: NavItem[];
+  pathname: string;
+  navigate: (href: string) => void;
+}) {
+  return (
+    <div className="mb-5">
+      <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#64748b]">{title}</p>
+      <ul className="space-y-1">
+        {items.map((item) => {
+          const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
+          return (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                prefetch
+                onClick={(e) => {
+                  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+                  e.preventDefault();
+                  navigate(item.href);
+                }}
+                className={clsx(
+                  "flex items-center gap-3 rounded-xl px-3.5 py-3 text-[15px] font-semibold transition-colors",
+                  active
+                    ? "bg-[#2563eb] text-white shadow-md shadow-blue-900/30"
+                    : "text-[#cbd5e1] hover:bg-white/10 hover:text-white",
+                )}
+              >
+                <span className="w-4 text-center text-[13px] opacity-80" aria-hidden>
+                  {item.icon}
+                </span>
+                {item.label}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
 
 export function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { isPending, startNavigation, mobileOpen, setMobileOpen } = useAdminNav();
   const [progress, setProgress] = useState(0);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   useEffect(() => {
     if (!isPending) {
@@ -35,7 +89,8 @@ export function AdminSidebar() {
   }, [isPending]);
 
   useEffect(() => {
-    for (const item of navItems) router.prefetch(item.href);
+    const all = [...overviewItems, ...crmItems, ...portfolioItems, ...billingItems, ...quickActions];
+    for (const item of all) router.prefetch(item.href);
   }, [router]);
 
   function navigate(href: string) {
@@ -44,6 +99,17 @@ export function AdminSidebar() {
       return;
     }
     startNavigation(() => router.push(href));
+  }
+
+  async function logout() {
+    setLoggingOut(true);
+    try {
+      await fetch("/api/admin/auth/logout", { method: "POST" });
+      router.replace("/admin/login");
+      router.refresh();
+    } finally {
+      setLoggingOut(false);
+    }
   }
 
   const nav = (
@@ -63,12 +129,18 @@ export function AdminSidebar() {
         </Link>
       </div>
 
-      <nav className="flex-1 px-3 py-4">
-        <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#64748b]">Menu</p>
-        <ul className="space-y-1">
-          {navItems.map((item) => {
-            const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
-            return (
+      <nav className="flex-1 overflow-y-auto px-3 py-4">
+        <NavSection title="Dashboard" items={overviewItems} pathname={pathname} navigate={navigate} />
+        <NavSection title="CRM" items={crmItems} pathname={pathname} navigate={navigate} />
+        <NavSection title="Portfolio" items={portfolioItems} pathname={pathname} navigate={navigate} />
+        <NavSection title="Billing" items={billingItems} pathname={pathname} navigate={navigate} />
+
+        <div className="mb-2">
+          <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#64748b]">
+            Quick actions
+          </p>
+          <ul className="space-y-1">
+            {quickActions.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
@@ -78,30 +150,36 @@ export function AdminSidebar() {
                     e.preventDefault();
                     navigate(item.href);
                   }}
-                  className={clsx(
-                    "flex items-center rounded-xl px-3.5 py-3 text-[16px] font-semibold transition-colors",
-                    active
-                      ? "bg-[#2563eb] text-white shadow-md shadow-blue-900/30"
-                      : "text-[#cbd5e1] hover:bg-white/10 hover:text-white",
-                  )}
+                  className="flex items-center rounded-xl border border-white/10 px-3.5 py-2.5 text-[14px] font-semibold text-[#93c5fd] transition-colors hover:border-[#2563eb]/50 hover:bg-white/5 hover:text-white"
                 >
-                  {item.label}
+                  + {item.label}
                 </Link>
               </li>
-            );
-          })}
-        </ul>
+            ))}
+          </ul>
+        </div>
       </nav>
 
       <div className="border-t border-white/10 px-5 py-5">
+        <div className="mb-4 rounded-xl bg-white/5 px-3 py-3">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#64748b]">Signed in</p>
+          <p className="mt-1 text-[15px] font-bold text-white">Admin</p>
+        </div>
+        <button
+          type="button"
+          onClick={logout}
+          disabled={loggingOut}
+          className="mb-3 flex min-h-11 w-full items-center justify-center rounded-xl border border-white/15 bg-white/5 px-3 text-[14px] font-semibold text-[#e2e8f0] transition-colors hover:bg-white/10 disabled:opacity-50"
+        >
+          {loggingOut ? "Signing out…" : "Log out"}
+        </button>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-[15px] font-semibold text-[#94a3b8] transition-colors hover:text-white"
+          className="inline-flex items-center gap-2 text-[14px] font-semibold text-[#94a3b8] transition-colors hover:text-white"
         >
           <span aria-hidden="true">←</span>
           Back to website
         </Link>
-        <p className="mt-3 text-[13px] font-medium leading-relaxed text-[#64748b]">Dev mode — no login required</p>
       </div>
     </aside>
   );
@@ -121,10 +199,8 @@ export function AdminSidebar() {
         />
       </div>
 
-      {/* Desktop sidebar */}
       <div className="hidden md:flex">{nav}</div>
 
-      {/* Mobile drawer */}
       <div
         className={clsx(
           "fixed inset-0 z-[130] md:hidden",
