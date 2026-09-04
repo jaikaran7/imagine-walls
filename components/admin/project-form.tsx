@@ -50,6 +50,8 @@ export function ProjectForm({ project, onSaved }: { project?: AdminProject; onSa
   const [saving, setSaving] = useState(false);
   const [galleryUrl, setGalleryUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [uploadingCover, setUploadingCover] = useState(false);
+  const [uploadingGallery, setUploadingGallery] = useState(false);
 
   useEffect(() => {
     if (project) setForm(project);
@@ -57,6 +59,57 @@ export function ProjectForm({ project, onSaved }: { project?: AdminProject; onSa
 
   function updateField<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  async function uploadImage(file: File): Promise<string> {
+    const body = new FormData();
+    body.append("file", file);
+    const res = await fetch("/api/admin/upload", { method: "POST", body });
+    const data = await res.json().catch(() => null);
+    if (!res.ok) {
+      throw new Error(data?.error || "Upload failed");
+    }
+    if (!data?.url) throw new Error("Upload failed");
+    return data.url as string;
+  }
+
+  async function handleCoverUpload(fileList: FileList | null) {
+    const file = fileList?.[0];
+    if (!file) return;
+    setUploadingCover(true);
+    setError(null);
+    try {
+      const url = await uploadImage(file);
+      updateField("coverImage", {
+        ...form.coverImage,
+        src: url,
+        alt: form.title || "Cover",
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Cover upload failed");
+    } finally {
+      setUploadingCover(false);
+    }
+  }
+
+  async function handleGalleryUpload(fileList: FileList | null) {
+    const file = fileList?.[0];
+    if (!file) return;
+    setUploadingGallery(true);
+    setError(null);
+    try {
+      const url = await uploadImage(file);
+      const image: AdminProjectImage = {
+        id: generateId("img"),
+        src: url,
+        alt: form.title || "Project image",
+      };
+      updateField("gallery", [...form.gallery, image]);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Gallery upload failed");
+    } finally {
+      setUploadingGallery(false);
+    }
   }
 
   function addGalleryImage() {
@@ -196,24 +249,53 @@ export function ProjectForm({ project, onSaved }: { project?: AdminProject; onSa
           onChange={(e) =>
             updateField("coverImage", { ...form.coverImage, src: e.target.value, alt: form.title || "Cover" })
           }
-          placeholder="https://… or /images/…"
+          placeholder="https://… or upload a file below"
         />
+        <div className="mt-3">
+          <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-[#94a3b8] bg-white px-4 py-2.5 text-[14px] font-semibold text-[#0f172a] shadow-sm hover:bg-[#f8fafc]">
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              className="sr-only"
+              disabled={uploadingCover}
+              onChange={(e) => {
+                void handleCoverUpload(e.target.files);
+                e.target.value = "";
+              }}
+            />
+            {uploadingCover ? "Uploading cover…" : "Upload cover from computer"}
+          </label>
+          <p className="mt-2 text-[13px] font-medium text-[#64748b]">JPEG, PNG, WebP, or GIF · max 5MB</p>
+        </div>
         {form.coverImage.src && (
           <img src={form.coverImage.src} alt="" className="mt-4 h-40 w-auto rounded-lg border object-cover shadow-sm" />
         )}
 
-        <div className="mt-6 flex gap-3">
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end">
           <AdminInput
             label="Add gallery image URL"
             value={galleryUrl}
             onChange={(e) => setGalleryUrl(e.target.value)}
             className="flex-1"
           />
-          <div className="flex items-end">
-            <AdminButton type="button" variant="secondary" onClick={addGalleryImage}>
-              Add photo
-            </AdminButton>
-          </div>
+          <AdminButton type="button" variant="secondary" onClick={addGalleryImage}>
+            Add photo
+          </AdminButton>
+        </div>
+        <div className="mt-3">
+          <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-[#94a3b8] bg-white px-4 py-2.5 text-[14px] font-semibold text-[#0f172a] shadow-sm hover:bg-[#f8fafc]">
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              className="sr-only"
+              disabled={uploadingGallery}
+              onChange={(e) => {
+                void handleGalleryUpload(e.target.files);
+                e.target.value = "";
+              }}
+            />
+            {uploadingGallery ? "Uploading…" : "Upload gallery photo from computer"}
+          </label>
         </div>
 
         {form.gallery.length > 0 && (
