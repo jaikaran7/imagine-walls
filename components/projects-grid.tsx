@@ -1,0 +1,120 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { MediaImage } from "@/components/media-image";
+import { ProjectGalleryCursor } from "@/components/projects/project-gallery-cursor";
+import type { Project, ProjectCategory } from "@/lib/types";
+
+const categories: (ProjectCategory | "All")[] = [
+  "All",
+  "Residential Interiors",
+  "Modular Kitchen",
+  "Bedroom & Wardrobe",
+  "TV Units & Feature Walls",
+  "Commercial Interiors",
+];
+
+export function ProjectsGrid({ projects }: { projects: Project[] }) {
+  const [active, setActive] = useState<(typeof categories)[number]>("All");
+  const [cursorVisible, setCursorVisible] = useState(false);
+
+  const filtered = useMemo(
+    () => (active === "All" ? projects : projects.filter((p) => p.category === active)),
+    [active, projects]
+  );
+
+  return (
+    <div onMouseLeave={() => setCursorVisible(false)}>
+      <ProjectGalleryCursor visible={cursorVisible} />
+
+      <div className="flex flex-wrap gap-x-6 gap-y-3 border-b border-line pb-6">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            type="button"
+            onClick={() => setActive(cat)}
+            className={`text-[0.75rem] uppercase tracking-editorial transition-opacity duration-300 ${
+              active === cat ? "opacity-100" : "opacity-60 hover:opacity-90"
+            }`}
+            aria-pressed={active === cat}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="py-24 text-center text-ink-muted">
+          <p className="font-display text-2xl">No projects in this category yet.</p>
+          <p className="mt-2 text-sm">Check back soon, or explore another category.</p>
+        </div>
+      ) : (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            className="mt-12 grid gap-x-8 gap-y-16 md:grid-cols-2 md:gap-x-12 md:gap-y-24 lg:gap-x-16"
+          >
+            {filtered.map((project, i) => (
+              <ProjectTile
+                key={project.slug}
+                project={project}
+                index={i}
+                onHover={setCursorVisible}
+              />
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      )}
+    </div>
+  );
+}
+
+function ProjectTile({
+  project,
+  index,
+  onHover,
+}: {
+  project: Project;
+  index: number;
+  onHover: (v: boolean) => void;
+}) {
+  const offset = index % 2 === 1;
+
+  return (
+    <Link
+      href={`/projects/${project.slug}`}
+      className={`group block md:cursor-none ${offset ? "md:mt-24 lg:mt-32" : ""}`}
+      onMouseEnter={() => onHover(true)}
+      onMouseLeave={() => onHover(false)}
+      onFocus={() => onHover(true)}
+      onBlur={() => onHover(false)}
+    >
+      <div className="relative aspect-[4/5] overflow-hidden bg-surface">
+        <MediaImage
+          src={project.coverImage.src}
+          alt={project.coverImage.alt}
+          fill
+          priority={index < 2}
+          sizes="(min-width: 768px) 46vw, 100vw"
+          className="object-cover transition-transform duration-[1200ms] ease-editorial group-hover:scale-[1.04]"
+        />
+      </div>
+
+      <div className="mt-5 flex items-start justify-between gap-4 border-t border-line pt-4">
+        <div>
+          <p className="label mb-1">
+            {project.category} &middot; {project.location}
+          </p>
+          <h3 className="font-display text-2xl leading-tight md:text-[1.75rem]">{project.title}</h3>
+        </div>
+        <span className="label shrink-0 pt-1 text-ink-faint">[{String(index + 1).padStart(2, "0")}]</span>
+      </div>
+    </Link>
+  );
+}

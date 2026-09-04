@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Enquiry {
+  id          String   @id
+  name        String
+  phone       String
+  email       String   @default("")
+  projectType String   @map("project_type")
+  location    String
+  projectSize String   @default("") @map("project_size")
+  budgetRange String   @default("") @map("budget_range")
+  timeline    String   @default("")
+  message     String   @default("")
+  status      String   @default("New")
+  submittedAt DateTime @default(now()) @map("submitted_at")
+
+  @@map("enquiries")
+}
+
+model AdminProject {
+  id                 String   @id
+  slug               String   @unique
+  title              String
+  location           String
+  category           String
+  year               Int
+  featured           Boolean  @default(false)
+  sortOrder          Int      @default(99) @map("sort_order")
+  shortDescription   String   @default("") @map("short_description")
+  overview           String   @default("")
+  designApproach     String   @default("") @map("design_approach")
+  servicesInvolved   Json     @default("[]") @map("services_involved")
+  materialHighlights Json     @default("[]") @map("material_highlights")
+  coverImage         Json     @map("cover_image")
+  gallery            Json     @default("[]")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@map("admin_projects")
+}
+
+model Quotation {
+  id            String    @id
+  clientName    String    @map("client_name")
+  clientPhone   String    @map("client_phone")
+  clientEmail   String    @default("") @map("client_email")
+  clientAddress String    @default("") @map("client_address")
+  projectType   String    @map("project_type")
+  projectTitle  String    @map("project_title")
+  sections      Json      @default("[]")
+  status        String    @default("draft")
+  totalAmount   Float     @default(0) @map("total_amount")
+  notes         String    @default("")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  finalizedAt   DateTime? @map("finalized_at")
+
+  @@map("quotations")
+}
+
+model Invoice {
+  id           String   @id
+  quotationId  String   @map("quotation_id")
+  clientName   String   @map("client_name")
+  clientPhone  String   @map("client_phone")
+  clientEmail  String   @default("") @map("client_email")
+  projectTitle String   @map("project_title")
+  totalAmount  Float    @default(0) @map("total_amount")
+  payments     Json     @default("[]")
+  notes        String   @default("")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("invoices")
+}

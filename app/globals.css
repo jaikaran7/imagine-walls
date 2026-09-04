@@ -1,0 +1,298 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #f7f6f3;
+  --surface: #efeee9;
+  --ink: #0c0c0b;
+  --ink-muted: #3d3b36;
+  --ink-faint: #5c5a54;
+  --line: rgba(12, 12, 11, 0.14);
+  --line-strong: rgba(12, 12, 11, 0.32);
+  --section-vh: 100dvh;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --paper: #0a0a09;
+  --surface: #141412;
+  --ink: #f5f4f0;
+  --ink-muted: #c8c5bc;
+  --ink-faint: #9a9790;
+  --line: rgba(245, 244, 240, 0.14);
+  --line-strong: rgba(245, 244, 240, 0.3);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0a0a09;
+    --surface: #141412;
+    --ink: #f5f4f0;
+    --ink-muted: #c8c5bc;
+    --ink-faint: #9a9790;
+    --line: rgba(245, 244, 240, 0.14);
+    --line-strong: rgba(245, 244, 240, 0.3);
+    color-scheme: dark;
+  }
+}
+
+@supports not (height: 100dvh) {
+  :root {
+    --section-vh: 100svh;
+  }
+}
+
+* {
+  border-color: var(--line);
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-feature-settings: "kern" 1;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Admin is always light and self-contained — never inherit public dark theme */
+.admin-root {
+  color-scheme: light;
+  --paper: #eef1f6;
+  --surface: #ffffff;
+  --ink: #0f172a;
+  --ink-muted: #334155;
+  --ink-faint: #64748b;
+  --line: rgba(15, 23, 42, 0.12);
+  --line-strong: rgba(15, 23, 42, 0.28);
+}
+
+.admin-root input,
+.admin-root select,
+.admin-root textarea {
+  color-scheme: light;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 1.5px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.eyebrow {
+  font-size: clamp(0.6875rem, 0.8vw, 0.8125rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+
+.label {
+  font-size: clamp(0.6875rem, 0.75vw, 0.8125rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.display-xl {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3rem, 8vw, 9rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+.display-lg {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.25rem, 5vw, 6rem);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  font-weight: 500;
+}
+
+.display-md {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.875rem, 3.5vw, 4.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+.display-sm {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.5rem, 2.5vw, 2.75rem);
+  line-height: 1.12;
+  letter-spacing: -0.008em;
+  font-weight: 500;
+}
+
+.body-lg {
+  font-size: clamp(1.0625rem, 1.2vw, 1.25rem);
+  line-height: 1.7;
+  color: var(--ink-muted);
+}
+
+.body-text {
+  font-size: clamp(1rem, 1.05vw, 1.125rem);
+  line-height: 1.7;
+  color: var(--ink-muted);
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: gap 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link-arrow:hover {
+  gap: 0.55rem;
+}
+
+.section-dark {
+  --on-dark: #f5f4f0;
+  --on-dark-muted: #c8c5bc;
+  --on-dark-faint: #9a9790;
+  --on-dark-line: rgba(245, 244, 240, 0.16);
+  --ink: var(--on-dark);
+  --ink-muted: var(--on-dark-muted);
+  --ink-faint: var(--on-dark-faint);
+  --line: var(--on-dark-line);
+  --line-strong: rgba(245, 244, 240, 0.3);
+  background-color: #0c0c0b;
+  color: var(--on-dark);
+}
+
+.section-dark .eyebrow,
+.section-dark .label {
+  color: var(--on-dark-muted);
+}
+
+.section-dark .body-text,
+.section-dark .body-lg {
+  color: var(--on-dark-muted);
+}
+
+.section-dark .display-xl,
+.section-dark .display-lg,
+.section-dark .display-md,
+.section-dark .display-sm,
+.section-dark h1,
+.section-dark h2,
+.section-dark h3 {
+  color: var(--on-dark);
+}
+
+.section-dark .link-arrow {
+  color: var(--on-dark-muted);
+}
+
+.section-dark .link-arrow:hover {
+  color: var(--on-dark);
+}
+
+.section-dark .border-line {
+  border-color: var(--on-dark-line);
+}
+
+.btn-outline {
+  display: inline-block;
+  border: 1px solid var(--ink);
+  padding: 0.875rem 2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-outline:hover {
+  background-color: var(--ink);
+  color: var(--paper);
+}
+
+.section-dark .btn-outline {
+  border-color: var(--on-dark);
+  color: var(--on-dark);
+}
+
+.section-dark .btn-outline:hover {
+  background-color: var(--on-dark);
+  color: #0c0c0b;
+}
+
+.rule {
+  border-top: 1px solid var(--line);
+}
+
+.container-edge {
+  width: 100%;
+  max-width: 1800px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 6vw, 7rem);
+}
+
+.scroll-pin-section {
+  position: relative;
+  isolation: isolate;
+}
+
+.scroll-pin-sticky {
+  position: sticky;
+  top: 0;
+  height: var(--section-vh);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.scroll-pin-inner {
+  width: 100%;
+  max-height: var(--section-vh);
+  padding-block: clamp(5rem, 10vh, 7rem);
+}
+
+/* Services fold section — fit all rows in viewport, top-aligned */
+.services-pin-sticky {
+  position: sticky;
+  top: 0;
+  height: var(--section-vh);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Hide global nav while the Avaa-style project showcase is pinned */
+body[data-showcase-active="true"] #site-nav {
+  opacity: 0;
+  pointer-events: none;
+}
