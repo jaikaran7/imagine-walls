@@ -62,10 +62,20 @@ function IconInvoices() {
   );
 }
 
+function IconReviews() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M5 6.5h14a1.5 1.5 0 0 1 1.5 1.5v7a1.5 1.5 0 0 1-1.5 1.5H10l-3.5 3v-3H5A1.5 1.5 0 0 1 3.5 15V8A1.5 1.5 0 0 1 5 6.5Z" />
+      <path d="M8 11h8M8 14h5" />
+    </svg>
+  );
+}
+
 const primaryNav: NavItem[] = [
   { href: "/admin", label: "Overview", exact: true, icon: <IconOverview /> },
   { href: "/admin/leads", label: "Leads", icon: <IconLeads /> },
   { href: "/admin/projects", label: "Projects", icon: <IconProjects /> },
+  { href: "/admin/reviews", label: "Reviews", icon: <IconReviews /> },
   { href: "/admin/quotations", label: "Quotations", icon: <IconQuotes /> },
   { href: "/admin/invoices", label: "Invoices", icon: <IconInvoices /> },
 ];
@@ -73,6 +83,7 @@ const primaryNav: NavItem[] = [
 const quickActions = [
   { href: "/admin/quotations/new", label: "Quote" },
   { href: "/admin/projects/new", label: "Project" },
+  { href: "/admin/reviews/new", label: "Review" },
   { href: "/admin/invoices/new", label: "Invoice" },
 ];
 

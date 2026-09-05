@@ -80,3 +80,20 @@ model Invoice {
 
   @@map("invoices")
 }
+
+model AdminReview {
+  id        String   @id
+  kind      String   @default("quote")
+  title     String   @default("")
+  quote     String   @default("")
+  name      String   @default("")
+  detail    String   @default("")
+  headline  String   @default("")
+  color     String   @default("#E9CCFF")
+  sortOrder Int      @default(99) @map("sort_order")
+  published Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("admin_reviews")
+}

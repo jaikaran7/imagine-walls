@@ -61,3 +61,8 @@ export type Quotation = Prisma.QuotationModel
  * 
  */
 export type Invoice = Prisma.InvoiceModel
+/**
+ * Model AdminReview
+ * 
+ */
+export type AdminReview = Prisma.AdminReviewModel

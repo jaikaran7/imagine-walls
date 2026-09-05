@@ -297,6 +297,18 @@ body[data-showcase-active="true"] #site-nav {
   pointer-events: none;
 }
 
+/* Immersive single-project reveal */
+body[data-project-reveal="true"] #site-nav,
+body[data-project-reveal="true"] footer,
+body[data-project-reveal="true"] #site-spine {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body[data-project-reveal="true"] {
+  overflow: hidden;
+}
+
 /* Quotation print — A4-friendly document only */
 @media print {
   @page {

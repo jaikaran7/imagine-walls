@@ -5,6 +5,8 @@ import { generateId } from "./id";
 import type {
   AdminProject,
   AdminProjectImage,
+  AdminReview,
+  AdminReviewKind,
   Enquiry,
   EnquiryStatus,
   Invoice,
@@ -434,6 +436,100 @@ export async function updateInvoice(id: string, patch: Partial<Invoice>): Promis
 export async function deleteInvoice(id: string): Promise<boolean> {
   try {
     await prisma.invoice.delete({ where: { id } });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// Reviews
+function mapReview(record: {
+  id: string;
+  kind: string;
+  title: string;
+  quote: string;
+  name: string;
+  detail: string;
+  headline: string;
+  color: string;
+  sortOrder: number;
+  published: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}): AdminReview {
+  return {
+    id: record.id,
+    kind: (record.kind === "highlight" ? "highlight" : "quote") as AdminReviewKind,
+    title: record.title,
+    quote: record.quote,
+    name: record.name,
+    detail: record.detail,
+    headline: record.headline,
+    color: record.color,
+    order: record.sortOrder,
+    published: record.published,
+    createdAt: toIso(record.createdAt),
+    updatedAt: toIso(record.updatedAt),
+  };
+}
+
+export async function getAdminReviews(): Promise<AdminReview[]> {
+  const items = await prisma.adminReview.findMany({
+    orderBy: { sortOrder: "asc" },
+  });
+  return items.map(mapReview);
+}
+
+export async function getAdminReview(id: string): Promise<AdminReview | null> {
+  const record = await prisma.adminReview.findUnique({ where: { id } });
+  return record ? mapReview(record) : null;
+}
+
+export async function addAdminReview(
+  review: Omit<AdminReview, "id" | "createdAt" | "updatedAt">,
+): Promise<AdminReview> {
+  const record = await prisma.adminReview.create({
+    data: {
+      id: generateId("rev"),
+      kind: review.kind,
+      title: review.title,
+      quote: review.quote,
+      name: review.name,
+      detail: review.detail,
+      headline: review.headline,
+      color: review.color,
+      sortOrder: review.order,
+      published: review.published,
+    },
+  });
+  return mapReview(record);
+}
+
+export async function updateAdminReview(id: string, patch: Partial<AdminReview>): Promise<AdminReview | null> {
+  try {
+    const record = await prisma.adminReview.update({
+      where: { id },
+      data: {
+        kind: patch.kind,
+        title: patch.title,
+        quote: patch.quote,
+        name: patch.name,
+        detail: patch.detail,
+        headline: patch.headline,
+        color: patch.color,
+        sortOrder: patch.order,
+        published: patch.published,
+      },
+    });
+    return mapReview(record);
+  } catch {
+    return null;
+  }
+}
+
+export async function deleteAdminReview(id: string): Promise<boolean> {
+  try {
+    await prisma.adminReview.delete({ where: { id } });
     return true;
   } catch {
     return false;

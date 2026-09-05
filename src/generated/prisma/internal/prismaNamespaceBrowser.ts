@@ -54,7 +54,8 @@ export const ModelName = {
   Enquiry: 'Enquiry',
   AdminProject: 'AdminProject',
   Quotation: 'Quotation',
-  Invoice: 'Invoice'
+  Invoice: 'Invoice',
+  AdminReview: 'AdminReview'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -149,6 +150,24 @@ export const InvoiceScalarFieldEnum = {
 } as const
 
 export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const AdminReviewScalarFieldEnum = {
+  id: 'id',
+  kind: 'kind',
+  title: 'title',
+  quote: 'quote',
+  name: 'name',
+  detail: 'detail',
+  headline: 'headline',
+  color: 'color',
+  sortOrder: 'sortOrder',
+  published: 'published',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdminReviewScalarFieldEnum = (typeof AdminReviewScalarFieldEnum)[keyof typeof AdminReviewScalarFieldEnum]
 
 
 export const SortOrder = {

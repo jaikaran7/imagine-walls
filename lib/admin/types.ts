@@ -127,3 +127,20 @@ export interface Invoice {
   createdAt: string;
   updatedAt: string;
 }
+
+export type AdminReviewKind = "quote" | "highlight";
+
+export interface AdminReview {
+  id: string;
+  kind: AdminReviewKind;
+  title: string;
+  quote: string;
+  name: string;
+  detail: string;
+  headline: string;
+  color: string;
+  order: number;
+  published: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

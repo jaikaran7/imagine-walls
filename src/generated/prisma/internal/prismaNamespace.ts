@@ -400,7 +400,8 @@ export const ModelName = {
   Enquiry: 'Enquiry',
   AdminProject: 'AdminProject',
   Quotation: 'Quotation',
-  Invoice: 'Invoice'
+  Invoice: 'Invoice',
+  AdminReview: 'AdminReview'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -416,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "enquiry" | "adminProject" | "quotation" | "invoice"
+    modelProps: "enquiry" | "adminProject" | "quotation" | "invoice" | "adminReview"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -716,6 +717,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AdminReview: {
+      payload: Prisma.$AdminReviewPayload<ExtArgs>
+      fields: Prisma.AdminReviewFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AdminReviewFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminReviewPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AdminReviewFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminReviewPayload>
+        }
+        findFirst: {
+          args: Prisma.AdminReviewFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminReviewPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AdminReviewFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminReviewPayload>
+        }
+        findMany: {
+          args: Prisma.AdminReviewFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminReviewPayload>[]
+        }
+        create: {
+          args: Prisma.AdminReviewCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminReviewPayload>
+        }
+        createMany: {
+          args: Prisma.AdminReviewCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AdminReviewCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminReviewPayload>[]
+        }
+        delete: {
+          args: Prisma.AdminReviewDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminReviewPayload>
+        }
+        update: {
+          args: Prisma.AdminReviewUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminReviewPayload>
+        }
+        deleteMany: {
+          args: Prisma.AdminReviewDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AdminReviewUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AdminReviewUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminReviewPayload>[]
+        }
+        upsert: {
+          args: Prisma.AdminReviewUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminReviewPayload>
+        }
+        aggregate: {
+          args: Prisma.AdminReviewAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAdminReview>
+        }
+        groupBy: {
+          args: Prisma.AdminReviewGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdminReviewGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AdminReviewCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdminReviewCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -831,6 +906,24 @@ export const InvoiceScalarFieldEnum = {
 } as const
 
 export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const AdminReviewScalarFieldEnum = {
+  id: 'id',
+  kind: 'kind',
+  title: 'title',
+  quote: 'quote',
+  name: 'name',
+  detail: 'detail',
+  headline: 'headline',
+  color: 'color',
+  sortOrder: 'sortOrder',
+  published: 'published',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdminReviewScalarFieldEnum = (typeof AdminReviewScalarFieldEnum)[keyof typeof AdminReviewScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1110,6 +1203,7 @@ export type GlobalOmitConfig = {
   adminProject?: Prisma.AdminProjectOmit
   quotation?: Prisma.QuotationOmit
   invoice?: Prisma.InvoiceOmit
+  adminReview?: Prisma.AdminReviewOmit
 }
 
 /* Types for Logging */

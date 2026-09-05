@@ -9,6 +9,7 @@ export function Spine() {
 
   return (
     <div
+      id="site-spine"
       className="pointer-events-none fixed left-0 top-1/2 z-30 hidden -translate-y-1/2 pl-[clamp(1.25rem,6vw,7rem)] xl:block"
       aria-hidden="true"
     >

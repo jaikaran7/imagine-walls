@@ -1,0 +1,145 @@
+.slider {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.slideTitles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.title {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.title h2 {
+  text-align: center;
+  font-size: clamp(1.125rem, 2.2vw, 1.75rem);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.2);
+  transition: color 0.25s ease, opacity 0.25s ease;
+  max-width: 16ch;
+  line-height: 1.2;
+}
+
+.activeTitle h2 {
+  color: #fff;
+}
+
+.slideImages {
+  width: min(550px, 86vw);
+  height: min(500px, 62vh);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: all;
+  opacity: 0.5;
+  z-index: 1;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+}
+
+.imgTop,
+.imgBottom {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.imgTop {
+  clip-path: polygon(85% 0%, 0% 0%, 0% 50%, 85% 50%);
+  transition: clip-path 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.imgBottom {
+  clip-path: polygon(100% 50%, 15% 50%, 15% 100%, 100% 100%);
+  transition: clip-path 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.slideImages:hover .imgTop {
+  clip-path: polygon(90% 0%, 10% 0%, 10% 50%, 90% 50%);
+}
+
+.slideImages:hover .imgBottom {
+  clip-path: polygon(90% 50%, 10% 50%, 10% 100%, 90% 100%);
+}
+
+.slideImages img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .slideTitles {
+    height: auto;
+    top: 12%;
+    left: 0;
+    right: 0;
+  }
+
+  .title {
+    align-items: flex-start;
+    padding-top: 0;
+  }
+
+  .title h2 {
+    opacity: 0;
+    font-size: clamp(1.15rem, 5.5vw, 1.5rem);
+    max-width: 18ch;
+  }
+
+  .activeTitle h2 {
+    opacity: 1;
+  }
+
+  .slideImages {
+    width: min(88vw, 22rem);
+    height: min(58vw, 17rem);
+    top: 48%;
+    opacity: 0.65;
+  }
+
+  .imgTop,
+  .imgBottom {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+
+  .slideImages:hover .imgTop,
+  .slideImages:hover .imgBottom {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+}
+
+@media (max-width: 480px) {
+  .slideImages {
+    width: 86vw;
+    height: 52vw;
+    top: 46%;
+  }
+
+  .slideTitles {
+    top: 10%;
+  }
+}

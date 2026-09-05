@@ -1,0 +1,382 @@
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: #fff;
+  color: #000;
+}
+
+.revealers {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.revealer {
+  flex: 1;
+  width: 100%;
+  background: #fff;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.images {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.5);
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  opacity: 0;
+}
+
+.img:first-child {
+  opacity: 1;
+}
+
+.img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stackedContainer {
+  position: fixed !important;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  width: auto !important;
+  height: auto !important;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 0.75rem;
+  transform: none !important;
+  top: auto !important;
+  z-index: 5;
+}
+
+.imgStacked {
+  position: relative !important;
+  width: 140px !important;
+  height: 95px !important;
+  transform: none !important;
+  top: auto !important;
+  left: auto !important;
+  opacity: 1 !important;
+}
+
+.heroContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.heroContent a {
+  pointer-events: auto;
+}
+
+.siteLogo {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em 0.5em;
+  max-width: min(70vw, 28rem);
+  z-index: 4;
+}
+
+.siteLogo h1 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #000;
+}
+
+.nav {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(50%, 28rem);
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem 1.25rem;
+  z-index: 4;
+}
+
+.navItem p,
+.navItem a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #000;
+  text-decoration: none;
+}
+
+.navItem a:hover {
+  opacity: 0.55;
+}
+
+.featureImg {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  width: min(42%, 28rem);
+  height: min(52%, 28rem);
+  clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.featureImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.85);
+}
+
+.siteInfo {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  width: min(52%, 36rem);
+  height: min(52%, 28rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-bottom: 0;
+  z-index: 4;
+}
+
+.siteInfoRaised {
+  padding-bottom: 7.5rem;
+}
+
+.row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.col {
+  flex: 1;
+  min-width: 0;
+}
+
+.siteInfo h2 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.05rem, 1.6vw, 1.45rem);
+  font-weight: 500;
+  line-height: 1.3;
+  color: #000;
+}
+
+.siteInfo .row:nth-child(2) .col:nth-child(2) {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.siteInfo p,
+.metaLabel {
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: #000;
+}
+
+.metaBlock {
+  flex: 1;
+}
+
+.metaBlock p {
+  line-height: 1.35;
+}
+
+.linksBlock {
+  flex: 1;
+}
+
+.linksBlock a {
+  display: block;
+  line-height: 1.35;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: #000;
+  text-decoration: none;
+}
+
+.linksBlock a:hover {
+  opacity: 0.55;
+}
+
+.word,
+.navItem,
+.line {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.word h1,
+.navItem p,
+.navItem a,
+.siteInfo h2 .line span,
+.line p,
+.line a {
+  position: relative;
+  display: block;
+  will-change: transform;
+  transform: translateY(100%);
+}
+
+.ready .word h1,
+.ready .navItem p,
+.ready .navItem a,
+.ready .siteInfo h2 .line span,
+.ready .line p,
+.ready .line a {
+  transform: none;
+}
+
+.staticFallback {
+  position: relative;
+  min-height: 100dvh;
+  background: #fff;
+  color: #000;
+  padding: 5rem 1.25rem 2.5rem;
+  overflow-x: hidden;
+}
+
+.staticGrid {
+  display: grid;
+  gap: 1.75rem;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.staticThumbs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.staticThumb {
+  position: relative;
+  height: 4.5rem;
+  width: 6.25rem;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #f3f3f1;
+}
+
+.staticThumb img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+@media (min-width: 900px) {
+  .staticGrid {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .staticFallback {
+    padding: 5rem 1.5rem 2rem;
+  }
+}
+
+@media (max-width: 899px) {
+  /* Animated desktop reveal is replaced by static on small screens in JS.
+     Keep these rules for any residual desktop-narrow edge cases. */
+  .siteLogo {
+    max-width: calc(100% - 6.5rem);
+  }
+
+  .siteLogo h1 {
+    font-size: clamp(1.5rem, 8vw, 2.25rem);
+  }
+
+  .nav {
+    width: auto;
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .navItem a {
+    font-size: 0.75rem;
+  }
+
+  .featureImg {
+    display: none;
+  }
+
+  .siteInfo {
+    position: absolute;
+    inset: auto 1rem 5.5rem 1rem;
+    width: auto;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .row:nth-child(2) .col:nth-child(2) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .stackedContainer {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    flex-direction: row;
+    gap: 0.4rem;
+    overflow-x: auto;
+    max-width: calc(100vw - 1.5rem);
+  }
+
+  .imgStacked {
+    width: 72px !important;
+    height: 52px !important;
+    flex-shrink: 0;
+  }
+
+  .siteInfoRaised {
+    padding-bottom: 0;
+  }
+
+  .siteInfo h2 {
+    font-size: 0.98rem;
+  }
+}
