@@ -237,9 +237,9 @@ export function EnquiryPanel() {
                   >
                     <div
                       className="mb-4 flex h-16 w-16 items-center justify-center rounded-full"
-                      style={{ backgroundColor: "rgba(245,244,240,0.2)" }}
+                      style={{ backgroundColor: "rgba(245,244,240,0.2)", color: chrome.cream }}
                     >
-                      <IconCheck className="h-8 w-8" style={{ color: chrome.cream }} />
+                      <IconCheck className="h-8 w-8" />
                     </div>
                     <h3 className="text-3xl font-light leading-tight text-white md:text-4xl">
                       Thank you for reaching out
