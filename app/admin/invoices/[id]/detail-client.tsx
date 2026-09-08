@@ -7,11 +7,15 @@ import {
   AdminSelect,
   AdminTextarea,
 } from "@/components/admin/admin-shell";
-import { InvoiceDocument } from "@/components/admin/invoice-document";
+import {
+  InvoiceDocument,
+  type DocumentPrintTheme,
+} from "@/components/admin/invoice-document";
+import { PrintThemeChips } from "@/components/admin/print-theme-chips";
 import { Letterhead } from "@/components/admin/letterhead";
-import { formatCurrency, formatDate, sumPayments } from "@/lib/admin/format";
+import { formatCurrency, formatDate, invoiceDiscountAmount, invoiceGrandTotal, sumPayments } from "@/lib/admin/format";
 import { generateId } from "@/lib/admin/id";
-import type { Invoice, PaymentMethod, PaymentRecord } from "@/lib/admin/types";
+import type { Invoice, InvoiceDiscountType, PaymentMethod, PaymentRecord } from "@/lib/admin/types";
 
 const paymentMethods: PaymentMethod[] = ["UPI", "Bank Transfer", "Cash", "Cheque", "Card", "Other"];
 
@@ -19,6 +23,7 @@ export function InvoiceDetailClient({ invoice: initial }: { invoice: Invoice }) 
   const [invoice, setInvoice] = useState(initial);
   const [saving, setSaving] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [printTheme, setPrintTheme] = useState<DocumentPrintTheme>("classic");
 
   const [paymentDate, setPaymentDate] = useState(new Date().toISOString().slice(0, 10));
   const [paymentAmount, setPaymentAmount] = useState("");
@@ -60,7 +65,25 @@ export function InvoiceDetailClient({ invoice: initial }: { invoice: Invoice }) 
   }
 
   const received = sumPayments(invoice.payments);
-  const pending = Math.max(0, invoice.totalAmount - received);
+  const discountAmt = invoiceDiscountAmount(
+    invoice.totalAmount,
+    invoice.discountType,
+    invoice.discountValue,
+  );
+  const grandTotal = invoiceGrandTotal(
+    invoice.totalAmount,
+    invoice.discountType,
+    invoice.discountValue,
+  );
+  const pending = Math.max(0, grandTotal - received);
+
+  function setDiscountType(type: InvoiceDiscountType) {
+    setInvoice({
+      ...invoice,
+      discountType: type,
+      discountValue: type === "none" ? 0 : invoice.discountValue,
+    });
+  }
 
   return (
     <>
@@ -79,10 +102,23 @@ export function InvoiceDetailClient({ invoice: initial }: { invoice: Invoice }) 
                 <p className="mt-1 text-[13px] font-medium text-[#64748b]">Direct invoice (no quotation)</p>
               )}
             </div>
-            <div className="mt-8 border-t border-[#e2e5ea] pt-6">
-              <div className="flex justify-between text-[15px]">
-                <span className="text-[#6b7280]">Project total</span>
+            <div className="mt-8 space-y-2 border-t border-[#e2e5ea] pt-6 text-[15px]">
+              <div className="flex justify-between">
+                <span className="text-[#6b7280]">Subtotal</span>
                 <span className="font-medium tabular-nums">{formatCurrency(invoice.totalAmount)}</span>
+              </div>
+              {discountAmt > 0 && (
+                <div className="flex justify-between text-[#b45309]">
+                  <span>
+                    Discount
+                    {invoice.discountType === "percent" ? ` (${invoice.discountValue}%)` : ""}
+                  </span>
+                  <span className="font-medium tabular-nums">− {formatCurrency(discountAmt)}</span>
+                </div>
+              )}
+              <div className="flex justify-between border-t border-[#e2e5ea] pt-2 font-semibold">
+                <span>Grand total</span>
+                <span className="tabular-nums">{formatCurrency(grandTotal)}</span>
               </div>
             </div>
           </div>
@@ -131,15 +167,18 @@ export function InvoiceDetailClient({ invoice: initial }: { invoice: Invoice }) 
 
           {showPreview && (
             <div className="overflow-hidden rounded-xl border border-[#e2e5ea] bg-white shadow-sm">
-              <div className="flex items-center justify-between border-b border-[#e2e5ea] px-4 py-3">
-                <p className="text-[13px] font-bold uppercase tracking-[0.1em] text-[#64748b]">
-                  Print preview
-                </p>
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e2e5ea] px-4 py-3">
+                <div className="flex min-w-0 flex-wrap items-center gap-3">
+                  <p className="text-[13px] font-bold uppercase tracking-[0.1em] text-[#64748b]">
+                    Print preview
+                  </p>
+                  <PrintThemeChips value={printTheme} onChange={setPrintTheme} />
+                </div>
                 <AdminButton variant="ghost" onClick={() => setShowPreview(false)}>
                   Hide preview
                 </AdminButton>
               </div>
-              <InvoiceDocument invoice={invoice} />
+              <InvoiceDocument invoice={invoice} theme={printTheme} />
             </div>
           )}
         </div>
@@ -148,8 +187,18 @@ export function InvoiceDetailClient({ invoice: initial }: { invoice: Invoice }) 
           <div className="rounded-xl border border-[#e2e5ea] bg-white p-5 shadow-sm">
             <div className="space-y-3">
               <div className="flex justify-between text-[15px]">
-                <span className="text-[#6b7280]">Total</span>
+                <span className="text-[#6b7280]">Subtotal</span>
                 <span className="font-medium tabular-nums">{formatCurrency(invoice.totalAmount)}</span>
+              </div>
+              {discountAmt > 0 && (
+                <div className="flex justify-between text-[15px] text-[#b45309]">
+                  <span>Discount</span>
+                  <span className="font-medium tabular-nums">− {formatCurrency(discountAmt)}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-[15px]">
+                <span className="text-[#6b7280]">Grand total</span>
+                <span className="font-medium tabular-nums">{formatCurrency(grandTotal)}</span>
               </div>
               <div className="flex justify-between text-[15px]">
                 <span className="text-[#6b7280]">Received</span>
@@ -164,19 +213,65 @@ export function InvoiceDetailClient({ invoice: initial }: { invoice: Invoice }) 
             </div>
 
             <AdminInput
-              label="Edit total (₹)"
+              label="Edit subtotal (₹)"
               type="number"
               value={invoice.totalAmount || ""}
               onChange={(e) => setInvoice({ ...invoice, totalAmount: Number(e.target.value) || 0 })}
               className="mt-4"
             />
+
+            <div className="mt-4">
+              <p className="mb-2 text-[13px] font-semibold uppercase tracking-wider text-[#6b7280]">
+                Discount
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {(
+                  [
+                    ["none", "None"],
+                    ["amount", "₹ Amount"],
+                    ["percent", "% Percent"],
+                  ] as const
+                ).map(([key, label]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setDiscountType(key)}
+                    className={`rounded-lg px-2.5 py-1.5 text-[12px] font-semibold ${
+                      invoice.discountType === key
+                        ? "bg-[#2563eb] text-white"
+                        : "bg-[#f1f5f9] text-[#475569]"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              {invoice.discountType !== "none" && (
+                <AdminInput
+                  label={invoice.discountType === "percent" ? "Percent" : "Amount (₹)"}
+                  type="number"
+                  value={invoice.discountValue || ""}
+                  onChange={(e) =>
+                    setInvoice({ ...invoice, discountValue: Number(e.target.value) || 0 })
+                  }
+                  className="mt-2"
+                />
+              )}
+            </div>
+
             <AdminButton
               variant="secondary"
-              className="mt-2 w-full"
+              className="mt-3 w-full"
               disabled={saving}
-              onClick={() => saveInvoice({ totalAmount: invoice.totalAmount })}
+              onClick={() =>
+                saveInvoice({
+                  totalAmount: invoice.totalAmount,
+                  discountType: invoice.discountType,
+                  discountValue: invoice.discountValue,
+                })
+              }
             >
-              Update total
+              Update totals
             </AdminButton>
           </div>
 
@@ -233,7 +328,7 @@ export function InvoiceDetailClient({ invoice: initial }: { invoice: Invoice }) 
       </div>
 
       <div className="hidden print:block">
-        <InvoiceDocument invoice={invoice} />
+        <InvoiceDocument invoice={invoice} theme={printTheme} />
       </div>
     </>
   );

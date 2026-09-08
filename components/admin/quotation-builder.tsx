@@ -9,16 +9,28 @@ import {
   AdminSelect,
   AdminTextarea,
 } from "@/components/admin/admin-shell";
-import { QuotationDocument } from "@/components/admin/quotation-document";
+import {
+  QuotationDocument,
+  type QuotationPrintTheme,
+} from "@/components/admin/quotation-document";
+import { PrintThemeChips } from "@/components/admin/print-theme-chips";
+import {
+  firstClientContactError,
+  validateClientContact,
+  type ClientContactErrors,
+} from "@/lib/admin/client-contact";
 import {
   formatCurrency,
   formatQuoteAmount,
+  invoiceDiscountAmount,
+  invoiceGrandTotal,
   lineItemAmount,
   normalizeQuotationLineItem,
   sumLineItems,
 } from "@/lib/admin/format";
 import { generateId } from "@/lib/admin/id";
 import type {
+  InvoiceDiscountType,
   Quotation,
   QuotationLineItem,
   QuotationProjectType,
@@ -65,6 +77,8 @@ function emptyQuotation(): Omit<Quotation, "id" | "createdAt" | "updatedAt"> {
     sections: [emptySection()],
     status: "draft",
     totalAmount: 0,
+    discountType: "none",
+    discountValue: 0,
     notes: "",
   };
 }
@@ -72,6 +86,8 @@ function emptyQuotation(): Omit<Quotation, "id" | "createdAt" | "updatedAt"> {
 function hydrateQuotation(q: Quotation): Quotation {
   return {
     ...q,
+    discountType: q.discountType || "none",
+    discountValue: q.discountValue || 0,
     sections: q.sections.map((section) => ({
       ...section,
       items: section.items.map((item) => normalizeQuotationLineItem(item)),
@@ -92,7 +108,9 @@ export function QuotationBuilder({
   const [saving, setSaving] = useState(false);
   const [manualTotal, setManualTotal] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<ClientContactErrors>({});
   const [showPreview, setShowPreview] = useState(false);
+  const [printTheme, setPrintTheme] = useState<QuotationPrintTheme>("classic");
 
   useEffect(() => {
     if (quotation) {
@@ -103,15 +121,37 @@ export function QuotationBuilder({
   }, [quotation]);
 
   const lineItemsTotal = sumLineItems(form.sections);
+  const subtotal = manualTotal ? form.totalAmount : lineItemsTotal;
+  const discountAmt = invoiceDiscountAmount(subtotal, form.discountType, form.discountValue);
+  const grandTotal = invoiceGrandTotal(subtotal, form.discountType, form.discountValue);
   const previewQuotation = {
     ...form,
-    totalAmount: manualTotal ? form.totalAmount : lineItemsTotal,
+    totalAmount: subtotal,
+    discountType: form.discountType,
+    discountValue: form.discountType === "none" ? 0 : form.discountValue,
     createdAt: quotation?.createdAt ?? new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
 
   function updateField<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
+    if (key === "clientName") {
+      setFieldErrors((prev) => (prev.clientName ? { ...prev, clientName: undefined } : prev));
+    } else if (key === "clientPhone") {
+      setFieldErrors((prev) => (prev.clientPhone ? { ...prev, clientPhone: undefined } : prev));
+    }
+  }
+
+  function validateBeforeSave(): boolean {
+    const next = validateClientContact(form);
+    setFieldErrors(next);
+    const message = firstClientContactError(next);
+    if (message) {
+      setError(message);
+      return false;
+    }
+    setError(null);
+    return true;
   }
 
   function addSection() {
@@ -173,6 +213,8 @@ export function QuotationBuilder({
   }
 
   async function save(status: QuotationStatus) {
+    if (!validateBeforeSave()) return;
+
     setSaving(true);
     setError(null);
     const totalAmount = manualTotal ? form.totalAmount : lineItemsTotal;
@@ -188,6 +230,8 @@ export function QuotationBuilder({
       sections,
       status,
       totalAmount,
+      discountType: form.discountType,
+      discountValue: form.discountType === "none" ? 0 : form.discountValue,
       finalizedAt: status === "finalized" ? new Date().toISOString() : form.finalizedAt,
     };
 
@@ -218,9 +262,7 @@ export function QuotationBuilder({
 
   function handlePrint() {
     setShowPreview(true);
-    requestAnimationFrame(() => {
-      window.print();
-    });
+    requestAnimationFrame(() => window.print());
   }
 
   return (
@@ -232,22 +274,28 @@ export function QuotationBuilder({
 
             <div className="mt-2 grid gap-4 sm:grid-cols-2">
               <AdminInput
-                label="Client name"
+                label="Client name *"
                 value={form.clientName}
                 onChange={(e) => updateField("clientName", e.target.value)}
                 placeholder="e.g. Ravi Kumar Sir"
+                error={fieldErrors.clientName}
+                autoComplete="name"
               />
               <AdminInput
-                label="Phone"
+                label="Mobile *"
                 value={form.clientPhone}
                 onChange={(e) => updateField("clientPhone", e.target.value)}
                 placeholder="10-digit mobile"
+                error={fieldErrors.clientPhone}
+                inputMode="tel"
+                autoComplete="tel"
               />
               <AdminInput
-                label="Email"
+                label="Email (optional)"
                 value={form.clientEmail}
                 onChange={(e) => updateField("clientEmail", e.target.value)}
                 placeholder="optional@email.com"
+                autoComplete="email"
               />
               <AdminSelect
                 label="Project type"
@@ -419,15 +467,18 @@ export function QuotationBuilder({
 
           {showPreview && (
             <section className="overflow-hidden rounded-2xl border border-[#d7dde8] bg-white shadow-sm">
-              <div className="flex items-center justify-between border-b border-[#e2e8f0] px-4 py-3">
-                <p className="text-[13px] font-bold uppercase tracking-[0.1em] text-[#64748b]">
-                  Print preview
-                </p>
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e2e8f0] px-4 py-3">
+                <div className="flex min-w-0 flex-wrap items-center gap-3">
+                  <p className="text-[13px] font-bold uppercase tracking-[0.1em] text-[#64748b]">
+                    Print preview
+                  </p>
+                  <PrintThemeChips value={printTheme} onChange={setPrintTheme} />
+                </div>
                 <AdminButton variant="ghost" onClick={() => setShowPreview(false)}>
                   Hide preview
                 </AdminButton>
               </div>
-              <QuotationDocument quotation={previewQuotation} />
+              <QuotationDocument quotation={previewQuotation} theme={printTheme} />
             </section>
           )}
         </div>
@@ -460,6 +511,61 @@ export function QuotationBuilder({
                 onChange={(e) => updateField("totalAmount", Number(e.target.value) || 0)}
                 className="mt-3"
               />
+            )}
+
+            <div className="mt-5">
+              <p className="mb-2 text-[13px] font-semibold uppercase tracking-wider text-[#6b7280]">
+                Discount
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {(
+                  [
+                    ["none", "None"],
+                    ["amount", "₹ Amount"],
+                    ["percent", "% Percent"],
+                  ] as const
+                ).map(([key, label]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => {
+                      updateField("discountType", key as InvoiceDiscountType);
+                      if (key === "none") updateField("discountValue", 0);
+                    }}
+                    className={`rounded-lg px-2.5 py-1.5 text-[12px] font-semibold ${
+                      form.discountType === key
+                        ? "bg-[#2563eb] text-white"
+                        : "bg-[#f1f5f9] text-[#475569]"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              {form.discountType !== "none" && (
+                <AdminInput
+                  label={form.discountType === "percent" ? "Percent" : "Amount (₹)"}
+                  type="number"
+                  value={form.discountValue || ""}
+                  onChange={(e) => updateField("discountValue", Number(e.target.value) || 0)}
+                  className="mt-2"
+                />
+              )}
+            </div>
+
+            {(discountAmt > 0 || form.discountType !== "none") && (
+              <div className="mt-4 rounded-lg bg-[#f9fafb] px-4 py-3 text-[14px]">
+                <div className="flex justify-between text-[#6b7280]">
+                  <span>Discount</span>
+                  <span className="tabular-nums text-[#b45309]">
+                    {discountAmt > 0 ? `− ${formatCurrency(discountAmt)}` : "—"}
+                  </span>
+                </div>
+                <div className="mt-1 flex justify-between font-semibold text-[#111318]">
+                  <span>Grand total</span>
+                  <span className="tabular-nums">{formatCurrency(grandTotal)}</span>
+                </div>
+              </div>
             )}
           </div>
 
@@ -517,7 +623,7 @@ export function QuotationBuilder({
       </div>
 
       <div className="hidden print:block">
-        <QuotationDocument quotation={previewQuotation} />
+        <QuotationDocument quotation={previewQuotation} theme={printTheme} />
       </div>
     </>
   );

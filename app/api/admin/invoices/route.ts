@@ -26,6 +26,9 @@ export async function POST(request: Request) {
     clientEmail: String(body.clientEmail || "").trim(),
     projectTitle: String(body.projectTitle || "").trim(),
     totalAmount: Number(body.totalAmount) || 0,
+    discountType:
+      body.discountType === "amount" || body.discountType === "percent" ? body.discountType : "none",
+    discountValue: Number(body.discountValue) || 0,
     payments: Array.isArray(body.payments) ? body.payments : [],
     notes: String(body.notes || "").trim(),
   });

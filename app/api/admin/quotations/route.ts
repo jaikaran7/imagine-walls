@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+import {
+  firstClientContactError,
+  validateClientContact,
+} from "@/lib/admin/client-contact";
 import { addQuotation, getQuotations } from "@/lib/admin/store";
 
 export async function GET() {
@@ -14,9 +18,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
+  const clientName = String(body.clientName || "").trim();
+  const clientPhone = String(body.clientPhone || "").trim();
+  const contactError = firstClientContactError(
+    validateClientContact({ clientName, clientPhone }),
+  );
+  if (contactError) {
+    return NextResponse.json({ error: contactError }, { status: 400 });
+  }
+
   const quotation = await addQuotation({
-    clientName: String(body.clientName || "").trim(),
-    clientPhone: String(body.clientPhone || "").trim(),
+    clientName,
+    clientPhone,
     clientEmail: String(body.clientEmail || "").trim(),
     clientAddress: String(body.clientAddress || "").trim(),
     projectType: body.projectType as never,
@@ -24,6 +37,9 @@ export async function POST(request: Request) {
     sections: Array.isArray(body.sections) ? body.sections : [],
     status: body.status === "finalized" ? "finalized" : "draft",
     totalAmount: Number(body.totalAmount) || 0,
+    discountType:
+      body.discountType === "amount" || body.discountType === "percent" ? body.discountType : "none",
+    discountValue: Number(body.discountValue) || 0,
     notes: String(body.notes || "").trim(),
     finalizedAt: body.status === "finalized" ? new Date().toISOString() : undefined,
   });

@@ -11,7 +11,13 @@ export default async function LeadsPage() {
     <>
       <AdminPageHeader
         title="Leads"
-        description="Contact form enquiries and project inquiries from the website."
+        breadcrumb={["Admin", "Enquiries"]}
+        description="Spatial portfolio registry — contact form enquiries and project inquiries from the website."
+        meta={
+          <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-admin-outline">
+            Spatial Portfolio Registry
+          </p>
+        }
       />
       <AdminContent>
         <LeadsPanel initialLeads={leads} />

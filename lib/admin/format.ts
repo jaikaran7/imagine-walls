@@ -1,4 +1,4 @@
-import type { QuotationLineItem, QuotationSection } from "./types";
+import type { InvoiceDiscountType, QuotationLineItem, QuotationSection } from "./types";
 
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat("en-IN", {
@@ -57,6 +57,32 @@ export function sumLineItems(sections: QuotationSection[] | { items: QuotationLi
 
 export function sumPayments(payments: { amount: number }[]): number {
   return payments.reduce((total, p) => total + (Number(p.amount) || 0), 0);
+}
+
+/** Rupee amount of the discount (never exceeds subtotal). */
+export function invoiceDiscountAmount(
+  subtotal: number,
+  discountType: InvoiceDiscountType = "none",
+  discountValue = 0,
+): number {
+  const base = Math.max(0, Number(subtotal) || 0);
+  const value = Math.max(0, Number(discountValue) || 0);
+  if (discountType === "percent") {
+    return Math.min(base, Math.round((base * Math.min(100, value)) / 100));
+  }
+  if (discountType === "amount") {
+    return Math.min(base, Math.round(value));
+  }
+  return 0;
+}
+
+/** Payable total after discount. */
+export function invoiceGrandTotal(
+  subtotal: number,
+  discountType: InvoiceDiscountType = "none",
+  discountValue = 0,
+): number {
+  return Math.max(0, (Number(subtotal) || 0) - invoiceDiscountAmount(subtotal, discountType, discountValue));
 }
 
 export function normalizeQuotationLineItem(raw: unknown): QuotationLineItem {

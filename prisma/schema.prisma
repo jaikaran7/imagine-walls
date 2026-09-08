@@ -57,6 +57,9 @@ model Quotation {
   sections      Json      @default("[]")
   status        String    @default("draft")
   totalAmount   Float     @default(0) @map("total_amount")
+  /** none | amount | percent */
+  discountType  String    @default("none") @map("discount_type")
+  discountValue Float     @default(0) @map("discount_value")
   notes         String    @default("")
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
@@ -66,17 +69,20 @@ model Quotation {
 }
 
 model Invoice {
-  id           String   @id
-  quotationId  String   @default("") @map("quotation_id")
-  clientName   String   @map("client_name")
-  clientPhone  String   @map("client_phone")
-  clientEmail  String   @default("") @map("client_email")
-  projectTitle String   @map("project_title")
-  totalAmount  Float    @default(0) @map("total_amount")
-  payments     Json     @default("[]")
-  notes        String   @default("")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  id            String   @id
+  quotationId   String   @default("") @map("quotation_id")
+  clientName    String   @map("client_name")
+  clientPhone   String   @map("client_phone")
+  clientEmail   String   @default("") @map("client_email")
+  projectTitle  String   @map("project_title")
+  totalAmount   Float    @default(0) @map("total_amount")
+  /** none | amount | percent */
+  discountType  String   @default("none") @map("discount_type")
+  discountValue Float    @default(0) @map("discount_value")
+  payments      Json     @default("[]")
+  notes         String   @default("")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
   @@map("invoices")
 }

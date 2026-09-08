@@ -15,8 +15,14 @@ export default async function QuotationsPage() {
     <>
       <AdminPageHeader
         title="Quotations"
+        breadcrumb={["Admin", "Commercial Estimation"]}
         description="Build quotations with letterhead, room types, line items, and manual pricing."
-        action={<AdminLinkButton href="/admin/quotations/new">New quotation</AdminLinkButton>}
+        action={
+          <AdminLinkButton href="/admin/quotations/new">
+            <span className="material-symbols-outlined text-[18px]">add</span>
+            + New quotation
+          </AdminLinkButton>
+        }
       />
       <AdminContent>
         <QuotationsList initialQuotations={quotations} />

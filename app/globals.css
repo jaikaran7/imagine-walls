@@ -75,16 +75,52 @@ body {
   overflow-x: clip;
 }
 
-/* Admin is always light and self-contained — never inherit public dark theme */
+/* Admin — Stitch Architectural Atelier tokens (cool atelier surfaces + navy) */
 .admin-root {
   color-scheme: light;
-  --paper: #eef1f6;
+  --paper: #f9f9ff;
   --surface: #ffffff;
-  --ink: #0f172a;
-  --ink-muted: #334155;
-  --ink-faint: #64748b;
-  --line: rgba(15, 23, 42, 0.12);
-  --line-strong: rgba(15, 23, 42, 0.28);
+  --ink: #181c23;
+  --ink-muted: #43474e;
+  --ink-faint: #74777f;
+  --line: #c4c6cf;
+  --line-strong: #74777f;
+  --admin-bg: #f9f9ff;
+  --admin-surface: #ffffff;
+  --admin-surface-low: #f1f3fd;
+  --admin-surface-high: #e5e8f2;
+  --admin-surface-highest: #dfe2ec;
+  --admin-primary: #022448;
+  --admin-primary-container: #1e3a5f;
+  --admin-on-primary: #ffffff;
+  --admin-secondary: #0051d5;
+  --admin-secondary-container: #316bf3;
+  --admin-outline: #74777f;
+  --admin-outline-variant: #c4c6cf;
+  --admin-success: #059669;
+  --admin-success-bg: #ecfdf5;
+  --admin-warning: #d97706;
+  --admin-warning-bg: #fffbeb;
+  --admin-danger: #dc2626;
+  --admin-danger-bg: #fef2f2;
+  --admin-sidebar-w: 18rem;
+}
+
+.admin-root .material-symbols-outlined {
+  font-family: "Material Symbols Outlined", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 20;
 }
 
 .admin-root input,
@@ -96,6 +132,21 @@ body {
 ::selection {
   background: var(--ink);
   color: var(--paper);
+}
+
+/* Home hero loader: hide site chrome until the sequence finishes */
+html:has([data-home-hero-root]):not([data-home-hero="ready"]) [data-site-chrome] {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html[data-home-hero="ready"] [data-site-chrome] {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s ease;
 }
 
 :focus-visible {
@@ -299,8 +350,7 @@ body[data-showcase-active="true"] #site-nav {
 
 /* Immersive single-project reveal */
 body[data-project-reveal="true"] #site-nav,
-body[data-project-reveal="true"] footer,
-body[data-project-reveal="true"] #site-spine {
+body[data-project-reveal="true"] footer {
   opacity: 0;
   pointer-events: none;
 }
@@ -340,6 +390,10 @@ body[data-project-reveal="true"] {
 
   .quotation-print table {
     break-inside: auto;
+  }
+
+  .quotation-print thead {
+    display: table-header-group;
   }
 
   .quotation-print tr {

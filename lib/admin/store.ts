@@ -123,11 +123,17 @@ function mapQuotation(record: {
   sections: unknown;
   status: string;
   totalAmount: number;
+  discountType?: string | null;
+  discountValue?: number | null;
   notes: string;
   createdAt: Date;
   updatedAt: Date;
   finalizedAt: Date | null;
 }): Quotation {
+  const discountType =
+    record.discountType === "amount" || record.discountType === "percent"
+      ? record.discountType
+      : "none";
   return {
     id: record.id,
     clientName: record.clientName,
@@ -139,6 +145,8 @@ function mapQuotation(record: {
     sections: asQuotationSections(record.sections),
     status: record.status as Quotation["status"],
     totalAmount: record.totalAmount,
+    discountType,
+    discountValue: Number(record.discountValue) || 0,
     notes: record.notes,
     createdAt: toIso(record.createdAt),
     updatedAt: toIso(record.updatedAt),
@@ -154,11 +162,17 @@ function mapInvoice(record: {
   clientEmail: string;
   projectTitle: string;
   totalAmount: number;
+  discountType?: string | null;
+  discountValue?: number | null;
   payments: unknown;
   notes: string;
   createdAt: Date;
   updatedAt: Date;
 }): Invoice {
+  const discountType =
+    record.discountType === "amount" || record.discountType === "percent"
+      ? record.discountType
+      : "none";
   return {
     id: record.id,
     quotationId: record.quotationId,
@@ -167,6 +181,8 @@ function mapInvoice(record: {
     clientEmail: record.clientEmail,
     projectTitle: record.projectTitle,
     totalAmount: record.totalAmount,
+    discountType,
+    discountValue: Number(record.discountValue) || 0,
     payments: asPayments(record.payments),
     notes: record.notes,
     createdAt: toIso(record.createdAt),
@@ -337,6 +353,8 @@ export async function addQuotation(
       sections: quotation.sections as unknown as Prisma.InputJsonValue,
       status: quotation.status,
       totalAmount: quotation.totalAmount,
+      discountType: quotation.discountType || "none",
+      discountValue: quotation.discountValue || 0,
       notes: quotation.notes,
       finalizedAt: quotation.finalizedAt ? new Date(quotation.finalizedAt) : null,
     },
@@ -358,6 +376,8 @@ export async function updateQuotation(id: string, patch: Partial<Quotation>): Pr
         sections: patch.sections as unknown as Prisma.InputJsonValue | undefined,
         status: patch.status,
         totalAmount: patch.totalAmount,
+        discountType: patch.discountType,
+        discountValue: patch.discountValue,
         notes: patch.notes,
         finalizedAt:
           patch.finalizedAt === undefined
@@ -405,6 +425,8 @@ export async function addInvoice(invoice: Omit<Invoice, "id" | "createdAt" | "up
       clientEmail: invoice.clientEmail,
       projectTitle: invoice.projectTitle,
       totalAmount: invoice.totalAmount,
+      discountType: invoice.discountType || "none",
+      discountValue: invoice.discountValue || 0,
       payments: invoice.payments as unknown as Prisma.InputJsonValue,
       notes: invoice.notes,
     },
@@ -423,6 +445,8 @@ export async function updateInvoice(id: string, patch: Partial<Invoice>): Promis
         clientEmail: patch.clientEmail,
         projectTitle: patch.projectTitle,
         totalAmount: patch.totalAmount,
+        discountType: patch.discountType,
+        discountValue: patch.discountValue,
         payments: patch.payments as unknown as Prisma.InputJsonValue | undefined,
         notes: patch.notes,
       },

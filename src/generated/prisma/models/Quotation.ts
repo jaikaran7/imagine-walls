@@ -28,10 +28,12 @@ export type AggregateQuotation = {
 
 export type QuotationAvgAggregateOutputType = {
   totalAmount: number | null
+  discountValue: number | null
 }
 
 export type QuotationSumAggregateOutputType = {
   totalAmount: number | null
+  discountValue: number | null
 }
 
 export type QuotationMinAggregateOutputType = {
@@ -44,6 +46,8 @@ export type QuotationMinAggregateOutputType = {
   projectTitle: string | null
   status: string | null
   totalAmount: number | null
+  discountType: string | null
+  discountValue: number | null
   notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -60,6 +64,8 @@ export type QuotationMaxAggregateOutputType = {
   projectTitle: string | null
   status: string | null
   totalAmount: number | null
+  discountType: string | null
+  discountValue: number | null
   notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -77,6 +83,8 @@ export type QuotationCountAggregateOutputType = {
   sections: number
   status: number
   totalAmount: number
+  discountType: number
+  discountValue: number
   notes: number
   createdAt: number
   updatedAt: number
@@ -87,10 +95,12 @@ export type QuotationCountAggregateOutputType = {
 
 export type QuotationAvgAggregateInputType = {
   totalAmount?: true
+  discountValue?: true
 }
 
 export type QuotationSumAggregateInputType = {
   totalAmount?: true
+  discountValue?: true
 }
 
 export type QuotationMinAggregateInputType = {
@@ -103,6 +113,8 @@ export type QuotationMinAggregateInputType = {
   projectTitle?: true
   status?: true
   totalAmount?: true
+  discountType?: true
+  discountValue?: true
   notes?: true
   createdAt?: true
   updatedAt?: true
@@ -119,6 +131,8 @@ export type QuotationMaxAggregateInputType = {
   projectTitle?: true
   status?: true
   totalAmount?: true
+  discountType?: true
+  discountValue?: true
   notes?: true
   createdAt?: true
   updatedAt?: true
@@ -136,6 +150,8 @@ export type QuotationCountAggregateInputType = {
   sections?: true
   status?: true
   totalAmount?: true
+  discountType?: true
+  discountValue?: true
   notes?: true
   createdAt?: true
   updatedAt?: true
@@ -240,6 +256,8 @@ export type QuotationGroupByOutputType = {
   sections: runtime.JsonValue
   status: string
   totalAmount: number
+  discountType: string
+  discountValue: number
   notes: string
   createdAt: Date
   updatedAt: Date
@@ -280,6 +298,8 @@ export type QuotationWhereInput = {
   sections?: Prisma.JsonFilter<"Quotation">
   status?: Prisma.StringFilter<"Quotation"> | string
   totalAmount?: Prisma.FloatFilter<"Quotation"> | number
+  discountType?: Prisma.StringFilter<"Quotation"> | string
+  discountValue?: Prisma.FloatFilter<"Quotation"> | number
   notes?: Prisma.StringFilter<"Quotation"> | string
   createdAt?: Prisma.DateTimeFilter<"Quotation"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Quotation"> | Date | string
@@ -297,6 +317,8 @@ export type QuotationOrderByWithRelationInput = {
   sections?: Prisma.SortOrder
   status?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
+  discountType?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -317,6 +339,8 @@ export type QuotationWhereUniqueInput = Prisma.AtLeast<{
   sections?: Prisma.JsonFilter<"Quotation">
   status?: Prisma.StringFilter<"Quotation"> | string
   totalAmount?: Prisma.FloatFilter<"Quotation"> | number
+  discountType?: Prisma.StringFilter<"Quotation"> | string
+  discountValue?: Prisma.FloatFilter<"Quotation"> | number
   notes?: Prisma.StringFilter<"Quotation"> | string
   createdAt?: Prisma.DateTimeFilter<"Quotation"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Quotation"> | Date | string
@@ -334,6 +358,8 @@ export type QuotationOrderByWithAggregationInput = {
   sections?: Prisma.SortOrder
   status?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
+  discountType?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -359,6 +385,8 @@ export type QuotationScalarWhereWithAggregatesInput = {
   sections?: Prisma.JsonWithAggregatesFilter<"Quotation">
   status?: Prisma.StringWithAggregatesFilter<"Quotation"> | string
   totalAmount?: Prisma.FloatWithAggregatesFilter<"Quotation"> | number
+  discountType?: Prisma.StringWithAggregatesFilter<"Quotation"> | string
+  discountValue?: Prisma.FloatWithAggregatesFilter<"Quotation"> | number
   notes?: Prisma.StringWithAggregatesFilter<"Quotation"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Quotation"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Quotation"> | Date | string
@@ -376,6 +404,8 @@ export type QuotationCreateInput = {
   sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: string
   totalAmount?: number
+  discountType?: string
+  discountValue?: number
   notes?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -393,6 +423,8 @@ export type QuotationUncheckedCreateInput = {
   sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: string
   totalAmount?: number
+  discountType?: string
+  discountValue?: number
   notes?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -410,6 +442,8 @@ export type QuotationUpdateInput = {
   sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  discountType?: Prisma.StringFieldUpdateOperationsInput | string
+  discountValue?: Prisma.FloatFieldUpdateOperationsInput | number
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -427,6 +461,8 @@ export type QuotationUncheckedUpdateInput = {
   sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  discountType?: Prisma.StringFieldUpdateOperationsInput | string
+  discountValue?: Prisma.FloatFieldUpdateOperationsInput | number
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -444,6 +480,8 @@ export type QuotationCreateManyInput = {
   sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: string
   totalAmount?: number
+  discountType?: string
+  discountValue?: number
   notes?: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -461,6 +499,8 @@ export type QuotationUpdateManyMutationInput = {
   sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  discountType?: Prisma.StringFieldUpdateOperationsInput | string
+  discountValue?: Prisma.FloatFieldUpdateOperationsInput | number
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -478,6 +518,8 @@ export type QuotationUncheckedUpdateManyInput = {
   sections?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  discountType?: Prisma.StringFieldUpdateOperationsInput | string
+  discountValue?: Prisma.FloatFieldUpdateOperationsInput | number
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -495,6 +537,8 @@ export type QuotationCountOrderByAggregateInput = {
   sections?: Prisma.SortOrder
   status?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
+  discountType?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -503,6 +547,7 @@ export type QuotationCountOrderByAggregateInput = {
 
 export type QuotationAvgOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
 }
 
 export type QuotationMaxOrderByAggregateInput = {
@@ -515,6 +560,8 @@ export type QuotationMaxOrderByAggregateInput = {
   projectTitle?: Prisma.SortOrder
   status?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
+  discountType?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -531,6 +578,8 @@ export type QuotationMinOrderByAggregateInput = {
   projectTitle?: Prisma.SortOrder
   status?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
+  discountType?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -539,6 +588,7 @@ export type QuotationMinOrderByAggregateInput = {
 
 export type QuotationSumOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
 }
 
 export type FloatFieldUpdateOperationsInput = {
@@ -566,6 +616,8 @@ export type QuotationSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   sections?: boolean
   status?: boolean
   totalAmount?: boolean
+  discountType?: boolean
+  discountValue?: boolean
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -583,6 +635,8 @@ export type QuotationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   sections?: boolean
   status?: boolean
   totalAmount?: boolean
+  discountType?: boolean
+  discountValue?: boolean
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -600,6 +654,8 @@ export type QuotationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   sections?: boolean
   status?: boolean
   totalAmount?: boolean
+  discountType?: boolean
+  discountValue?: boolean
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -617,13 +673,15 @@ export type QuotationSelectScalar = {
   sections?: boolean
   status?: boolean
   totalAmount?: boolean
+  discountType?: boolean
+  discountValue?: boolean
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   finalizedAt?: boolean
 }
 
-export type QuotationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientName" | "clientPhone" | "clientEmail" | "clientAddress" | "projectType" | "projectTitle" | "sections" | "status" | "totalAmount" | "notes" | "createdAt" | "updatedAt" | "finalizedAt", ExtArgs["result"]["quotation"]>
+export type QuotationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientName" | "clientPhone" | "clientEmail" | "clientAddress" | "projectType" | "projectTitle" | "sections" | "status" | "totalAmount" | "discountType" | "discountValue" | "notes" | "createdAt" | "updatedAt" | "finalizedAt", ExtArgs["result"]["quotation"]>
 
 export type $QuotationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Quotation"
@@ -639,6 +697,11 @@ export type $QuotationPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     sections: runtime.JsonValue
     status: string
     totalAmount: number
+    /**
+     * * none | amount | percent
+     */
+    discountType: string
+    discountValue: number
     notes: string
     createdAt: Date
     updatedAt: Date
@@ -1076,6 +1139,8 @@ export interface QuotationFieldRefs {
   readonly sections: Prisma.FieldRef<"Quotation", 'Json'>
   readonly status: Prisma.FieldRef<"Quotation", 'String'>
   readonly totalAmount: Prisma.FieldRef<"Quotation", 'Float'>
+  readonly discountType: Prisma.FieldRef<"Quotation", 'String'>
+  readonly discountValue: Prisma.FieldRef<"Quotation", 'Float'>
   readonly notes: Prisma.FieldRef<"Quotation", 'String'>
   readonly createdAt: Prisma.FieldRef<"Quotation", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Quotation", 'DateTime'>

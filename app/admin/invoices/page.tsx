@@ -15,8 +15,14 @@ export default async function InvoicesPage() {
     <>
       <AdminPageHeader
         title="Invoices"
+        breadcrumb={["Admin", "Commercial Ledger", "Invoices"]}
         description="Track payments against finalized quotations — received, pending, and payment method."
-        action={<AdminLinkButton href="/admin/invoices/new">Create invoice</AdminLinkButton>}
+        action={
+          <AdminLinkButton href="/admin/invoices/new">
+            <span className="material-symbols-outlined text-[18px]">add</span>
+            + Create Invoice
+          </AdminLinkButton>
+        }
       />
       <AdminContent>
         <InvoicesList initialInvoices={invoices} />

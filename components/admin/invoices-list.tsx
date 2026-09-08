@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import { AdminButton, AdminLinkButton, EmptyState } from "@/components/admin/admin-shell";
-import { formatCurrency, formatDate, sumPayments } from "@/lib/admin/format";
+import { formatCurrency, formatDate, invoiceGrandTotal, sumPayments } from "@/lib/admin/format";
 import type { Invoice } from "@/lib/admin/types";
 
 export function InvoicesList({ initialInvoices }: { initialInvoices: Invoice[] }) {
@@ -55,12 +55,13 @@ export function InvoicesList({ initialInvoices }: { initialInvoices: Invoice[] }
         <tbody>
           {invoices.map((inv) => {
             const received = sumPayments(inv.payments);
-            const pending = Math.max(0, inv.totalAmount - received);
+            const grand = invoiceGrandTotal(inv.totalAmount, inv.discountType, inv.discountValue);
+            const pending = Math.max(0, grand - received);
             return (
               <tr key={inv.id} className="border-b border-[#f3f4f6] last:border-0">
                 <td className="px-5 py-4 text-[15px] font-medium text-[#111318]">{inv.clientName}</td>
                 <td className="px-5 py-4 text-[15px] text-[#6b7280]">{inv.projectTitle}</td>
-                <td className="px-5 py-4 text-[15px] tabular-nums">{formatCurrency(inv.totalAmount)}</td>
+                <td className="px-5 py-4 text-[15px] tabular-nums">{formatCurrency(grand)}</td>
                 <td className="px-5 py-4 text-[15px] tabular-nums text-[#047857]">{formatCurrency(received)}</td>
                 <td className="px-5 py-4 text-[15px] tabular-nums text-[#b45309]">{formatCurrency(pending)}</td>
                 <td className="px-5 py-4 text-[14px] text-[#9ca3af]">{formatDate(inv.createdAt)}</td>

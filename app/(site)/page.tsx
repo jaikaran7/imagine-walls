@@ -1,28 +1,29 @@
 import { Hero } from "@/components/home/hero";
-import { StudioIntro, CommitmentSection, FinalCta } from "@/components/home/final-cta";
+import { CommitmentSection } from "@/components/home/final-cta";
 import { ModularProjectSlider } from "@/components/home/modular-project-slider";
 import { ServicesPreview } from "@/components/home/services-preview";
 import { ProcessTeaser } from "@/components/home/process-teaser";
 import { ReviewsSwiper } from "@/components/home/reviews-swiper";
-import { getFeaturedProjects } from "@/lib/projects";
+import { getFeaturedProjects, getProjects } from "@/lib/projects";
 import { getPublishedReviews } from "@/lib/reviews";
 
 export default async function HomePage() {
-  const [featuredProjects, reviews] = await Promise.all([
+  const [projects, featuredProjects, reviews] = await Promise.all([
+    getProjects(),
     getFeaturedProjects(),
     getPublishedReviews(),
   ]);
 
+  const heroImages = projects.map((p) => p.coverImage.src).filter(Boolean);
+
   return (
     <>
-      <Hero />
-      <StudioIntro />
+      <Hero images={heroImages} />
       <CommitmentSection />
       <ModularProjectSlider projects={featuredProjects} />
       <ServicesPreview />
       <ProcessTeaser />
       <ReviewsSwiper reviews={reviews} />
-      <FinalCta />
     </>
   );
 }

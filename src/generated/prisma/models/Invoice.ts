@@ -28,10 +28,12 @@ export type AggregateInvoice = {
 
 export type InvoiceAvgAggregateOutputType = {
   totalAmount: number | null
+  discountValue: number | null
 }
 
 export type InvoiceSumAggregateOutputType = {
   totalAmount: number | null
+  discountValue: number | null
 }
 
 export type InvoiceMinAggregateOutputType = {
@@ -42,6 +44,8 @@ export type InvoiceMinAggregateOutputType = {
   clientEmail: string | null
   projectTitle: string | null
   totalAmount: number | null
+  discountType: string | null
+  discountValue: number | null
   notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -55,6 +59,8 @@ export type InvoiceMaxAggregateOutputType = {
   clientEmail: string | null
   projectTitle: string | null
   totalAmount: number | null
+  discountType: string | null
+  discountValue: number | null
   notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -68,6 +74,8 @@ export type InvoiceCountAggregateOutputType = {
   clientEmail: number
   projectTitle: number
   totalAmount: number
+  discountType: number
+  discountValue: number
   payments: number
   notes: number
   createdAt: number
@@ -78,10 +86,12 @@ export type InvoiceCountAggregateOutputType = {
 
 export type InvoiceAvgAggregateInputType = {
   totalAmount?: true
+  discountValue?: true
 }
 
 export type InvoiceSumAggregateInputType = {
   totalAmount?: true
+  discountValue?: true
 }
 
 export type InvoiceMinAggregateInputType = {
@@ -92,6 +102,8 @@ export type InvoiceMinAggregateInputType = {
   clientEmail?: true
   projectTitle?: true
   totalAmount?: true
+  discountType?: true
+  discountValue?: true
   notes?: true
   createdAt?: true
   updatedAt?: true
@@ -105,6 +117,8 @@ export type InvoiceMaxAggregateInputType = {
   clientEmail?: true
   projectTitle?: true
   totalAmount?: true
+  discountType?: true
+  discountValue?: true
   notes?: true
   createdAt?: true
   updatedAt?: true
@@ -118,6 +132,8 @@ export type InvoiceCountAggregateInputType = {
   clientEmail?: true
   projectTitle?: true
   totalAmount?: true
+  discountType?: true
+  discountValue?: true
   payments?: true
   notes?: true
   createdAt?: true
@@ -219,6 +235,8 @@ export type InvoiceGroupByOutputType = {
   clientEmail: string
   projectTitle: string
   totalAmount: number
+  discountType: string
+  discountValue: number
   payments: runtime.JsonValue
   notes: string
   createdAt: Date
@@ -256,6 +274,8 @@ export type InvoiceWhereInput = {
   clientEmail?: Prisma.StringFilter<"Invoice"> | string
   projectTitle?: Prisma.StringFilter<"Invoice"> | string
   totalAmount?: Prisma.FloatFilter<"Invoice"> | number
+  discountType?: Prisma.StringFilter<"Invoice"> | string
+  discountValue?: Prisma.FloatFilter<"Invoice"> | number
   payments?: Prisma.JsonFilter<"Invoice">
   notes?: Prisma.StringFilter<"Invoice"> | string
   createdAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
@@ -270,6 +290,8 @@ export type InvoiceOrderByWithRelationInput = {
   clientEmail?: Prisma.SortOrder
   projectTitle?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
+  discountType?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
   payments?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -287,6 +309,8 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   clientEmail?: Prisma.StringFilter<"Invoice"> | string
   projectTitle?: Prisma.StringFilter<"Invoice"> | string
   totalAmount?: Prisma.FloatFilter<"Invoice"> | number
+  discountType?: Prisma.StringFilter<"Invoice"> | string
+  discountValue?: Prisma.FloatFilter<"Invoice"> | number
   payments?: Prisma.JsonFilter<"Invoice">
   notes?: Prisma.StringFilter<"Invoice"> | string
   createdAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
@@ -301,6 +325,8 @@ export type InvoiceOrderByWithAggregationInput = {
   clientEmail?: Prisma.SortOrder
   projectTitle?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
+  discountType?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
   payments?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -323,6 +349,8 @@ export type InvoiceScalarWhereWithAggregatesInput = {
   clientEmail?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   projectTitle?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   totalAmount?: Prisma.FloatWithAggregatesFilter<"Invoice"> | number
+  discountType?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
+  discountValue?: Prisma.FloatWithAggregatesFilter<"Invoice"> | number
   payments?: Prisma.JsonWithAggregatesFilter<"Invoice">
   notes?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Invoice"> | Date | string
@@ -337,6 +365,8 @@ export type InvoiceCreateInput = {
   clientEmail?: string
   projectTitle: string
   totalAmount?: number
+  discountType?: string
+  discountValue?: number
   payments?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   notes?: string
   createdAt?: Date | string
@@ -351,6 +381,8 @@ export type InvoiceUncheckedCreateInput = {
   clientEmail?: string
   projectTitle: string
   totalAmount?: number
+  discountType?: string
+  discountValue?: number
   payments?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   notes?: string
   createdAt?: Date | string
@@ -365,6 +397,8 @@ export type InvoiceUpdateInput = {
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
   projectTitle?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  discountType?: Prisma.StringFieldUpdateOperationsInput | string
+  discountValue?: Prisma.FloatFieldUpdateOperationsInput | number
   payments?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -379,6 +413,8 @@ export type InvoiceUncheckedUpdateInput = {
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
   projectTitle?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  discountType?: Prisma.StringFieldUpdateOperationsInput | string
+  discountValue?: Prisma.FloatFieldUpdateOperationsInput | number
   payments?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -393,6 +429,8 @@ export type InvoiceCreateManyInput = {
   clientEmail?: string
   projectTitle: string
   totalAmount?: number
+  discountType?: string
+  discountValue?: number
   payments?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   notes?: string
   createdAt?: Date | string
@@ -407,6 +445,8 @@ export type InvoiceUpdateManyMutationInput = {
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
   projectTitle?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  discountType?: Prisma.StringFieldUpdateOperationsInput | string
+  discountValue?: Prisma.FloatFieldUpdateOperationsInput | number
   payments?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -421,6 +461,8 @@ export type InvoiceUncheckedUpdateManyInput = {
   clientEmail?: Prisma.StringFieldUpdateOperationsInput | string
   projectTitle?: Prisma.StringFieldUpdateOperationsInput | string
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  discountType?: Prisma.StringFieldUpdateOperationsInput | string
+  discountValue?: Prisma.FloatFieldUpdateOperationsInput | number
   payments?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   notes?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -435,6 +477,8 @@ export type InvoiceCountOrderByAggregateInput = {
   clientEmail?: Prisma.SortOrder
   projectTitle?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
+  discountType?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
   payments?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -443,6 +487,7 @@ export type InvoiceCountOrderByAggregateInput = {
 
 export type InvoiceAvgOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
 }
 
 export type InvoiceMaxOrderByAggregateInput = {
@@ -453,6 +498,8 @@ export type InvoiceMaxOrderByAggregateInput = {
   clientEmail?: Prisma.SortOrder
   projectTitle?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
+  discountType?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -466,6 +513,8 @@ export type InvoiceMinOrderByAggregateInput = {
   clientEmail?: Prisma.SortOrder
   projectTitle?: Prisma.SortOrder
   totalAmount?: Prisma.SortOrder
+  discountType?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -473,6 +522,7 @@ export type InvoiceMinOrderByAggregateInput = {
 
 export type InvoiceSumOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
+  discountValue?: Prisma.SortOrder
 }
 
 
@@ -485,6 +535,8 @@ export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   clientEmail?: boolean
   projectTitle?: boolean
   totalAmount?: boolean
+  discountType?: boolean
+  discountValue?: boolean
   payments?: boolean
   notes?: boolean
   createdAt?: boolean
@@ -499,6 +551,8 @@ export type InvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   clientEmail?: boolean
   projectTitle?: boolean
   totalAmount?: boolean
+  discountType?: boolean
+  discountValue?: boolean
   payments?: boolean
   notes?: boolean
   createdAt?: boolean
@@ -513,6 +567,8 @@ export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   clientEmail?: boolean
   projectTitle?: boolean
   totalAmount?: boolean
+  discountType?: boolean
+  discountValue?: boolean
   payments?: boolean
   notes?: boolean
   createdAt?: boolean
@@ -527,13 +583,15 @@ export type InvoiceSelectScalar = {
   clientEmail?: boolean
   projectTitle?: boolean
   totalAmount?: boolean
+  discountType?: boolean
+  discountValue?: boolean
   payments?: boolean
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "quotationId" | "clientName" | "clientPhone" | "clientEmail" | "projectTitle" | "totalAmount" | "payments" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["invoice"]>
+export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "quotationId" | "clientName" | "clientPhone" | "clientEmail" | "projectTitle" | "totalAmount" | "discountType" | "discountValue" | "payments" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["invoice"]>
 
 export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Invoice"
@@ -546,6 +604,11 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     clientEmail: string
     projectTitle: string
     totalAmount: number
+    /**
+     * * none | amount | percent
+     */
+    discountType: string
+    discountValue: number
     payments: runtime.JsonValue
     notes: string
     createdAt: Date
@@ -980,6 +1043,8 @@ export interface InvoiceFieldRefs {
   readonly clientEmail: Prisma.FieldRef<"Invoice", 'String'>
   readonly projectTitle: Prisma.FieldRef<"Invoice", 'String'>
   readonly totalAmount: Prisma.FieldRef<"Invoice", 'Float'>
+  readonly discountType: Prisma.FieldRef<"Invoice", 'String'>
+  readonly discountValue: Prisma.FieldRef<"Invoice", 'Float'>
   readonly payments: Prisma.FieldRef<"Invoice", 'Json'>
   readonly notes: Prisma.FieldRef<"Invoice", 'String'>
   readonly createdAt: Prisma.FieldRef<"Invoice", 'DateTime'>

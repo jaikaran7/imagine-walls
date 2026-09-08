@@ -9,8 +9,12 @@ import {
   AdminSelect,
   AdminTextarea,
 } from "@/components/admin/admin-shell";
-import { formatCurrency } from "@/lib/admin/format";
-import type { Quotation } from "@/lib/admin/types";
+import {
+  formatCurrency,
+  invoiceDiscountAmount,
+  invoiceGrandTotal,
+} from "@/lib/admin/format";
+import type { InvoiceDiscountType, Quotation } from "@/lib/admin/types";
 
 type Mode = "quotation" | "direct";
 
@@ -29,11 +33,15 @@ export function NewInvoiceClient({
   const [clientEmail, setClientEmail] = useState("");
   const [projectTitle, setProjectTitle] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
+  const [discountType, setDiscountType] = useState<InvoiceDiscountType>("none");
+  const [discountValue, setDiscountValue] = useState(0);
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const selected = quotations.find((q) => q.id === selectedId);
+  const discountAmt = invoiceDiscountAmount(totalAmount, discountType, discountValue);
+  const grandTotal = invoiceGrandTotal(totalAmount, discountType, discountValue);
 
   useEffect(() => {
     if (mode === "quotation" && selected) {
@@ -41,6 +49,11 @@ export function NewInvoiceClient({
       setNotes(selected.notes || "");
     }
   }, [mode, selected]);
+
+  function pickDiscountType(type: InvoiceDiscountType) {
+    setDiscountType(type);
+    if (type === "none") setDiscountValue(0);
+  }
 
   async function createInvoice() {
     setSaving(true);
@@ -56,6 +69,8 @@ export function NewInvoiceClient({
               clientEmail: selected.clientEmail,
               projectTitle: selected.projectTitle,
               totalAmount,
+              discountType,
+              discountValue: discountType === "none" ? 0 : discountValue,
               payments: [],
               notes,
             }
@@ -67,6 +82,8 @@ export function NewInvoiceClient({
             clientEmail: clientEmail.trim(),
             projectTitle: projectTitle.trim(),
             totalAmount,
+            discountType,
+            discountValue: discountType === "none" ? 0 : discountValue,
             payments: [],
             notes,
           };
@@ -206,11 +223,64 @@ export function NewInvoiceClient({
         {(mode === "direct" || selected) && (
           <>
             <AdminInput
-              label="Invoice total (₹)"
+              label="Subtotal (₹)"
               type="number"
               value={totalAmount || ""}
               onChange={(e) => setTotalAmount(Number(e.target.value) || 0)}
             />
+
+            <div>
+              <p className="mb-2 text-[13px] font-semibold uppercase tracking-wider text-[#6b7280]">
+                Discount
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {(
+                  [
+                    ["none", "None"],
+                    ["amount", "₹ Amount"],
+                    ["percent", "% Percent"],
+                  ] as const
+                ).map(([key, label]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => pickDiscountType(key)}
+                    className={`rounded-lg px-2.5 py-1.5 text-[12px] font-semibold ${
+                      discountType === key
+                        ? "bg-[#2563eb] text-white"
+                        : "bg-[#f1f5f9] text-[#475569]"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              {discountType !== "none" && (
+                <AdminInput
+                  label={discountType === "percent" ? "Percent" : "Amount (₹)"}
+                  type="number"
+                  value={discountValue || ""}
+                  onChange={(e) => setDiscountValue(Number(e.target.value) || 0)}
+                  className="mt-2"
+                />
+              )}
+            </div>
+
+            {(discountAmt > 0 || discountType !== "none") && (
+              <div className="rounded-lg bg-[#f9fafb] px-4 py-3 text-[14px]">
+                <div className="flex justify-between text-[#6b7280]">
+                  <span>Discount</span>
+                  <span className="tabular-nums text-[#b45309]">
+                    {discountAmt > 0 ? `− ${formatCurrency(discountAmt)}` : "—"}
+                  </span>
+                </div>
+                <div className="mt-1 flex justify-between font-semibold text-[#111318]">
+                  <span>Grand total</span>
+                  <span className="tabular-nums">{formatCurrency(grandTotal)}</span>
+                </div>
+              </div>
+            )}
+
             <AdminTextarea label="Notes" rows={2} value={notes} onChange={(e) => setNotes(e.target.value)} />
           </>
         )}

@@ -1,0 +1,223 @@
+.preloader {
+  position: fixed;
+  inset: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  background-color: var(--ink);
+  color: var(--paper);
+  will-change: clip-path;
+  overflow: hidden;
+  z-index: 60;
+}
+
+.preloaderImages {
+  position: absolute;
+  inset: 0;
+}
+
+.preloaderCard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: min(250px, 46vw);
+  height: min(300px, 55vw);
+  transform-origin: center center;
+  clip-path: polygon(20% 20%, 80% 20%, 80% 80%, 20% 80%);
+  will-change: transform, clip-path;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.preloaderCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preloaderHeader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  width: max-content;
+  max-width: none;
+  z-index: 2;
+}
+
+.title {
+  margin: 0;
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-style: normal;
+  font-stretch: normal;
+  font-synthesis: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.preloaderHeader .title {
+  white-space: nowrap;
+  font-weight: 400;
+  font-size: clamp(6.25rem, 10vw, 9.6875rem);
+  letter-spacing: -0.055em;
+  line-height: 0.86;
+  color: var(--paper);
+}
+
+.title > * {
+  display: inline-block;
+  vertical-align: top;
+  letter-spacing: inherit;
+}
+
+.char {
+  display: inline-block;
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  transform: translateY(100%);
+  will-change: transform;
+}
+
+.preloaderCounter {
+  position: absolute;
+  top: -1.5rem;
+  left: calc(100% + 1.5rem);
+  overflow: hidden;
+}
+
+.preloaderCounter p {
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-size: clamp(1rem, 1.5vw, 2rem);
+  font-weight: 400;
+  line-height: 0.86;
+  letter-spacing: -0.055em;
+  color: var(--paper);
+  transform: translateY(100%);
+  will-change: transform;
+}
+
+/* Settled hero — OUTFIT-style top band */
+.hero {
+  position: relative;
+  width: 100%;
+  padding: clamp(5.5rem, 12vh, 7rem) clamp(1.25rem, 6vw, 7rem) clamp(2rem, 4vw, 3rem);
+  background-color: var(--surface);
+  color: var(--ink);
+  overflow: visible;
+}
+
+.header {
+  position: relative;
+  width: 100%;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: clamp(1rem, 2vw, 1.75rem);
+  overflow: visible;
+}
+
+.header .title,
+.staticHero .title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  white-space: normal;
+  font-weight: 700;
+  font-size: clamp(3.25rem, 13.5vw, 10.5rem);
+  letter-spacing: 0;
+  line-height: 0.82;
+  color: var(--ink);
+}
+
+/* SplitText line wrapper + char masks — spread letters edge to edge */
+.header .title > *,
+.staticHero .title > * {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  flex: 1;
+  letter-spacing: 0;
+}
+
+/* Plain text fallback (reduced motion) — stretch word edge to edge */
+.staticHero .title:not(:has(*)) {
+  display: block;
+  text-align: justify;
+  text-align-last: justify;
+}
+
+.staticHero .title:not(:has(*))::after {
+  content: "";
+  display: inline-block;
+  width: 100%;
+}
+
+.heroFooter {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  padding-top: clamp(1rem, 2vw, 1.75rem);
+}
+
+.heroFooter p {
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-size: clamp(0.6875rem, 1vw, 0.8125rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.word {
+  transform: translateY(100%);
+  will-change: transform;
+}
+
+.staticHero {
+  position: relative;
+  width: 100%;
+  padding: clamp(5.5rem, 12vh, 7rem) clamp(1.25rem, 6vw, 7rem) clamp(2rem, 4vw, 3rem);
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+@media (max-width: 1000px) {
+  .preloaderHeader .title {
+    font-size: clamp(4.5rem, 14vw, 6.25rem);
+    letter-spacing: -0.05em;
+  }
+
+  .header .title,
+  .staticHero .title {
+    font-size: clamp(2.75rem, 15vw, 5.5rem);
+  }
+
+  .preloaderCounter {
+    top: -1.25rem;
+    left: calc(100% + 0.5rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .preloaderHeader .title {
+    font-size: clamp(3.5rem, 16vw, 4.5rem);
+    letter-spacing: -0.045em;
+  }
+
+  .header .title,
+  .staticHero .title {
+    font-size: clamp(2.25rem, 17vw, 3.75rem);
+  }
+
+  .heroFooter {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

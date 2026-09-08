@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { BrandLogo } from "@/components/brand-logo";
 
 export function AdminLoginForm() {
   const router = useRouter();
@@ -41,38 +42,47 @@ export function AdminLoginForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="mx-auto w-full max-w-md space-y-5 rounded-2xl border border-[#d7dde8] bg-white p-7 shadow-sm">
+    <form
+      onSubmit={onSubmit}
+      className="mx-auto w-full max-w-md space-y-5 rounded-admin-lg border border-admin-outline-variant/60 bg-admin-surface p-8 shadow-sm"
+    >
       <div>
-        <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-[#2563eb]">Imagine Walls</p>
-        <h1 className="mt-2 text-[1.75rem] font-bold tracking-tight text-[#0f172a]">Admin login</h1>
-        <p className="mt-2 text-[15px] font-medium text-[#64748b]">Sign in to manage leads, projects, quotes, and invoices.</p>
+        <BrandLogo height={40} />
+        <h1 className="mt-5 text-[28px] font-normal tracking-[-0.02em] text-admin-primary">Admin login</h1>
+        <p className="mt-2 text-[14px] text-[var(--ink-muted)]">
+          Sign in to manage leads, projects, quotes, and invoices.
+        </p>
       </div>
 
       <label className="block">
-        <span className="mb-1.5 block text-[13px] font-bold text-[#0f172a]">ID</span>
+        <span className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.08em] text-[var(--ink-muted)]">
+          ID
+        </span>
         <input
           value={id}
           onChange={(e) => setId(e.target.value)}
           autoComplete="username"
-          className="w-full rounded-xl border-2 border-[#cbd5e1] bg-white px-3 py-2.5 text-[15px] font-medium text-[#0f172a] outline-none focus:border-[#2563eb] focus:ring-4 focus:ring-[#2563eb]/15"
+          className="h-11 w-full rounded-admin border border-admin-outline-variant bg-admin-bg px-4 text-[14px] outline-none focus:border-admin-primary-container focus:bg-admin-surface"
           required
         />
       </label>
 
       <label className="block">
-        <span className="mb-1.5 block text-[13px] font-bold text-[#0f172a]">Password</span>
+        <span className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.08em] text-[var(--ink-muted)]">
+          Password
+        </span>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           autoComplete="current-password"
-          className="w-full rounded-xl border-2 border-[#cbd5e1] bg-white px-3 py-2.5 text-[15px] font-medium text-[#0f172a] outline-none focus:border-[#2563eb] focus:ring-4 focus:ring-[#2563eb]/15"
+          className="h-11 w-full rounded-admin border border-admin-outline-variant bg-admin-bg px-4 text-[14px] outline-none focus:border-admin-primary-container focus:bg-admin-surface"
           required
         />
       </label>
 
       {error && (
-        <p className="rounded-lg border border-[#fca5a5] bg-[#fef2f2] px-3 py-2 text-[14px] font-medium text-[#b91c1c]">
+        <p className="rounded-admin border border-[#fca5a5] bg-admin-danger-bg px-3 py-2 text-[14px] text-admin-danger">
           {error}
         </p>
       )}
@@ -80,7 +90,7 @@ export function AdminLoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="flex min-h-12 w-full items-center justify-center rounded-xl border-2 border-[#2563eb] bg-[#2563eb] px-4 py-3 text-[15px] font-bold text-white hover:bg-[#1d4ed8] disabled:opacity-50"
+        className="flex h-11 w-full items-center justify-center rounded-admin bg-admin-primary-container px-4 text-[14px] font-medium text-admin-on-primary hover:bg-admin-primary disabled:opacity-50"
       >
         {loading ? "Signing in…" : "Sign in"}
       </button>

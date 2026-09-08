@@ -1,12 +1,12 @@
-import { DM_Sans } from "next/font/google";
+import { Outfit } from "next/font/google";
 import { AdminDbGate } from "@/components/admin/admin-db-gate";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { hasDatabaseUrl } from "@/lib/db";
 
-const dmSans = DM_Sans({
+const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-admin",
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600"],
   display: "swap",
   preload: true,
 });
@@ -22,22 +22,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const configured = hasDatabaseUrl();
 
   return (
-    <div
-      className={`${dmSans.variable} admin-root font-admin`}
-      data-admin="true"
-      style={
-        {
-          ["--paper" as string]: "#eef1f6",
-          ["--surface" as string]: "#ffffff",
-          ["--ink" as string]: "#0f172a",
-          ["--ink-muted" as string]: "#334155",
-          ["--ink-faint" as string]: "#64748b",
-          ["--line" as string]: "rgba(15, 23, 42, 0.12)",
-          ["--line-strong" as string]: "rgba(15, 23, 42, 0.28)",
-          colorScheme: "light",
-        } as React.CSSProperties
-      }
-    >
+    <div className={`${outfit.variable} admin-root font-admin`} data-admin="true">
+      {/* Material Symbols — matches Stitch reference iconography */}
+      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        rel="stylesheet"
+      />
       <AdminShell>
         <AdminDbGate configured={configured}>{children}</AdminDbGate>
       </AdminShell>

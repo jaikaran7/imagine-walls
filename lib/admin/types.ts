@@ -97,7 +97,10 @@ export interface Quotation {
   projectTitle: string;
   sections: QuotationSection[];
   status: QuotationStatus;
+  /** Subtotal before discount (line items or manual override) */
   totalAmount: number;
+  discountType: InvoiceDiscountType;
+  discountValue: number;
   notes: string;
   createdAt: string;
   updatedAt: string;
@@ -114,6 +117,8 @@ export interface PaymentRecord {
   notes: string;
 }
 
+export type InvoiceDiscountType = "none" | "amount" | "percent";
+
 export interface Invoice {
   id: string;
   quotationId: string;
@@ -121,7 +126,10 @@ export interface Invoice {
   clientPhone: string;
   clientEmail: string;
   projectTitle: string;
+  /** Subtotal before discount */
   totalAmount: number;
+  discountType: InvoiceDiscountType;
+  discountValue: number;
   payments: PaymentRecord[];
   notes: string;
   createdAt: string;

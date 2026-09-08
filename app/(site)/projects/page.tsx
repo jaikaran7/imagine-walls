@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { SectionHeading } from "@/components/section-heading";
 import { ProjectsGrid } from "@/components/projects-grid";
+import { ProjectsHero } from "@/components/projects/projects-hero";
+import { ProjectsOutro } from "@/components/projects/projects-outro";
 import { getProjectsByCategory } from "@/lib/projects";
 
 export const metadata: Metadata = {
@@ -10,17 +11,15 @@ export const metadata: Metadata = {
 
 export default async function ProjectsPage() {
   const projects = await getProjectsByCategory();
+  const coverImages = projects.map((p) => p.coverImage.src).filter(Boolean);
 
   return (
-    <div className="container-edge pt-28 md:pt-36">
-      <SectionHeading
-        eyebrow="Portfolio Archive"
-        title="Projects"
-        description="A working archive of residential and commercial interiors, designed and turnkey-executed in Hyderabad."
-      />
-      <div className="mt-14">
+    <>
+      <ProjectsHero projects={projects} />
+      <div className="container-edge pb-24 pt-10 md:pt-14">
         <ProjectsGrid projects={projects} />
       </div>
-    </div>
+      <ProjectsOutro images={coverImages} />
+    </>
   );
 }

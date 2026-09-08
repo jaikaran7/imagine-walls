@@ -137,11 +137,6 @@ function ProjectTile({
         <p className="absolute left-4 top-4 z-[1] text-[0.65rem] uppercase tracking-[0.14em] text-white opacity-0 drop-shadow transition-opacity duration-500 group-hover:opacity-100 md:left-5 md:top-5">
           {project.title}
         </p>
-        <div className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-          <span className="rounded-full border border-white/35 bg-black/35 px-5 py-2.5 text-[0.6875rem] uppercase tracking-[0.14em] text-white">
-            View Project
-          </span>
-        </div>
       </div>
 
       <div className="mt-5 flex items-start justify-between gap-4 border-t border-line pt-4">

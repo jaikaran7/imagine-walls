@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { AdminCard, AdminContent, AdminPageHeader, StatCard } from "@/components/admin/admin-shell";
-import { formatCurrency, sumPayments } from "@/lib/admin/format";
+import { formatCurrency, invoiceGrandTotal, sumPayments } from "@/lib/admin/format";
 import { getAdminProjects, getEnquiries, getInvoices, getQuotations } from "@/lib/admin/store";
 
 export const dynamic = "force-dynamic";
@@ -20,7 +20,13 @@ export default async function AdminDashboardPage() {
     .reduce((sum, q) => sum + q.totalAmount, 0);
   const totalReceived = invoices.reduce((sum, inv) => sum + sumPayments(inv.payments), 0);
   const totalPending = invoices.reduce(
-    (sum, inv) => sum + Math.max(0, inv.totalAmount - sumPayments(inv.payments)),
+    (sum, inv) =>
+      sum +
+      Math.max(
+        0,
+        invoiceGrandTotal(inv.totalAmount, inv.discountType, inv.discountValue) -
+          sumPayments(inv.payments),
+      ),
     0,
   );
 

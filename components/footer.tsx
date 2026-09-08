@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand-logo";
 import { siteSettings } from "@/lib/data/site";
 
 const links = [
@@ -10,13 +11,11 @@ const links = [
 
 export function Footer() {
   return (
-    <footer className="rule mt-section pb-12 pt-section-sm">
+    <footer data-site-chrome className="rule mt-section pb-12 pt-section-sm">
       <div className="container-edge">
         <div className="grid gap-16 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <p className="font-display text-[clamp(1.5rem,3vw,2rem)] font-medium">
-              Imagine <span className="italic">Walls</span>
-            </p>
+            <BrandLogo height={48} />
             <p className="body-text mt-4">
               Interior Design Studio · {siteSettings.location}
             </p>

@@ -15,8 +15,15 @@ export default async function ProjectsPage() {
     <>
       <AdminPageHeader
         title="Projects"
-        description="Manage your portfolio — add, edit, or remove projects with photos and full details."
-        action={<AdminLinkButton href="/admin/projects/new">+ Add project</AdminLinkButton>}
+        breadcrumb={["Admin", "Website Portfolio"]}
+        eyebrow="CMS v2.4"
+        description="Manage the architectural work and curated spatial photography displayed on the Imagine Walls website."
+        action={
+          <AdminLinkButton href="/admin/projects/new">
+            <span className="material-symbols-outlined text-[18px]">add</span>
+            + Add project
+          </AdminLinkButton>
+        }
       />
       <AdminContent>
         <ProjectsList initialProjects={projects} />

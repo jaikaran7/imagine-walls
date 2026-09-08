@@ -1,0 +1,365 @@
+.header {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  color: #f5f4f0;
+  background-color: #f4f4f0;
+}
+
+/* After loader: tall shell so dissolve can scrub before about lands below */
+.scrollShell {
+  position: relative;
+  width: 100%;
+  height: 200vh;
+  color: #f5f4f0;
+  background-color: var(--paper);
+}
+
+.stickyPin {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background-color: #0c0c0b;
+}
+
+.brandLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  will-change: opacity;
+}
+
+.dissolveCanvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Lives inside the sticky pin, above the dissolve canvas.
+   Opacity is driven by dissolve progress so copy only appears on paper. */
+.introPlane {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: clamp(5.5rem, 12vh, 8rem) clamp(1.25rem, 4vw, 3rem) clamp(2rem, 5vh, 3.5rem);
+  color: var(--ink);
+  background-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.introInner {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  pointer-events: auto;
+}
+
+.introLabel {
+  margin: 0 0 1.75rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.introLead {
+  margin: 0;
+  max-width: 42rem;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.65rem, 3.4vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.introWord {
+  display: inline;
+}
+
+.introMeta {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: clamp(2.5rem, 5vh, 4rem);
+  max-width: 36rem;
+}
+
+.introStat {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.introBody {
+  margin: 0;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.55;
+  color: var(--ink-muted);
+}
+
+.loader {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #201d1d;
+  pointer-events: none;
+}
+
+.loaderTitle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3.5rem, 11vw, 11rem);
+  font-weight: 500;
+  line-height: 0.85;
+}
+
+.loaderStart,
+.loaderEnd {
+  display: flex;
+  overflow: hidden;
+}
+
+.loaderStart {
+  justify-content: flex-end;
+}
+
+.loaderEnd {
+  justify-content: flex-start;
+}
+
+.letter {
+  position: relative;
+  display: block;
+}
+
+.letterDesktopOnly {
+  display: block;
+}
+
+.box {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  width: 0;
+}
+
+.boxInner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1em;
+  height: 0.92em;
+}
+
+.growingImage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0%;
+  height: 100%;
+  overflow: hidden;
+  /* separate from transform so GSAP width/height won't wipe centering */
+  translate: -50% -50%;
+  will-change: width, height;
+}
+
+.growingWrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  min-width: 1em;
+  height: 100%;
+}
+
+.cover,
+.coverExtra {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+.coverExtra1 {
+  z-index: 3;
+}
+
+.coverExtra2 {
+  z-index: 2;
+}
+
+.coverExtra3 {
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 3;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  padding: clamp(5.5rem, 10vh, 7rem) clamp(1.25rem, 4vw, 3rem) clamp(2rem, 5vh, 3.5rem);
+  gap: 1.5rem;
+  pointer-events: none;
+}
+
+.bottom {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  overflow: hidden;
+  /* room for serif feet inside the reveal mask */
+  padding-bottom: 0.14em;
+}
+
+.finalTitle {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 0.18em;
+  white-space: nowrap;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2.75rem, 10vw, 11rem);
+  font-weight: 500;
+  line-height: 0.9;
+  color: #f5f4f0;
+}
+
+.finalWord {
+  display: flex;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+
+.finalLetter {
+  position: relative;
+  display: block;
+  transform: translateY(110%);
+  will-change: transform;
+}
+
+.tagline {
+  margin: 0 0 0 auto;
+  max-width: 14rem;
+  text-align: right;
+  font-size: clamp(0.95rem, 1.2vw, 1.125rem);
+  font-weight: 500;
+  line-height: 1.35;
+  color: rgba(245, 244, 240, 0.65);
+  transform: translateY(110%);
+  will-change: transform;
+  overflow: hidden;
+}
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem 2rem;
+  pointer-events: auto;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.ctaPrimary {
+  border: 1px solid #f5f4f0;
+  padding: 0.85rem 1.75rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #f5f4f0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.ctaPrimary:hover {
+  background-color: #f5f4f0;
+  color: #0c0c0b;
+}
+
+.ctaSecondary {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(245, 244, 240, 0.75);
+  transition: opacity 0.3s ease;
+}
+
+.ctaSecondary:hover {
+  opacity: 1;
+  color: #f5f4f0;
+}
+
+@media (max-width: 991px) {
+  .tagline {
+    display: none;
+  }
+
+  .loaderTitle {
+    font-size: clamp(4.5rem, 22vw, 8rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .letterDesktopOnly {
+    display: none;
+  }
+
+  .loaderTitle {
+    font-size: clamp(5rem, 28vw, 7rem);
+  }
+
+  .content {
+    padding-inline: 1.25rem;
+    padding-bottom: max(1.75rem, env(safe-area-inset-bottom, 0px));
+  }
+
+  .finalTitle {
+    font-size: clamp(2.5rem, 14vw, 4.5rem);
+  }
+
+  .ctaRow {
+    width: 100%;
+  }
+}

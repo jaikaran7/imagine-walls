@@ -15,7 +15,8 @@ export default async function ReviewsPage() {
     <>
       <AdminPageHeader
         title="Reviews"
-        description="Homepage review cards — quotes and highlight slides for the Don’t believe us section."
+        breadcrumb={["Admin", "Website"]}
+        description="Homepage review cards — quotes and highlight slides. Hidden from sidebar; bookmark this URL if needed."
         action={<AdminLinkButton href="/admin/reviews/new">+ Add review</AdminLinkButton>}
       />
       <AdminContent>

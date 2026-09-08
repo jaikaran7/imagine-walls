@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import clsx from "clsx";
+import { BrandLogo } from "@/components/brand-logo";
 import { useAdminNav } from "./admin-nav-context";
 
 type NavItem = {
@@ -146,8 +147,10 @@ export function AdminSidebar() {
           }}
           className="block"
         >
-          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">Imagine Walls</p>
-          <p className="mt-1 text-[1.2rem] font-bold tracking-tight text-white">Admin</p>
+          <BrandLogo invert height={36} className="max-w-full" />
+          <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
+            Admin
+          </p>
         </Link>
       </div>
 

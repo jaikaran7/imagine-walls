@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { AdminContent, AdminPageHeader } from "@/components/admin/admin-shell";
+import { AdminContent } from "@/components/admin/admin-shell";
 import { getQuotation } from "@/lib/admin/store";
 import { QuotationDetailClient } from "./detail-client";
 
@@ -15,16 +15,8 @@ export default async function QuotationDetailPage({
   if (!quotation) notFound();
 
   return (
-    <>
-      <div className="print:hidden">
-        <AdminPageHeader
-          title={quotation.status === "draft" ? "Edit quotation" : "Quotation"}
-          description={quotation.projectTitle || quotation.clientName || "Untitled"}
-        />
-      </div>
       <AdminContent>
         <QuotationDetailClient quotation={quotation} />
       </AdminContent>
-    </>
   );
 }

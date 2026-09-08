@@ -1,0 +1,87 @@
+.outro {
+  position: relative;
+  width: 100%;
+  min-height: 75svh;
+  padding: 2.5rem 1.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  background-color: #0c0c0b;
+  color: #f5f4f0;
+}
+
+.headline {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: none;
+  padding-inline: 0.25rem;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.35rem, 5.4vw, 5.75rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+}
+
+.logo {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 0.25rem;
+  opacity: 0.92;
+}
+
+.explosion {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 140px;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  transform: translate(-50%, 0);
+  will-change: transform, opacity;
+  border-radius: 2px;
+  opacity: 1;
+  transition: opacity 0.2s linear;
+}
+
+.particleGone {
+  opacity: 0;
+}
+
+@media (max-width: 640px) {
+  .particle {
+    width: 96px;
+  }
+
+  .outro {
+    min-height: 70svh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .explosion {
+    display: none;
+  }
+}

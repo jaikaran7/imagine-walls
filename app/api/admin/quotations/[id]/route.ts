@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+import {
+  firstClientContactError,
+  validateClientContact,
+} from "@/lib/admin/client-contact";
 import { deleteQuotation, getQuotation, updateQuotation } from "@/lib/admin/store";
 
 type RouteContext = { params: Promise<{ id: string }> };
@@ -21,7 +25,20 @@ export async function PUT(request: Request, context: RouteContext) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
+  const clientName = String(body.clientName ?? "").trim();
+  const clientPhone = String(body.clientPhone ?? "").trim();
+  if ("clientName" in body || "clientPhone" in body) {
+    const contactError = firstClientContactError(
+      validateClientContact({ clientName, clientPhone }),
+    );
+    if (contactError) {
+      return NextResponse.json({ error: contactError }, { status: 400 });
+    }
+  }
+
   const patch: Record<string, unknown> = { ...body };
+  if ("clientName" in body) patch.clientName = clientName;
+  if ("clientPhone" in body) patch.clientPhone = clientPhone;
   if (body.status === "finalized" && !body.finalizedAt) {
     patch.finalizedAt = new Date().toISOString();
   }
