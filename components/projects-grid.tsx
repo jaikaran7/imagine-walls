@@ -4,7 +4,10 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { MediaImage } from "@/components/media-image";
-import { ProjectGalleryCursor } from "@/components/projects/project-gallery-cursor";
+import {
+  ProjectMagnifierCursor,
+  type MagnifierTarget,
+} from "@/components/projects/project-magnifier-cursor";
 import type { Project, ProjectCategory } from "@/lib/types";
 
 const categories: (ProjectCategory | "All")[] = [
@@ -19,15 +22,21 @@ const categories: (ProjectCategory | "All")[] = [
 export function ProjectsGrid({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState<(typeof categories)[number]>("All");
   const [cursorVisible, setCursorVisible] = useState(false);
+  const [target, setTarget] = useState<MagnifierTarget | null>(null);
 
   const filtered = useMemo(
     () => (active === "All" ? projects : projects.filter((p) => p.category === active)),
-    [active, projects]
+    [active, projects],
   );
 
   return (
-    <div onMouseLeave={() => setCursorVisible(false)}>
-      <ProjectGalleryCursor visible={cursorVisible} />
+    <div
+      onMouseLeave={() => {
+        setCursorVisible(false);
+        setTarget(null);
+      }}
+    >
+      <ProjectMagnifierCursor visible={cursorVisible} target={target} />
 
       <div className="flex flex-wrap gap-x-6 gap-y-3 border-b border-line pb-6">
         {categories.map((cat) => (
@@ -65,7 +74,10 @@ export function ProjectsGrid({ projects }: { projects: Project[] }) {
                 key={project.slug}
                 project={project}
                 index={i}
-                onHover={setCursorVisible}
+                onHoverChange={(next) => {
+                  setCursorVisible(Boolean(next));
+                  setTarget(next);
+                }}
               />
             ))}
           </motion.div>
@@ -78,38 +90,55 @@ export function ProjectsGrid({ projects }: { projects: Project[] }) {
 function ProjectTile({
   project,
   index,
-  onHover,
+  onHoverChange,
 }: {
   project: Project;
   index: number;
-  onHover: (v: boolean) => void;
+  onHoverChange: (target: MagnifierTarget | null) => void;
 }) {
   const offset = index % 2 === 1;
+
+  function updateTarget(el: HTMLElement | null) {
+    if (!el) {
+      onHoverChange(null);
+      return;
+    }
+    const media = el.querySelector("[data-project-media]") as HTMLElement | null;
+    const box = (media ?? el).getBoundingClientRect();
+    onHoverChange({
+      src: project.coverImage.src,
+      left: box.left,
+      top: box.top,
+      width: box.width,
+      height: box.height,
+    });
+  }
 
   return (
     <Link
       href={`/projects/${project.slug}`}
       className={`group block md:cursor-none ${offset ? "md:mt-24 lg:mt-32" : ""}`}
-      onMouseEnter={() => onHover(true)}
-      onMouseLeave={() => onHover(false)}
-      onFocus={() => onHover(true)}
-      onBlur={() => onHover(false)}
+      onMouseEnter={(e) => updateTarget(e.currentTarget)}
+      onMouseMove={(e) => updateTarget(e.currentTarget)}
+      onMouseLeave={() => onHoverChange(null)}
+      onFocus={(e) => updateTarget(e.currentTarget)}
+      onBlur={() => onHoverChange(null)}
     >
-      <div className="relative aspect-[4/5] overflow-hidden bg-surface">
+      <div data-project-media className="relative aspect-[4/5] overflow-hidden bg-surface">
         <MediaImage
           src={project.coverImage.src}
           alt={project.coverImage.alt}
           fill
           priority={index < 2}
           sizes="(min-width: 768px) 46vw, 100vw"
-          className="object-cover transition-[transform,filter] duration-700 ease-editorial group-hover:scale-[1.04] group-hover:blur-[6px]"
+          className="object-cover transition-[transform,filter] duration-700 ease-editorial group-hover:scale-[1.04] group-hover:blur-[7px]"
         />
         <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/45" />
         <p className="absolute left-4 top-4 z-[1] text-[0.65rem] uppercase tracking-[0.14em] text-white opacity-0 drop-shadow transition-opacity duration-500 group-hover:opacity-100 md:left-5 md:top-5">
           {project.title}
         </p>
         <div className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-          <span className="rounded-full border border-white/35 bg-black/35 px-5 py-2.5 text-[0.6875rem] uppercase tracking-[0.14em] text-white backdrop-blur-sm">
+          <span className="rounded-full border border-white/35 bg-black/35 px-5 py-2.5 text-[0.6875rem] uppercase tracking-[0.14em] text-white">
             View Project
           </span>
         </div>
