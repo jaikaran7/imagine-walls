@@ -25,9 +25,14 @@ function ProjectTile({
         fill
         priority={priority}
         sizes={sizes}
-        className="object-cover transition-transform duration-[1400ms] ease-editorial group-hover:scale-[1.045]"
+        className="object-cover transition-[transform,filter] duration-700 ease-editorial group-hover:scale-[1.045] group-hover:blur-[6px]"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/0 opacity-70 transition-opacity duration-500 group-hover:opacity-90" />
+      <div className="absolute inset-0 bg-black/25 transition-colors duration-500 group-hover:bg-black/50" />
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        <span className="rounded-full border border-white/35 bg-black/35 px-5 py-2.5 text-[0.6875rem] uppercase tracking-[0.14em] text-white backdrop-blur-sm">
+          View Project
+        </span>
+      </div>
       <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 md:p-7">
         <div>
           <p className="text-[0.65rem] uppercase tracking-widest2 text-white/70">
@@ -35,9 +40,6 @@ function ProjectTile({
           </p>
           <p className="mt-1 font-display text-2xl text-white md:text-3xl">{project.title}</p>
         </div>
-        <span className="hidden shrink-0 translate-y-2 text-xs uppercase tracking-widest2 text-white opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100 md:block">
-          View &rarr;
-        </span>
       </div>
     </Link>
   );

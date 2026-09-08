@@ -160,17 +160,19 @@ function ProjectCard({
           fill
           priority={index === 0}
           sizes="(min-width: 1024px) 33vw, 100vw"
-          className="object-cover transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.03]"
+          className="object-cover transition-[transform,filter] duration-700 ease-editorial group-hover:scale-[1.03] group-hover:blur-[6px]"
         />
-
+        <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/45" />
+        <p className="absolute left-4 top-4 z-[1] text-[0.65rem] uppercase tracking-[0.14em] text-white opacity-0 drop-shadow transition-opacity duration-500 group-hover:opacity-100 md:left-5 md:top-5">
+          {project.title}
+        </p>
         <Link
           href={`/projects/${project.slug}`}
-          className="absolute bottom-4 left-4 z-[1] inline-flex items-center gap-3 rounded-full border border-white/30 bg-black/25 px-4 py-2.5 text-[0.6875rem] uppercase tracking-[0.12em] text-white backdrop-blur-sm transition-colors hover:bg-black/40 md:bottom-5 md:left-5 md:px-5"
+          className="absolute inset-0 z-[1] flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100"
           onClick={(e) => e.stopPropagation()}
         >
-          View project
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-paper text-ink">
-            ↗
+          <span className="rounded-full border border-white/35 bg-black/35 px-5 py-2.5 text-[0.6875rem] uppercase tracking-[0.14em] text-white backdrop-blur-sm">
+            View Project
           </span>
         </Link>
       </div>
