@@ -29,14 +29,67 @@ function ServicesHeader() {
 
 export function ServicesPreview() {
   return (
-    <section className="relative z-[2] border-t border-line bg-paper py-section" aria-labelledby="services-preview-heading">
+    <section
+      className="relative z-[2] border-t border-line bg-paper py-section"
+      aria-labelledby="services-preview-heading"
+    >
       <div className="container-edge">
         <ServicesHeader />
-        <ol className="mt-12 flex flex-col gap-4">
+      </div>
+
+      {/* Mobile: swipe cards horizontally — scroll stays on the strip */}
+      <div className="mt-10 md:hidden">
+        <div
+          className="-mx-0 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[1.25rem] pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
+          {homeServices.map((service) => (
+            <article
+              key={service.number}
+              className="w-[min(78vw,20rem)] shrink-0 snap-center overflow-hidden rounded-xl border border-line bg-surface"
+            >
+              <div className="relative aspect-[4/3]">
+                <MediaImage
+                  src={service.image.src}
+                  alt={service.image.alt}
+                  fill
+                  sizes="78vw"
+                  className="object-cover"
+                  style={{ objectPosition: service.objectPosition }}
+                />
+              </div>
+              <div className="flex items-end justify-between gap-3 p-4">
+                <div className="min-w-0">
+                  <p className="label mb-1.5">{service.number}</p>
+                  <h3 className="font-display text-xl font-medium uppercase leading-tight">
+                    {service.titleLines[0]}
+                    <br />
+                    {service.titleLines[1]}
+                  </h3>
+                </div>
+                <Link
+                  href={service.href}
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line"
+                  aria-label={`Explore ${service.titleLines.join(" ")}`}
+                >
+                  ↗
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p className="mt-3 px-[1.25rem] text-[11px] uppercase tracking-[0.14em] text-ink-faint">
+          Swipe for services
+        </p>
+      </div>
+
+      {/* Desktop: stacked rows */}
+      <div className="container-edge mt-12 hidden md:block">
+        <ol className="flex flex-col gap-4">
           {homeServices.map((service) => (
             <li
               key={service.number}
-              className="grid items-center gap-6 rounded-sm border border-line bg-surface px-6 py-7 md:grid-cols-[11rem_1fr_1fr_auto] md:gap-8 md:px-8"
+              className="grid items-center gap-8 rounded-sm border border-line bg-surface px-8 py-7 md:grid-cols-[11rem_1fr_1fr_auto]"
             >
               <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
                 <MediaImage

@@ -2,17 +2,9 @@ import { BrandLogoPrint, BRAND_LOGO_SRC } from "@/components/brand-logo";
 import { siteSettings } from "@/lib/data/site";
 import type { PrintThemeTokens } from "@/lib/admin/print-themes";
 
-export function PrintBrandMark({ theme }: { theme: Pick<PrintThemeTokens, "brand" | "tagline"> }) {
-  return (
-    <div className="flex items-start gap-3">
-      <BrandLogoPrint height={56} className="shrink-0" />
-      <div className="pt-1">
-        <p className={`text-[11px] font-semibold uppercase tracking-[0.18em] ${theme.tagline}`}>
-          {siteSettings.dreamLine}
-        </p>
-      </div>
-    </div>
-  );
+/** Official Imagine Walls lockup for print sheets (wordmark + tagline are in the PNG). */
+export function PrintBrandMark(_props: { theme: Pick<PrintThemeTokens, "brand" | "tagline"> }) {
+  return <BrandLogoPrint height={56} className="shrink-0" />;
 }
 
 /** Faded logo watermark for quotation / invoice print sheets. */
@@ -40,7 +32,8 @@ export function PrintStudioContact({ theme }: { theme: PrintThemeTokens }) {
       <p className={`font-bold uppercase tracking-[0.1em] ${theme.notesTitle}`}>
         {siteSettings.studioName}
       </p>
-      <p className="mt-1.5">
+      <p className={`mt-0.5 text-[10px] ${theme.tagline}`}>{siteSettings.tagline}</p>
+      <p className="mt-2">
         {siteSettings.phone}
         <span className="mx-1.5 opacity-40">·</span>
         {siteSettings.email}

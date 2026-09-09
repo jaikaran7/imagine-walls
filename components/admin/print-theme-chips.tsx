@@ -14,7 +14,7 @@ export function PrintThemeChips({
 }) {
   return (
     <div
-      className="flex max-w-full gap-1.5 overflow-x-auto pb-0.5"
+      className="flex max-w-full gap-1.5 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       role="tablist"
       aria-label="Print theme"
     >
@@ -26,11 +26,12 @@ export function PrintThemeChips({
             type="button"
             role="tab"
             aria-selected={active}
+            title={opt.blurb}
             onClick={() => onChange(opt.id)}
             className={`shrink-0 rounded-full px-3 py-1.5 text-[12px] font-bold transition ${
               active
-                ? "bg-[#0f172a] text-white"
-                : "bg-[#f1f5f9] text-[#475569] hover:bg-[#e2e8f0]"
+                ? "bg-[#2563eb] text-white ring-2 ring-white/30"
+                : "bg-white text-[#0f172a] hover:bg-[#e2e8f0]"
             }`}
           >
             {opt.label}

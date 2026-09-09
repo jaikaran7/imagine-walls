@@ -238,7 +238,7 @@ export function AdminSidebar() {
   return (
     <>
       <div
-        className="pointer-events-none fixed inset-x-0 top-0 z-[120] h-0.5 overflow-hidden md:left-[16.5rem]"
+        className="pointer-events-none fixed inset-x-0 top-0 z-[120] h-0.5 overflow-hidden print:hidden md:left-[16.5rem]"
         aria-hidden="true"
       >
         <div
@@ -250,11 +250,11 @@ export function AdminSidebar() {
         />
       </div>
 
-      <div className="hidden h-full md:block">{rail}</div>
+      <div className="hidden h-full w-[16.5rem] shrink-0 print:hidden md:block">{rail}</div>
 
       <div
         className={clsx(
-          "fixed inset-0 z-[130] md:hidden",
+          "fixed inset-0 z-[130] print:hidden md:hidden",
           mobileOpen ? "pointer-events-auto" : "pointer-events-none",
         )}
       >
@@ -280,15 +280,27 @@ export function AdminSidebar() {
   );
 }
 
+function mobileSectionLabel(pathname: string) {
+  if (pathname === "/admin") return "Overview";
+  if (pathname.startsWith("/admin/leads")) return "Leads";
+  if (pathname.startsWith("/admin/projects")) return "Projects";
+  if (pathname.startsWith("/admin/reviews")) return "Reviews";
+  if (pathname.startsWith("/admin/quotations")) return "Quotations";
+  if (pathname.startsWith("/admin/invoices")) return "Invoices";
+  return "Admin";
+}
+
 export function AdminMobileTopBar() {
+  const pathname = usePathname();
   const { toggleMobile, isPending } = useAdminNav();
+  const label = mobileSectionLabel(pathname);
 
   return (
-    <div className="sticky top-0 z-[115] flex items-center justify-between border-b border-[#d7dde8] bg-white px-4 py-3 md:hidden">
+    <div className="sticky top-0 z-[115] flex items-center justify-between gap-3 border-b border-[#d7dde8] bg-white px-4 py-3 md:hidden">
       <button
         type="button"
         onClick={toggleMobile}
-        className="inline-flex items-center gap-2 rounded-lg border border-[#cbd5e1] bg-[#f8fafc] px-3 py-2 text-[15px] font-semibold text-[#0f172a]"
+        className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-[#cbd5e1] bg-[#f8fafc] px-3 py-2 text-[15px] font-semibold text-[#0f172a]"
         aria-label="Open menu"
       >
         <span aria-hidden="true" className="text-lg leading-none">
@@ -296,7 +308,9 @@ export function AdminMobileTopBar() {
         </span>
         Menu
       </button>
-      <p className="text-[15px] font-bold text-[#0f172a]">{isPending ? "Loading…" : "Admin"}</p>
+      <p className="min-w-0 truncate text-right text-[15px] font-bold text-[#0f172a]">
+        {isPending ? "Loading…" : label}
+      </p>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import {
   AdminButton,
   AdminLinkButton,
@@ -9,6 +9,7 @@ import {
   EmptyState,
   StatusBadge,
 } from "@/components/admin/admin-shell";
+import { ConfirmDialog } from "@/components/admin/confirm-dialog";
 import { formatDateTime } from "@/lib/admin/format";
 import type { Enquiry, EnquiryStatus } from "@/lib/admin/types";
 
@@ -18,11 +19,17 @@ export function LeadsPanel({ initialLeads }: { initialLeads: Enquiry[] }) {
   const router = useRouter();
   const [leads, setLeads] = useState(initialLeads);
   const [selected, setSelected] = useState<Enquiry | null>(null);
+  const [pendingId, setPendingId] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
   const [, startTransition] = useTransition();
 
   useEffect(() => {
     setLeads(initialLeads);
   }, [initialLeads]);
+
+  const closeConfirm = useCallback(() => {
+    if (!busy) setPendingId(null);
+  }, [busy]);
 
   async function updateStatus(id: string, status: EnquiryStatus) {
     const res = await fetch("/api/admin/enquiries", {
@@ -37,16 +44,20 @@ export function LeadsPanel({ initialLeads }: { initialLeads: Enquiry[] }) {
     startTransition(() => router.refresh());
   }
 
-  async function remove(id: string) {
-    if (!confirm("Delete this lead?")) return;
+  async function confirmRemove() {
+    if (!pendingId || busy) return;
+    const id = pendingId;
     const prev = leads;
+    setBusy(true);
     setLeads((l) => l.filter((x) => x.id !== id));
     if (selected?.id === id) setSelected(null);
     const res = await fetch(`/api/admin/enquiries?id=${id}`, { method: "DELETE" });
+    setBusy(false);
     if (!res.ok) {
       setLeads(prev);
       return;
     }
+    setPendingId(null);
     startTransition(() => router.refresh());
   }
 
@@ -174,12 +185,26 @@ export function LeadsPanel({ initialLeads }: { initialLeads: Enquiry[] }) {
           </div>
 
           <div className="mt-5">
-            <AdminButton variant="danger" onClick={() => remove(selected.id)}>
+            <AdminButton variant="danger" onClick={() => setPendingId(selected.id)}>
               Delete lead
             </AdminButton>
           </div>
         </aside>
       )}
+
+      <ConfirmDialog
+        open={pendingId !== null}
+        title="Delete this lead?"
+        description={
+          pendingId
+            ? `“${leads.find((l) => l.id === pendingId)?.name ?? selected?.name ?? "This lead"}” will be permanently removed.`
+            : "This lead will be permanently removed."
+        }
+        confirmLabel="Delete lead"
+        busy={busy}
+        onCancel={closeConfirm}
+        onConfirm={confirmRemove}
+      />
     </div>
   );
 }

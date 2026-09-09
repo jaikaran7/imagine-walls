@@ -1,24 +1,29 @@
 import Image from "next/image";
 
-export const BRAND_LOGO_SRC = "/brand/imagine-walls-logo.png";
-export const BRAND_MARK_SRC = "/brand/imagine-walls-mark.png";
+/** Cache-bust so browsers pick up regenerated brand PNGs. */
+const V = "20260909b";
+
+export const BRAND_LOGO_SRC = `/brand/imagine-walls-logo.png?v=${V}`;
+export const BRAND_MARK_SRC = `/brand/imagine-walls-mark.png?v=${V}`;
+export const BRAND_LOGO_LIGHT_SRC = `/brand/imagine-walls-logo-light.png?v=${V}`;
+export const BRAND_MARK_LIGHT_SRC = `/brand/imagine-walls-mark-light.png?v=${V}`;
 
 type BrandLogoProps = {
   className?: string;
-  /** Visual height in px (width follows logo aspect ~2.38:1). */
+  /** Visual height in px (width follows lockup aspect). */
   height?: number;
   /** Use mark-only crop (icon without wordmark). */
   markOnly?: boolean;
-  /** Invert to light for dark backgrounds (e.g. home hero nav). */
+  /** Light lockup for dark backgrounds (keeps teal/slate brand colors). */
   invert?: boolean;
   priority?: boolean;
 };
 
 const LOGO_ASPECT = 1817 / 762;
-const MARK_ASPECT = 800 / 762;
+const MARK_ASPECT = 560 / 714;
 
 /**
- * Official Imagine Walls lockup — use this anywhere a brand mark is needed.
+ * Official Imagine Walls lockup from reference/IMG_1597624229087.png.
  * Do not recreate the name in text next to it; the PNG already includes the wordmark.
  */
 export function BrandLogo({
@@ -30,7 +35,13 @@ export function BrandLogo({
 }: BrandLogoProps) {
   const aspect = markOnly ? MARK_ASPECT : LOGO_ASPECT;
   const width = Math.round(height * aspect);
-  const src = markOnly ? BRAND_MARK_SRC : BRAND_LOGO_SRC;
+  const src = markOnly
+    ? invert
+      ? BRAND_MARK_LIGHT_SRC
+      : BRAND_MARK_SRC
+    : invert
+      ? BRAND_LOGO_LIGHT_SRC
+      : BRAND_LOGO_SRC;
 
   return (
     <Image
@@ -39,7 +50,8 @@ export function BrandLogo({
       width={width}
       height={height}
       priority={priority}
-      className={`object-contain ${invert ? "brightness-0 invert" : ""} ${className}`.trim()}
+      unoptimized
+      className={`object-contain ${className}`.trim()}
     />
   );
 }

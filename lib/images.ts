@@ -47,6 +47,14 @@ export const stock = {
   // Planning / materials
   blueprint: unsplash("photo-1503387762-592deb58ef4e"),
   draftingRuler: unsplash("photo-1503387837-b154d5074bd2"),
+  /** Plywood / board stack — Core Boards tab */
+  materialCoreBoards: unsplash("photo-1690768162582-342e1e9097a2"),
+  /** Finished surface / stone texture — Surfaces tab */
+  materialSurfaces: unsplash("photo-1600585154526-990dced4db0d"),
+  /** Cabinet fittings in kitchen — Hardware tab */
+  materialHardware: unsplash("photo-1556909212-d5b604d0c90d"),
+  /** Wall switch & outlet — Electrical tab */
+  materialElectrical: unsplash("photo-1759772237947-0c14aef755d5"),
 
   // Process stages — real photography, one per step
   processConsultation: unsplash("photo-1543269865-cbf427effbad"),

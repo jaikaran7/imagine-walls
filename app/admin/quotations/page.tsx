@@ -19,8 +19,10 @@ export default async function QuotationsPage() {
         description="Build quotations with letterhead, room types, line items, and manual pricing."
         action={
           <AdminLinkButton href="/admin/quotations/new">
-            <span className="material-symbols-outlined text-[18px]">add</span>
-            + New quotation
+            <span className="material-symbols-outlined text-[18px]" aria-hidden>
+              add
+            </span>
+            New quotation
           </AdminLinkButton>
         }
       />

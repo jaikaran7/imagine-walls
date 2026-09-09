@@ -276,6 +276,12 @@ export function InvoiceDetailClient({ invoice: initial }: { invoice: Invoice }) 
           </div>
 
           <div className="space-y-2 rounded-xl border border-[#0b1220] bg-[#0b1220] p-4 shadow-sm">
+            <div className="rounded-xl bg-white/5 p-2.5">
+              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#94a3b8]">
+                Print theme
+              </p>
+              <PrintThemeChips value={printTheme} onChange={setPrintTheme} />
+            </div>
             <button
               type="button"
               onClick={handlePrint}

@@ -173,6 +173,8 @@ function LoaderHero({ covers }: { covers: [string, string, string, string] }) {
       onComplete: () => {
         document.body.style.overflow = prevOverflow;
         document.documentElement.setAttribute("data-home-hero", "ready");
+        root.classList.add(styles.isReady);
+        gsap.set(coverExtras, { opacity: 0, display: "none" });
         if (brandRef.current) brandRef.current.style.opacity = "1";
         setScrollReady(true);
         requestAnimationFrame(() => ScrollTrigger.refresh());
@@ -212,6 +214,7 @@ function LoaderHero({ covers }: { covers: [string, string, string, string] }) {
     return () => {
       tl.kill();
       gsap.set([headerLetters, tagline, ctaRow], { clearProps: "transform,opacity" });
+      root.classList.remove(styles.isReady);
       document.body.style.overflow = prevOverflow;
       document.documentElement.removeAttribute("data-home-hero");
     };
@@ -271,6 +274,12 @@ function LoaderHero({ covers }: { covers: [string, string, string, string] }) {
         aria-label="Imagine Walls hero"
       >
         <div className={scrollReady ? styles.stickyPin : undefined}>
+          {/* True full-bleed photo — kills the black side gap after loader / on mobile */}
+          <div className={styles.fullBleedPhoto} aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className={styles.cover} src={main} alt="" />
+          </div>
+
           {/* Loader growing-image becomes the full-bleed hero photo — keep it mounted */}
           <div className={styles.loader} aria-hidden="true">
             <div className={styles.loaderTitle}>

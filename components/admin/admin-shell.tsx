@@ -21,9 +21,9 @@ export function AdminPageHeader({
   const crumbs = breadcrumb ?? ["Admin", title];
 
   return (
-    <div className="hidden flex-col gap-3 px-4 py-4 sm:px-6 md:flex md:flex-row md:items-end md:justify-between md:px-8 md:py-5 print:px-0">
+    <div className="flex flex-col gap-3 border-b border-[#d7dde8] bg-white px-4 py-4 shadow-sm sm:px-6 md:flex-row md:items-end md:justify-between md:px-8 md:py-5 print:border-0 print:bg-transparent print:px-0 print:shadow-none">
       <div className="min-w-0">
-        <div className="mb-1 flex flex-wrap items-center gap-2">
+        <div className="mb-1 hidden flex-wrap items-center gap-2 sm:flex">
           {crumbs.map((c, i) => (
             <span key={`${c}-${i}`} className="flex items-center gap-2">
               {i > 0 && <span className="text-admin-outline-variant">/</span>}
@@ -42,11 +42,13 @@ export function AdminPageHeader({
             </span>
           )}
         </div>
-        <h1 className="text-[28px] font-semibold tracking-[-0.02em] text-admin-primary md:text-[32px] md:leading-9">
+        <h1 className="text-[22px] font-semibold tracking-[-0.02em] text-admin-primary sm:text-[28px] md:text-[32px] md:leading-9">
           {title}
         </h1>
         {description && (
-          <p className="mt-1 max-w-2xl text-[14px] leading-[22px] text-[var(--ink-muted)]">{description}</p>
+          <p className="mt-1 max-w-2xl text-[13px] leading-5 text-[var(--ink-muted)] sm:text-[14px] sm:leading-[22px]">
+            {description}
+          </p>
         )}
         {meta}
       </div>
@@ -57,7 +59,7 @@ export function AdminPageHeader({
 
 export function AdminContent({ children, flushHeader }: { children: React.ReactNode; flushHeader?: boolean }) {
   return (
-    <div className={`px-3 pb-8 sm:px-6 md:px-8 print:p-0 ${flushHeader ? "-mt-2" : ""}`}>{children}</div>
+    <div className={`px-3 py-5 sm:px-6 md:px-8 md:py-6 print:p-0 ${flushHeader ? "-mt-2" : ""}`}>{children}</div>
   );
 }
 

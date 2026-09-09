@@ -5,16 +5,32 @@ import { MediaImage } from "@/components/media-image";
 import type { MaterialCategory } from "@/lib/types";
 import { stock } from "@/lib/images";
 
-const categoryImages: Record<string, string> = {
-  "core-boards": stock.wardrobeShelving,
-  surfaces: stock.kitchenDark,
-  hardware: stock.bedroomAccent,
-  electrical: stock.accentConsole,
+const categoryImages: Record<string, { src: string; alt: string }> = {
+  "core-boards": {
+    src: stock.materialCoreBoards,
+    alt: "Stacked plywood and core boards in a materials warehouse",
+  },
+  surfaces: {
+    src: stock.materialSurfaces,
+    alt: "Stone and finish surface texture for cabinetry exteriors",
+  },
+  hardware: {
+    src: stock.materialHardware,
+    alt: "Kitchen cabinetry with handles and soft-close hardware fittings",
+  },
+  electrical: {
+    src: stock.materialElectrical,
+    alt: "Wall electrical outlets and switches for interior fittings",
+  },
 };
 
 export function MaterialsLibrary({ categories }: { categories: MaterialCategory[] }) {
   const [activeSlug, setActiveSlug] = useState(categories[0].slug);
   const active = categories.find((c) => c.slug === activeSlug) ?? categories[0];
+  const image = categoryImages[active.slug] ?? {
+    src: stock.blueprint,
+    alt: active.title,
+  };
 
   return (
     <div>
@@ -29,7 +45,7 @@ export function MaterialsLibrary({ categories }: { categories: MaterialCategory[
               activeSlug === cat.slug ? "opacity-100" : "opacity-40 hover:opacity-70"
             }`}
           >
-            <span className="label block mb-1">{cat.number}</span>
+            <span className="label mb-1 block">{cat.number}</span>
             <span className="font-display text-2xl md:text-3xl">{cat.title}</span>
           </button>
         ))}
@@ -39,10 +55,10 @@ export function MaterialsLibrary({ categories }: { categories: MaterialCategory[
         <div className="relative aspect-[16/11] overflow-hidden bg-surface md:col-span-5 md:aspect-[4/5]">
           <MediaImage
             key={active.slug}
-            src={categoryImages[active.slug] ?? stock.blueprint}
-            alt={active.title}
+            src={image.src}
+            alt={image.alt}
             fill
-            sizes="40vw"
+            sizes="(min-width: 768px) 40vw, 100vw"
             className="object-cover transition-opacity duration-300"
           />
         </div>

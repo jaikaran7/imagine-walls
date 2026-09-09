@@ -38,16 +38,25 @@ export function ProjectsGrid({ projects }: { projects: Project[] }) {
     >
       <ProjectMagnifierCursor visible={cursorVisible} target={target} />
 
-      <div className="flex flex-wrap gap-x-6 gap-y-3 border-b border-line pb-6">
+      <div
+        className="flex flex-nowrap gap-x-5 overflow-x-auto overscroll-x-contain border-b border-line pb-5 [-ms-overflow-style:none] [scrollbar-width:none] md:flex-wrap md:gap-x-6 md:gap-y-3 md:overflow-visible md:pb-6 [&::-webkit-scrollbar]:hidden"
+        role="tablist"
+        aria-label="Filter by project type"
+        style={{ WebkitOverflowScrolling: "touch" }}
+      >
         {categories.map((cat) => (
           <button
             key={cat}
             type="button"
+            role="tab"
             onClick={() => setActive(cat)}
-            className={`text-[0.75rem] uppercase tracking-editorial transition-opacity duration-300 ${
-              active === cat ? "opacity-100" : "opacity-60 hover:opacity-90"
+            className={`shrink-0 whitespace-nowrap border-b pb-1 text-[0.6875rem] uppercase tracking-editorial transition-opacity duration-300 md:text-[0.75rem] ${
+              active === cat
+                ? "border-current opacity-100"
+                : "border-transparent opacity-60 hover:opacity-90"
             }`}
             aria-pressed={active === cat}
+            aria-selected={active === cat}
           >
             {cat}
           </button>

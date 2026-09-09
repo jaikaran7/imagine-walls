@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { BrandLogo } from "@/components/brand-logo";
 import { siteSettings } from "@/lib/data/site";
 import { easeEditorial } from "@/lib/motion";
 
@@ -19,8 +20,9 @@ export function ProjectShowcaseHeader() {
   return (
     <header className="relative z-20 shrink-0 px-6 pt-5 md:px-10 md:pt-7 lg:px-12">
       <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-4">
-        <Link href="/" className="font-display text-base tracking-normal text-ink md:text-[1.05rem]">
-          Imagine <span className="italic">Walls</span>
+        <Link href="/" className="justify-self-start">
+          <BrandLogo height={40} className="md:hidden" />
+          <BrandLogo height={52} className="hidden md:block" />
         </Link>
 
         <p className="hidden max-w-[15rem] text-center text-[0.5625rem] uppercase leading-[1.7] tracking-[0.15em] text-ink md:block md:text-[0.625rem]">

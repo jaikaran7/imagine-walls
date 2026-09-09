@@ -571,6 +571,12 @@ export function QuotationBuilder({
 
           <div className="space-y-2 rounded-2xl border border-[#d7dde8] bg-[#0b1220] p-4 shadow-sm">
             <p className="mb-2 text-[13px] font-bold uppercase tracking-[0.1em] text-[#94a3b8]">Actions</p>
+            <div className="rounded-xl bg-white/5 p-2.5">
+              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#94a3b8]">
+                Print theme
+              </p>
+              <PrintThemeChips value={printTheme} onChange={setPrintTheme} />
+            </div>
             {error && (
               <p className="rounded-lg border border-[#fca5a5] bg-[#fef2f2] px-3 py-2 text-[13px] font-medium text-[#b91c1c]">
                 {error}

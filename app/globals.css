@@ -359,7 +359,7 @@ body[data-project-reveal="true"] {
   overflow: hidden;
 }
 
-/* Quotation print — A4-friendly document only */
+/* Quotation / invoice print — A4 + keep theme fills on mobile browsers */
 @media print {
   @page {
     size: A4;
@@ -382,10 +382,18 @@ body[data-project-reveal="true"] {
     display: none !important;
   }
 
+  .quotation-print,
+  .quotation-print * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
   .quotation-print {
     max-width: none !important;
     padding: 0 !important;
     box-shadow: none !important;
+    background: white !important;
   }
 
   .quotation-print table {

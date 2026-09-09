@@ -78,8 +78,8 @@ export default async function AdminDashboardPage() {
                 View all
               </Link>
             </div>
-            <div className="overflow-hidden rounded-xl border border-[#e2e5ea] bg-white shadow-sm">
-              <table className="w-full text-left">
+            <div className="overflow-x-auto rounded-xl border border-[#e2e5ea] bg-white shadow-sm">
+              <table className="w-full min-w-[520px] text-left">
                 <thead className="border-b border-[#e2e5ea] bg-[#f9fafb] text-[13px] font-medium text-[#6b7280]">
                   <tr>
                     <th className="px-5 py-3.5">Name</th>

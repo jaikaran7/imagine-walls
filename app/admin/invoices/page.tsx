@@ -19,8 +19,10 @@ export default async function InvoicesPage() {
         description="Track payments against finalized quotations — received, pending, and payment method."
         action={
           <AdminLinkButton href="/admin/invoices/new">
-            <span className="material-symbols-outlined text-[18px]">add</span>
-            + Create Invoice
+            <span className="material-symbols-outlined text-[18px]" aria-hidden>
+              add
+            </span>
+            Create invoice
           </AdminLinkButton>
         }
       />

@@ -8,7 +8,6 @@ import clsx from "clsx";
 import { BrandLogo } from "@/components/brand-logo";
 import { useEnquiry } from "@/components/enquiry-provider";
 import { useTheme } from "@/components/theme-provider";
-import { siteSettings } from "@/lib/data/site";
 import { chrome } from "@/lib/chrome";
 
 const navItems = [
@@ -100,37 +99,16 @@ export function Nav() {
               </Link>
             </div>
 
-            {/* Mobile logo */}
+            {/* Mobile logo — full lockup (same official asset as desktop) */}
             <div className="z-50 flex flex-shrink-0 pl-1 md:hidden">
               <Link
                 href="/"
                 className="pointer-events-auto"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <BrandLogo height={40} markOnly invert={onDark} priority />
+                <BrandLogo height={32} invert={onDark} priority />
               </Link>
             </div>
-
-            {/* Mobile brand title — rises into place on home */}
-            <motion.div
-              initial={{ y: isHome ? "60vh" : 0, opacity: isHome ? 0 : 1 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 1.2, ease: "easeOut", delay: isHome ? 0.2 : 0 }}
-              className="pointer-events-none absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2 text-center md:hidden"
-            >
-              <p
-                className="text-lg font-bold uppercase leading-none tracking-widest drop-shadow-md"
-                style={{ color: onDark ? "#fff" : chrome.ink }}
-              >
-                Imagine Walls
-              </p>
-              <p
-                className="mt-0.5 text-[10px] font-light tracking-[0.2em]"
-                style={{ color: onDark ? "rgba(255,255,255,0.9)" : "#3d3b36" }}
-              >
-                {siteSettings.tagline}
-              </p>
-            </motion.div>
 
             {/* Desktop pill nav */}
             <div className="pointer-events-auto order-2 hidden w-auto flex-1 items-center justify-center md:flex">

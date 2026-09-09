@@ -20,8 +20,10 @@ export default async function ProjectsPage() {
         description="Manage the architectural work and curated spatial photography displayed on the Imagine Walls website."
         action={
           <AdminLinkButton href="/admin/projects/new">
-            <span className="material-symbols-outlined text-[18px]">add</span>
-            + Add project
+            <span className="material-symbols-outlined text-[18px]" aria-hidden>
+              add
+            </span>
+            Add project
           </AdminLinkButton>
         }
       />

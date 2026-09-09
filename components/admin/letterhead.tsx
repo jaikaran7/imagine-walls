@@ -1,14 +1,18 @@
+import { BrandLogoPrint } from "@/components/brand-logo";
+import { siteSettings } from "@/lib/data/site";
+
 export function Letterhead({ date }: { date?: string }) {
   return (
     <div className="border-b border-[#1a1a18] pb-6">
       <div className="flex items-start justify-between gap-6">
         <div>
-          <p className="font-display text-3xl font-medium tracking-tight">Imagine Walls</p>
-          <p className="mt-1 text-sm text-[#5c5a54]">Interior Design Studio · Hyderabad</p>
+          <BrandLogoPrint height={64} />
           <p className="mt-3 text-xs text-[#8a8780]">
-            +91 98765 43210 · hello@imaginewalls.in
+            {siteSettings.phone}
+            <span className="mx-1.5 opacity-40">·</span>
+            {siteSettings.email}
             <br />
-            Banjara Hills, Hyderabad, Telangana
+            {siteSettings.location}
           </p>
         </div>
         <div className="text-right text-xs text-[#8a8780]">

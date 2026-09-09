@@ -28,6 +28,35 @@
   background-color: #0c0c0b;
 }
 
+/* Edge-to-edge photo layer (avoids letter-box 100vw centering gap) */
+.fullBleedPhoto {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fullBleedPhoto .cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.isReady .fullBleedPhoto {
+  opacity: 1;
+  z-index: 1;
+}
+
+.isReady .growingImage {
+  opacity: 0 !important;
+  visibility: hidden;
+}
+
 .brandLayer {
   position: absolute;
   inset: 0;
@@ -346,6 +375,26 @@
     display: none;
   }
 
+  /* Mobile: always edge-to-edge — no black side gap from 100vw letter-box math */
+  .header .fullBleedPhoto,
+  .scrollShell .fullBleedPhoto {
+    opacity: 1;
+    z-index: 1;
+  }
+
+  .coverExtra {
+    display: none;
+  }
+
+  .growingImage {
+    /* Keep grow anim for letters, but photo underlay is already full-bleed */
+    opacity: 0.001;
+  }
+
+  .isReady .growingImage {
+    display: none;
+  }
+
   .loaderTitle {
     font-size: clamp(5rem, 28vw, 7rem);
   }
@@ -361,5 +410,12 @@
 
   .ctaRow {
     width: 100%;
+  }
+
+  .ctaPrimary {
+    border-radius: 999px;
+    background: #f5f4f0;
+    color: #0c0c0b;
+    border-color: #f5f4f0;
   }
 }

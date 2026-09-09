@@ -99,10 +99,21 @@ export function CommitmentSection() {
   ];
 
   return (
-    <section className="border-t border-line py-12 md:py-16">
+    <section className="border-t border-line py-8 md:py-16">
       <div className="container-edge">
-        <p className="label mb-section-sm">Our Commitment</p>
-        <div className="grid gap-px bg-line md:grid-cols-2 lg:grid-cols-4">
+        <p className="label mb-6 md:mb-section-sm">Our Commitment</p>
+        {/* Mobile: one compact line per item. Desktop: original cards. */}
+        <ul className="divide-y divide-line border-y border-line md:hidden">
+          {items.map((item) => (
+            <li key={item.num} className="flex items-baseline gap-4 py-3.5">
+              <span className="w-8 shrink-0 font-display text-[1.125rem] text-ink-faint">{item.num}</span>
+              <span className="font-display text-[1.0625rem] font-medium leading-snug text-ink">
+                {item.title}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <div className="hidden gap-px bg-line md:grid md:grid-cols-2 lg:grid-cols-4">
           {items.map((item) => (
             <div key={item.num} className="bg-paper px-8 py-12 md:px-10 md:py-14">
               <p className="font-display text-[clamp(1.75rem,3vw,2.25rem)] text-ink-faint">{item.num}</p>

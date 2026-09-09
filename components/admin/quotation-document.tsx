@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { PrintBrandMark, PrintLogoWatermark } from "@/components/admin/print-brand";
+import { PrintBrandMark, PrintLogoWatermark, PrintStudioContact } from "@/components/admin/print-brand";
 import {
   formatQuoteAmount,
   formatQuoteDate,
@@ -9,23 +9,21 @@ import {
   sumLineItems,
   sumSectionItems,
 } from "@/lib/admin/format";
+import {
+  PRINT_THEMES,
+  QUOTATION_PRINT_THEMES,
+  type QuotationPrintTheme,
+} from "@/lib/admin/print-themes";
 import type { InvoiceDiscountType, Quotation } from "@/lib/admin/types";
 
-export type QuotationPrintTheme = "classic" | "minimal" | "studio";
-
-export const QUOTATION_PRINT_THEMES: {
-  id: QuotationPrintTheme;
-  label: string;
-  blurb: string;
-}[] = [
-  { id: "classic", label: "Classic", blurb: "Yellow header, peach rooms — original look" },
-  { id: "minimal", label: "Minimal", blurb: "Clean black & white editorial" },
-  { id: "studio", label: "Studio", blurb: "Navy brand tables, polished studio feel" },
-];
+export type { QuotationPrintTheme };
+export { QUOTATION_PRINT_THEMES };
 
 type QuotationDocData = Pick<
   Quotation,
   | "clientName"
+  | "clientPhone"
+  | "clientEmail"
   | "clientAddress"
   | "projectTitle"
   | "sections"
@@ -37,90 +35,6 @@ type QuotationDocData = Pick<
   | "updatedAt"
 >;
 
-type ThemeTokens = {
-  brand: string;
-  tagline: string;
-  headerBorder: string;
-  meta: string;
-  metaLabel: string;
-  headline: string;
-  border: string;
-  thead: string;
-  theadText: string;
-  section: string;
-  sectionText: string;
-  row: string;
-  sectionTotalBg: string;
-  grandBg: string;
-  grandText: string;
-  notesBorder: string;
-  notesTitle: string;
-  notesBody: string;
-};
-
-const THEMES: Record<QuotationPrintTheme, ThemeTokens> = {
-  classic: {
-    brand: "text-[#111]",
-    tagline: "text-[#555]",
-    headerBorder: "border-[#d4d4d4]",
-    meta: "text-[#222]",
-    metaLabel: "text-[#666]",
-    headline: "text-[#111]",
-    border: "border-[#b8b8b8]",
-    thead: "bg-[#f5e642]",
-    theadText: "text-[#111]",
-    section: "bg-[#f6c9a8]",
-    sectionText: "text-[#111]",
-    row: "bg-white/90",
-    sectionTotalBg: "bg-[#f5e642]",
-    grandBg: "bg-[#111]",
-    grandText: "text-white",
-    notesBorder: "border-[#d4d4d4]",
-    notesTitle: "text-[#111]",
-    notesBody: "text-[#333]",
-  },
-  minimal: {
-    brand: "text-[#111]",
-    tagline: "text-[#777]",
-    headerBorder: "border-[#111]",
-    meta: "text-[#111]",
-    metaLabel: "text-[#666]",
-    headline: "text-[#111]",
-    border: "border-[#222]",
-    thead: "bg-[#111]",
-    theadText: "text-white",
-    section: "bg-[#f3f3f3]",
-    sectionText: "text-[#111]",
-    row: "bg-white",
-    sectionTotalBg: "bg-[#fafafa]",
-    grandBg: "bg-white",
-    grandText: "text-[#111]",
-    notesBorder: "border-[#222]",
-    notesTitle: "text-[#111]",
-    notesBody: "text-[#444]",
-  },
-  studio: {
-    brand: "text-[#0f172a]",
-    tagline: "text-[#475569]",
-    headerBorder: "border-[#1e3a5f]",
-    meta: "text-[#0f172a]",
-    metaLabel: "text-[#64748b]",
-    headline: "text-[#0f172a]",
-    border: "border-[#94a3b8]",
-    thead: "bg-[#1e3a5f]",
-    theadText: "text-white",
-    section: "bg-[#e8eef5]",
-    sectionText: "text-[#0f172a]",
-    row: "bg-white",
-    sectionTotalBg: "bg-[#d4e0ef]",
-    grandBg: "bg-[#0f172a]",
-    grandText: "text-white",
-    notesBorder: "border-[#cbd5e1]",
-    notesTitle: "text-[#0f172a]",
-    notesBody: "text-[#334155]",
-  },
-};
-
 export function QuotationDocument({
   quotation,
   dateOverride,
@@ -130,7 +44,7 @@ export function QuotationDocument({
   dateOverride?: string;
   theme?: QuotationPrintTheme;
 }) {
-  const t = THEMES[theme] ?? THEMES.classic;
+  const t = PRINT_THEMES[theme] ?? PRINT_THEMES.classic;
   const date = dateOverride || formatQuoteDate(quotation.updatedAt || quotation.createdAt);
   const place = quotation.clientAddress?.trim() || "—";
   const headline =
@@ -158,6 +72,16 @@ export function QuotationDocument({
           <p className="mt-1 uppercase">
             <span className={t.metaLabel}>Client:</span> {quotation.clientName || "—"}
           </p>
+          {quotation.clientPhone?.trim() && (
+            <p className="mt-1">
+              <span className={t.metaLabel}>Mobile:</span> {quotation.clientPhone}
+            </p>
+          )}
+          {quotation.clientEmail?.trim() && (
+            <p className="mt-1 normal-case">
+              <span className={t.metaLabel}>Email:</span> {quotation.clientEmail}
+            </p>
+          )}
           <p className="mt-1 uppercase">
             <span className={t.metaLabel}>Place:</span> {place}
           </p>
@@ -174,12 +98,12 @@ export function QuotationDocument({
         <table className="w-full border-collapse text-left text-[12px] sm:text-[13px]">
           <thead>
             <tr className={`${t.thead} ${t.theadText}`}>
-              <th className={`${cell} py-2.5 font-bold w-[7%]`}>Sl No</th>
-              <th className={`${cell} py-2.5 font-bold w-[16%]`}>Product</th>
-              <th className={`${cell} py-2.5 font-bold w-[34%]`}>Description</th>
-              <th className={`${cell} py-2.5 font-bold w-[14%] text-right`}>Per SFT Rate</th>
-              <th className={`${cell} py-2.5 font-bold w-[12%] text-right`}>Total SFT</th>
-              <th className={`${cell} py-2.5 font-bold w-[17%] text-right`}>Final Price</th>
+              <th className={`${cell} w-[7%] py-2.5 font-bold`}>Sl No</th>
+              <th className={`${cell} w-[16%] py-2.5 font-bold`}>Product</th>
+              <th className={`${cell} w-[34%] py-2.5 font-bold`}>Description</th>
+              <th className={`${cell} w-[14%] py-2.5 text-right font-bold`}>Per SFT Rate</th>
+              <th className={`${cell} w-[12%] py-2.5 text-right font-bold`}>Total SFT</th>
+              <th className={`${cell} w-[17%] py-2.5 text-right font-bold`}>Final Price</th>
             </tr>
           </thead>
           <tbody>
@@ -278,6 +202,8 @@ export function QuotationDocument({
           <p className="mt-2 whitespace-pre-wrap">{quotation.notes}</p>
         </div>
       )}
+
+      <PrintStudioContact theme={t} />
     </article>
   );
 }

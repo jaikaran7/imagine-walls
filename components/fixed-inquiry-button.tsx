@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { useEnquiry } from "@/components/enquiry-provider";
 import { chrome } from "@/lib/chrome";
 
@@ -20,7 +21,10 @@ function IconArrowUpRight({ className }: { className?: string }) {
 
 export function FixedInquiryButton() {
   const { open, isOpen } = useEnquiry();
+  const pathname = usePathname();
   if (isOpen) return null;
+  // Home hero already has CTAs — floating pill doubles up on phones
+  if (pathname === "/") return null;
 
   return (
     <motion.button
