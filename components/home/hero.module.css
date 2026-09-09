@@ -146,13 +146,19 @@
 .loader {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   color: #201d1d;
   pointer-events: none;
+  /* Solid cream until isReady — prevents home photo flashing behind IW */
+  background-color: #f4f4f0;
+}
+
+.isReady .loader {
+  background-color: transparent;
 }
 
 .loaderTitle {
@@ -375,22 +381,21 @@
     display: none;
   }
 
-  /* Mobile: always edge-to-edge — no black side gap from 100vw letter-box math */
-  .header .fullBleedPhoto,
-  .scrollShell .fullBleedPhoto {
-    opacity: 1;
-    z-index: 1;
+  /* Cream loader plane — home photo must not peek behind IW */
+  .loader {
+    z-index: 2;
   }
 
   .coverExtra {
     display: none;
   }
 
+  /* Grow the real photo inside the letter box (not a pre-shown underlay) */
   .growingImage {
-    /* Keep grow anim for letters, but photo underlay is already full-bleed */
-    opacity: 0.001;
+    opacity: 1;
   }
 
+  /* Only after loader finishes: edge-to-edge photo, no black side strip */
   .isReady .growingImage {
     display: none;
   }
