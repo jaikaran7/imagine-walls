@@ -61,7 +61,7 @@ export function ProjectShowcaseHeader() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.3, ease: easeEditorial }}
-            className="absolute right-6 top-[calc(100%+0.25rem)] z-30 min-w-[10rem] border border-black/10 bg-paper py-2 md:right-10 lg:right-12"
+            className="absolute right-6 top-[calc(100%+0.25rem)] z-30 min-w-[10rem] border border-line bg-paper py-2 md:right-10 lg:right-12"
           >
             {menuLinks.map((link) => (
               <Link

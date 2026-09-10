@@ -8,7 +8,7 @@ function AdminMain({ children }: { children: React.ReactNode }) {
   const { isPending } = useAdminNav();
 
   return (
-    <div className="relative flex h-full min-w-0 flex-1 flex-col overflow-hidden bg-[#eef1f6] print:overflow-visible print:bg-white">
+    <div className="relative flex h-full min-w-0 flex-1 flex-col overflow-hidden bg-[var(--admin-bg,#eef1f6)] print:overflow-visible print:bg-white">
       <div className="print:hidden md:hidden">
         <AdminMobileTopBar />
       </div>

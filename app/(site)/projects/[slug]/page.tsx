@@ -33,8 +33,10 @@ export default async function ProjectDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = await getProjectBySlug(slug);
+  const [project, projects] = await Promise.all([getProjectBySlug(slug), getProjects()]);
   if (!project) notFound();
 
-  return <ProjectDetailLayout project={project} />;
+  const outroImages = projects.map((p) => p.coverImage.src).filter(Boolean);
+
+  return <ProjectDetailLayout project={project} outroImages={outroImages} />;
 }

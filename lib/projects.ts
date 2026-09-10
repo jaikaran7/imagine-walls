@@ -21,6 +21,7 @@ function toProject(record: AdminProject): Project {
   return {
     slug: record.slug,
     title: record.title,
+    client: record.client || "Private Client",
     location: record.location,
     category: record.category as ProjectCategory,
     year: record.year,

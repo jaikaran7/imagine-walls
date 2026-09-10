@@ -852,6 +852,7 @@ export const AdminProjectScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
   title: 'title',
+  client: 'client',
   location: 'location',
   category: 'category',
   year: 'year',

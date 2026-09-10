@@ -2,16 +2,18 @@
   position: relative;
   overflow: hidden;
   width: 100%;
+  max-width: 100%;
   height: 100dvh;
   min-height: 100dvh;
   color: #f5f4f0;
-  background-color: #f4f4f0;
+  background-color: var(--paper);
 }
 
 /* After loader: tall shell so dissolve can scrub before about lands below */
 .scrollShell {
   position: relative;
   width: 100%;
+  max-width: 100%;
   height: 200vh;
   color: #f5f4f0;
   background-color: var(--paper);
@@ -20,41 +22,52 @@
 .stickyPin {
   position: sticky;
   top: 0;
+  left: 0;
   z-index: 1;
   width: 100%;
+  max-width: 100%;
   height: 100dvh;
   min-height: 100dvh;
   overflow: hidden;
-  background-color: #0c0c0b;
+  background-color: var(--paper);
 }
 
-/* Edge-to-edge photo layer (avoids letter-box 100vw centering gap) */
-.fullBleedPhoto {
+.isReady .stickyPin,
+.isReady.header {
+  background-color: var(--paper);
+}
+
+/* Pin-level photo: same asset as the grow, revealed in the SAME paint as loader hide */
+.heroPhoto {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
 }
 
-.fullBleedPhoto .cover {
+.heroPhoto .cover {
   position: absolute;
   inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
 }
 
-.isReady .fullBleedPhoto {
+.isReady .heroPhoto {
   opacity: 1;
-  z-index: 1;
 }
 
-.isReady .growingImage {
-  opacity: 0 !important;
+/* Hide letter loader in the same frame heroPhoto appears — no pop-out / second load */
+.isReady .loader {
+  opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 }
 
 .brandLayer {
@@ -151,14 +164,10 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  color: #201d1d;
+  color: var(--ink);
   pointer-events: none;
-  /* Solid cream until isReady — prevents home photo flashing behind IW */
-  background-color: #f4f4f0;
-}
-
-.isReady .loader {
-  background-color: transparent;
+  /* Theme paper until isReady — light cream / dark black, no photo flash behind IW */
+  background-color: var(--paper);
 }
 
 .loaderTitle {
@@ -170,13 +179,14 @@
   font-family: var(--font-display), Georgia, serif;
   font-size: clamp(3.5rem, 11vw, 11rem);
   font-weight: 500;
-  line-height: 0.85;
+  line-height: 1.05;
 }
 
 .loaderStart,
 .loaderEnd {
   display: flex;
   overflow: hidden;
+  padding-bottom: 0.18em;
 }
 
 .loaderStart {
@@ -190,6 +200,7 @@
 .letter {
   position: relative;
   display: block;
+  will-change: transform;
 }
 
 .letterDesktopOnly {
@@ -274,8 +285,26 @@
   width: 100%;
   height: 100dvh;
   min-height: 100dvh;
-  padding: clamp(5.5rem, 10vh, 7rem) clamp(1.25rem, 4vw, 3rem) clamp(2rem, 5vh, 3.5rem);
+  padding: clamp(5.5rem, 10vh, 7rem) clamp(1.25rem, 4vw, 3rem)
+    max(2.75rem, calc(1.5rem + env(safe-area-inset-bottom, 0px)));
   gap: 1.5rem;
+  pointer-events: none;
+}
+
+/* Soft floor scrim so CTAs / tagline stay readable on bright photos */
+.content::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: min(42%, 18rem);
+  background: linear-gradient(
+    to top,
+    rgba(12, 12, 11, 0.55) 0%,
+    rgba(12, 12, 11, 0.22) 45%,
+    transparent 100%
+  );
   pointer-events: none;
 }
 
@@ -284,8 +313,8 @@
   width: 100%;
   align-items: flex-end;
   overflow: hidden;
-  /* room for serif feet inside the reveal mask */
-  padding-bottom: 0.14em;
+  /* room for serif descenders (g, y) inside the reveal mask */
+  padding-bottom: 0.32em;
 }
 
 .finalTitle {
@@ -298,14 +327,14 @@
   font-family: var(--font-display), Georgia, serif;
   font-size: clamp(2.75rem, 10vw, 11rem);
   font-weight: 500;
-  line-height: 0.9;
+  line-height: 1.05;
   color: #f5f4f0;
 }
 
 .finalWord {
   display: flex;
   overflow: hidden;
-  padding-bottom: 0.06em;
+  padding-bottom: 0.22em;
 }
 
 .finalLetter {
@@ -315,59 +344,81 @@
   will-change: transform;
 }
 
+.taglineMask {
+  overflow: hidden;
+  flex-shrink: 0;
+  max-width: min(16rem, 42vw);
+  padding-bottom: 0.2em;
+  pointer-events: none;
+}
+
 .tagline {
-  margin: 0 0 0 auto;
-  max-width: 14rem;
+  margin: 0;
   text-align: right;
-  font-size: clamp(0.95rem, 1.2vw, 1.125rem);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1rem, 1.35vw, 1.25rem);
   font-weight: 500;
   line-height: 1.35;
-  color: rgba(245, 244, 240, 0.65);
+  letter-spacing: 0.01em;
+  color: rgba(245, 244, 240, 0.95);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
   transform: translateY(110%);
   will-change: transform;
-  overflow: hidden;
+}
+
+.bottomBar {
+  display: flex;
+  width: 100%;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem 2rem;
+  pointer-events: auto;
 }
 
 .ctaRow {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1.25rem 2rem;
-  pointer-events: auto;
+  gap: 1rem 1.5rem;
+  min-width: 0;
   opacity: 0;
-  overflow: hidden;
 }
 
 .ctaPrimary {
   border: 1px solid #f5f4f0;
+  border-radius: 999px;
+  background: #f5f4f0;
   padding: 0.85rem 1.75rem;
   font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #f5f4f0;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  color: #0c0c0b;
+  transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
 }
 
 .ctaPrimary:hover {
-  background-color: #f5f4f0;
-  color: #0c0c0b;
+  opacity: 0.9;
 }
 
 .ctaSecondary {
+  border: 1px solid rgba(245, 244, 240, 0.85);
+  border-radius: 999px;
+  padding: 0.85rem 1.5rem;
   font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(245, 244, 240, 0.75);
+  color: #f5f4f0;
+  background: rgba(12, 12, 11, 0.35);
+  backdrop-filter: blur(8px);
   transition: opacity 0.3s ease;
 }
 
 .ctaSecondary:hover {
-  opacity: 1;
-  color: #f5f4f0;
+  opacity: 0.85;
 }
 
 @media (max-width: 991px) {
-  .tagline {
+  .taglineMask {
     display: none;
   }
 
@@ -395,18 +446,13 @@
     opacity: 1;
   }
 
-  /* Only after loader finishes: edge-to-edge photo, no black side strip */
-  .isReady .growingImage {
-    display: none;
-  }
-
   .loaderTitle {
     font-size: clamp(5rem, 28vw, 7rem);
   }
 
   .content {
     padding-inline: 1.25rem;
-    padding-bottom: max(1.75rem, env(safe-area-inset-bottom, 0px));
+    padding-bottom: max(2.25rem, calc(1.25rem + env(safe-area-inset-bottom, 0px)));
   }
 
   .finalTitle {
@@ -415,12 +461,5 @@
 
   .ctaRow {
     width: 100%;
-  }
-
-  .ctaPrimary {
-    border-radius: 999px;
-    background: #f5f4f0;
-    color: #0c0c0b;
-    border-color: #f5f4f0;
   }
 }

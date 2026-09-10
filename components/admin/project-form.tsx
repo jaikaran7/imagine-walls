@@ -15,15 +15,15 @@ import type { AdminProject, AdminProjectCategory, AdminProjectImage } from "@/li
 
 const categories: AdminProjectCategory[] = [
   "Residential Interiors",
-  "Modular Kitchen",
-  "Bedroom & Wardrobe",
-  "TV Units & Feature Walls",
   "Commercial Interiors",
+  "Kitchens & Custom Joinery",
+  "Lighting & Architectural Details",
 ];
 
 const emptyProject = (): Omit<AdminProject, "id" | "createdAt" | "updatedAt"> => ({
   slug: "",
   title: "",
+  client: "Private Client",
   location: "Hyderabad",
   category: "Residential Interiors",
   year: new Date().getFullYear(),
@@ -176,6 +176,12 @@ export function ProjectForm({ project, onSaved }: { project?: AdminProject; onSa
             onChange={(e) => updateField("slug", e.target.value)}
             placeholder="auto-generated from title"
           />
+          <AdminInput
+            label="Client"
+            value={form.client}
+            onChange={(e) => updateField("client", e.target.value)}
+            placeholder="Private Client"
+          />
           <AdminInput label="Location" value={form.location} onChange={(e) => updateField("location", e.target.value)} />
           <AdminSelect
             label="Category"
@@ -230,11 +236,12 @@ export function ProjectForm({ project, onSaved }: { project?: AdminProject; onSa
           />
           <AdminInput
             label="Services involved (comma-separated)"
+            placeholder="Residential Interiors, Kitchens & Custom Joinery"
             value={form.servicesInvolved.join(", ")}
             onChange={(e) => updateField("servicesInvolved", commaList(e.target.value))}
           />
           <AdminInput
-            label="Material highlights (comma-separated)"
+            label="Project highlights (comma-separated)"
             value={form.materialHighlights.join(", ")}
             onChange={(e) => updateField("materialHighlights", commaList(e.target.value))}
           />

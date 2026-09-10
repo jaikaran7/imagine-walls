@@ -4,8 +4,8 @@
   max-width: 100vw;
   height: 100dvh;
   overflow: hidden;
-  background: #fff;
-  color: #000;
+  background: var(--paper);
+  color: var(--ink);
 }
 
 .revealers {
@@ -20,7 +20,7 @@
 .revealer {
   flex: 1;
   width: 100%;
-  background: #fff;
+  background: var(--paper);
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
 }
 
@@ -110,7 +110,7 @@
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.02em;
-  color: #000;
+  color: var(--ink);
 }
 
 .nav {
@@ -130,7 +130,7 @@
 .navItem a {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #000;
+  color: var(--ink);
   text-decoration: none;
 }
 
@@ -189,7 +189,7 @@
   font-size: clamp(1.05rem, 1.6vw, 1.45rem);
   font-weight: 500;
   line-height: 1.3;
-  color: #000;
+  color: var(--ink);
 }
 
 .siteInfo .row:nth-child(2) .col:nth-child(2) {
@@ -203,7 +203,7 @@
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.08em;
-  color: #000;
+  color: var(--ink);
 }
 
 .metaBlock {
@@ -225,7 +225,7 @@
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.08em;
-  color: #000;
+  color: var(--ink);
   text-decoration: none;
 }
 
@@ -263,8 +263,8 @@
 .staticFallback {
   position: relative;
   min-height: 100dvh;
-  background: #fff;
-  color: #000;
+  background: var(--paper);
+  color: var(--ink);
   padding: 5rem 1.25rem 2.5rem;
   overflow-x: hidden;
 }
@@ -290,7 +290,7 @@
   width: 6.25rem;
   flex-shrink: 0;
   overflow: hidden;
-  background: #f3f3f1;
+  background: var(--surface);
 }
 
 .staticThumb img {

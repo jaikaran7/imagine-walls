@@ -17,10 +17,9 @@ export interface Enquiry {
 
 export type AdminProjectCategory =
   | "Residential Interiors"
-  | "Modular Kitchen"
-  | "Bedroom & Wardrobe"
-  | "TV Units & Feature Walls"
-  | "Commercial Interiors";
+  | "Commercial Interiors"
+  | "Kitchens & Custom Joinery"
+  | "Lighting & Architectural Details";
 
 export interface AdminProjectImage {
   id: string;
@@ -33,6 +32,7 @@ export interface AdminProject {
   id: string;
   slug: string;
   title: string;
+  client: string;
   location: string;
   category: AdminProjectCategory;
   year: number;
@@ -52,10 +52,8 @@ export interface AdminProject {
 export type QuotationProjectType =
   | "Residential"
   | "Commercial"
-  | "Modular Kitchen"
-  | "Bedroom & Wardrobe"
-  | "TV Unit & Feature Wall"
-  | "Hospitality & Specialty"
+  | "Kitchens & Custom Joinery"
+  | "Lighting & Architectural Details"
   | "Other";
 
 export type QuotationStatus = "draft" | "finalized";

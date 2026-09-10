@@ -76,6 +76,7 @@ function mapProject(record: {
   id: string;
   slug: string;
   title: string;
+  client: string;
   location: string;
   category: string;
   year: number;
@@ -95,6 +96,7 @@ function mapProject(record: {
     id: record.id,
     slug: record.slug,
     title: record.title,
+    client: record.client || "",
     location: record.location,
     category: record.category as AdminProject["category"],
     year: record.year,
@@ -272,6 +274,7 @@ export async function addAdminProject(
       id: generateId("proj"),
       slug: project.slug,
       title: project.title,
+      client: project.client,
       location: project.location,
       category: project.category,
       year: project.year,
@@ -296,6 +299,7 @@ export async function updateAdminProject(id: string, patch: Partial<AdminProject
       data: {
         slug: patch.slug,
         title: patch.title,
+        client: patch.client,
         location: patch.location,
         category: patch.category,
         year: patch.year,

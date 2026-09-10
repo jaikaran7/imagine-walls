@@ -8,6 +8,7 @@ export const projects: Project[] = [
   {
     slug: "the-warm-minimal-residence",
     title: "The Warm Minimal Residence",
+    client: "Private Client",
     location: "Hyderabad",
     category: "Residential Interiors",
     year: 2025,
@@ -20,7 +21,7 @@ export const projects: Project[] = [
       "The brief was a full residential turnkey interior for a family that wanted their apartment to feel calm without feeling bare. The layout was reworked around how the household actually moves — a wide, uninterrupted line from entry to living to dining — with storage folded into the architecture rather than added on top of it.",
     designApproach:
       "We led with lifestyle-first flow: furniture layouts were tested against real daily movement before a single board was cut. A restrained material palette — warm wood tones, matte laminate, and a single fluted feature wall — keeps the eye settled, while three layers of lighting (ambient, task, and accent) let the same room feel different at 8am and 9pm.",
-    servicesInvolved: ["Residential Interiors", "TV Units & Feature Walls", "False Ceiling & Lighting"],
+    servicesInvolved: ["Residential Interiors", "Lighting & Architectural Details"],
     materialHighlights: ["Century core boards", "Natural wood veneer", "Concealed 3000K LED coves", "Matte laminate cabinetry"],
     coverImage: {
       id: "wmr-cover",
@@ -42,8 +43,9 @@ export const projects: Project[] = [
   {
     slug: "the-contemporary-kitchen",
     title: "The Contemporary Kitchen",
+    client: "Private Client",
     location: "Hyderabad",
-    category: "Modular Kitchen",
+    category: "Kitchens & Custom Joinery",
     year: 2025,
     featured: true,
     order: 2,
@@ -54,7 +56,7 @@ export const projects: Project[] = [
       "This kitchen replaced a closed, compartmentalised layout with an open island plan built around a strict prep–cook–clean triangle. Every run was measured against the client's actual cooking habits, from where spices live to how tall the person plating food at the island stands.",
     designApproach:
       "Base and wall cabinetry in a durable matte finish keep the palette quiet, while a non-porous quartz countertop and warm under-cabinet task LED do the functional work. Storage was engineered rather than added: tall larder pull-outs, a dedicated spice organiser, and soft-close tandem drawers throughout.",
-    servicesInvolved: ["Modular Kitchens", "False Ceiling & Lighting"],
+    servicesInvolved: ["Kitchens & Custom Joinery", "Lighting & Architectural Details"],
     materialHighlights: ["Non-porous quartz counters", "Soft-close tandem drawers", "Matte laminate cabinetry", "Full-extension pantry pull-outs"],
     coverImage: {
       id: "tck-cover",
@@ -73,8 +75,9 @@ export const projects: Project[] = [
   {
     slug: "the-quiet-master-suite",
     title: "The Quiet Master Suite",
+    client: "Private Client",
     location: "Hyderabad",
-    category: "Bedroom & Wardrobe",
+    category: "Kitchens & Custom Joinery",
     year: 2024,
     featured: true,
     order: 3,
@@ -85,7 +88,7 @@ export const projects: Project[] = [
       "The client wanted a bedroom that felt like a retreat rather than another storage-heavy room. Wardrobes run floor-to-ceiling along one wall, freeing the rest of the room for a single, quiet composition: bed, backdrop, and light.",
     designApproach:
       "A cohesive tonal palette carries from the headboard into the wardrobe shutters, so the room reads as one gesture rather than separate furniture pieces. Internal wardrobe storage was organised by category — shelving, soft-close organisers, shoe pull-outs — with layered lighting that shifts from bright task light to a warm, low glow at night.",
-    servicesInvolved: ["Bedrooms & Wardrobes", "False Ceiling & Lighting"],
+    servicesInvolved: ["Kitchens & Custom Joinery", "Lighting & Architectural Details"],
     materialHighlights: ["Floor-to-ceiling sliding wardrobes", "Open internal shelving", "Layered bedside lighting", "Upholstered headboard"],
     coverImage: {
       id: "qms-cover",
@@ -104,6 +107,7 @@ export const projects: Project[] = [
   {
     slug: "the-open-plan-living",
     title: "The Open Plan Living",
+    client: "Private Client",
     location: "Hyderabad",
     category: "Residential Interiors",
     year: 2024,
@@ -116,7 +120,7 @@ export const projects: Project[] = [
       "The apartment's main zone was opened into one continuous living-to-dining line. Storage, wiring, and display are integrated into a single feature wall so the room reads calm from every angle.",
     designApproach:
       "Furniture placement was tested for daily movement before any built-in work began. A floating console, fluted panel backdrop, and concealed LED coves give the space depth without adding visual clutter.",
-    servicesInvolved: ["Residential Interiors", "TV Units & Feature Walls", "False Ceiling & Lighting"],
+    servicesInvolved: ["Residential Interiors", "Lighting & Architectural Details"],
     materialHighlights: ["Fluted wall paneling", "Floating TV console", "Concealed LED coves", "Soft-close storage"],
     coverImage: {
       id: "opl-cover",
@@ -134,6 +138,7 @@ export const projects: Project[] = [
   {
     slug: "the-workspace-studio",
     title: "The Workspace Studio",
+    client: "Private Client",
     location: "Hyderabad",
     category: "Commercial Interiors",
     year: 2024,
@@ -146,7 +151,7 @@ export const projects: Project[] = [
       "The brief called for a professional environment that still felt human — not a generic office fit-out. Circulation, storage, and meeting zones were mapped before material selection began.",
     designApproach:
       "Matte laminate surfaces and concealed storage keep the palette quiet. Task and ambient lighting are layered so the same room supports focused work and client-facing moments.",
-    servicesInvolved: ["Commercial Interiors", "False Ceiling & Lighting"],
+    servicesInvolved: ["Commercial Interiors", "Lighting & Architectural Details"],
     materialHighlights: ["Matte laminate cabinetry", "Magnetic track lighting", "Durable work surfaces", "Concealed cable management"],
     coverImage: {
       id: "tws-cover",
@@ -163,6 +168,7 @@ export const projects: Project[] = [
   {
     slug: "the-dining-pavilion",
     title: "The Dining Pavilion",
+    client: "Private Client",
     location: "Hyderabad",
     category: "Residential Interiors",
     year: 2023,
@@ -175,7 +181,7 @@ export const projects: Project[] = [
       "This zone was designed as the social heart of the home — a place for everyday meals and occasional entertaining, with storage and lighting integrated into the architecture.",
     designApproach:
       "A restrained material palette lets pendant fixtures and the dining table anchor the room. Joinery runs floor-to-ceiling on one wall, freeing the rest of the space for movement and light.",
-    servicesInvolved: ["Residential Interiors", "False Ceiling & Lighting"],
+    servicesInvolved: ["Residential Interiors", "Lighting & Architectural Details"],
     materialHighlights: ["Statement pendant fixtures", "Custom dining storage", "Warm 3000K ambient light", "Matte wood finishes"],
     coverImage: {
       id: "tdp-cover",

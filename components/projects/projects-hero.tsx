@@ -52,130 +52,143 @@ function AnimatedProjectsHero({ projects }: { projects: Project[] }) {
     const root = rootRef.current;
     if (!root) return;
 
-    const preloaderTitle = root.querySelector(`.${styles.preloaderHeader} h1`);
-    const heroTitle = root.querySelector(`.${styles.header} h1`);
-    const footerLines = root.querySelectorAll(`.${styles.heroFooter} p`);
+    const splits: { revert: () => void }[] = [];
 
-    if (!preloaderTitle || !heroTitle || footerLines.length === 0) return;
+    const ctx = gsap.context(() => {
+      const preloaderTitle = root.querySelector(`.${styles.preloaderHeader} h1`);
+      const heroTitle = root.querySelector(`.${styles.header} h1`);
+      const footerLines = root.querySelectorAll(`.${styles.heroFooter} p`);
 
-    const preloaderHeaderSplit = splitText(preloaderTitle, "chars", styles.char);
-    const headerSplit = splitText(heroTitle, "chars", styles.char, false);
-    const footerSplit = splitText([...footerLines], "words", styles.word);
+      if (!preloaderTitle || !heroTitle || footerLines.length === 0) return;
 
-    gsap.set(root.querySelectorAll(`.${styles.preloaderCard}`), {
-      rotate: (i) => PRELOADER_ROTATIONS[i] ?? 0,
-    });
+      splits.push(
+        splitText(preloaderTitle, "chars", styles.char),
+        splitText(heroTitle, "chars", styles.char, false),
+        splitText([...footerLines], "words", styles.word),
+      );
 
-    const counterEl = root.querySelector(`.${styles.preloaderCounter} p`);
-    const tl = gsap.timeline({ delay: 0.5 });
+      gsap.set(root.querySelectorAll(`.${styles.preloaderCard}`), {
+        rotate: (i) => PRELOADER_ROTATIONS[i] ?? 0,
+      });
 
-    tl.to(root.querySelectorAll(`.${styles.preloaderCard}`), {
-      scale: 1,
-      clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-      duration: 1,
-      ease: "hop",
-      stagger: 0.2,
-    });
+      const counterEl = root.querySelector(`.${styles.preloaderCounter} p`);
+      const preloaderChars = root.querySelectorAll(`.${styles.preloaderHeader} .${styles.char}`);
+      const headerChars = root.querySelectorAll(`.${styles.header} .${styles.char}`);
+      const footerWords = root.querySelectorAll(`.${styles.heroFooter} .${styles.word}`);
 
-    tl.to(
-      root.querySelectorAll(`.${styles.preloaderHeader} .${styles.char}`),
-      {
-        y: "0%",
+      gsap.set(preloaderChars, { y: "100%" });
+      gsap.set(headerChars, { y: "100%" });
+      gsap.set(footerWords, { y: "100%" });
+      if (counterEl) gsap.set(counterEl, { y: "100%" });
+
+      const tl = gsap.timeline({ delay: 0.5 });
+
+      tl.to(root.querySelectorAll(`.${styles.preloaderCard}`), {
+        scale: 1,
+        clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
         duration: 1,
-        ease: "hop2",
-        stagger: { each: 0.125, from: "random" },
-      },
-      "0.35",
-    );
+        ease: "hop",
+        stagger: 0.2,
+      });
 
-    tl.to(
-      counterEl,
-      {
-        y: "0%",
-        duration: 1,
-        ease: "hop2",
-        onStart: () => {
-          if (!counterEl) return;
-          const counter = { value: 0 };
-
-          gsap.to(counter, {
-            value: 100,
-            duration: 2,
-            delay: 0.5,
-            ease: "power2.inOut",
-            onUpdate: () => {
-              const rounded = Math.round(counter.value);
-              counterEl.textContent =
-                rounded >= 100 ? siteSettings.projectsCompleted : String(rounded).padStart(3, "0");
-            },
-          });
+      tl.to(
+        preloaderChars,
+        {
+          y: "0%",
+          duration: 1,
+          ease: "hop2",
+          stagger: { each: 0.125, from: "random" },
         },
-      },
-      "<",
-    );
+        "0.35",
+      );
 
-    tl.to(counterEl, { y: "-100%", duration: 0.75, ease: "hop2" }, 3.25);
+      tl.to(
+        counterEl,
+        {
+          y: "0%",
+          duration: 1,
+          ease: "hop2",
+          onStart: () => {
+            if (!counterEl) return;
+            const counter = { value: 0 };
 
-    tl.to(
-      root.querySelectorAll(`.${styles.preloaderHeader} .${styles.char}`),
-      {
-        y: "-100%",
-        duration: 0.75,
-        ease: "hop2",
-        stagger: { each: 0.125, from: "random" },
-      },
-      3.25,
-    );
+            gsap.to(counter, {
+              value: 100,
+              duration: 2,
+              delay: 0.5,
+              ease: "power2.inOut",
+              onUpdate: () => {
+                const rounded = Math.round(counter.value);
+                counterEl.textContent =
+                  rounded >= 100 ? siteSettings.projectsCompleted : String(rounded).padStart(3, "0");
+              },
+            });
+          },
+        },
+        "<",
+      );
 
-    tl.to(
-      root.querySelectorAll(`.${styles.preloaderImages} .${styles.preloaderCard}`),
-      {
-        scale: 0,
-        clipPath: "polygon(20% 20%, 80% 20%, 80% 80%, 20% 80%)",
-        duration: 1,
-        ease: "hop2",
-        stagger: -0.075,
-      },
-      3.5,
-    );
+      tl.to(counterEl, { y: "-100%", duration: 0.75, ease: "hop2" }, 3.25);
 
-    tl.to(
-      root.querySelector(`.${styles.preloader}`),
-      {
-        clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
-        duration: 1,
-        ease: "hop2",
-      },
-      4.35,
-    );
+      tl.to(
+        preloaderChars,
+        {
+          y: "-100%",
+          duration: 0.75,
+          ease: "hop2",
+          stagger: { each: 0.125, from: "random" },
+        },
+        3.25,
+      );
 
-    tl.to(
-      root.querySelectorAll(`.${styles.header} .${styles.char}`),
-      {
-        y: "0%",
-        duration: 1,
-        ease: "hop",
-        stagger: { each: 0.075, from: "random" },
-      },
-      4.65,
-    );
+      tl.to(
+        root.querySelectorAll(`.${styles.preloaderImages} .${styles.preloaderCard}`),
+        {
+          scale: 0,
+          clipPath: "polygon(20% 20%, 80% 20%, 80% 80%, 20% 80%)",
+          duration: 1,
+          ease: "hop2",
+          stagger: -0.075,
+        },
+        3.5,
+      );
 
-    tl.to(
-      root.querySelectorAll(`.${styles.heroFooter} .${styles.word}`),
-      {
-        y: "0%",
-        duration: 1,
-        ease: "hop",
-        stagger: 0.075,
-      },
-      4.75,
-    );
+      tl.to(
+        root.querySelector(`.${styles.preloader}`),
+        {
+          clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
+          duration: 1,
+          ease: "hop2",
+        },
+        4.35,
+      );
+
+      tl.to(
+        headerChars,
+        {
+          y: "0%",
+          duration: 1,
+          ease: "hop",
+          stagger: { each: 0.075, from: "random" },
+        },
+        4.65,
+      );
+
+      tl.to(
+        footerWords,
+        {
+          y: "0%",
+          duration: 1,
+          ease: "hop",
+          stagger: 0.075,
+        },
+        4.75,
+      );
+    }, root);
 
     return () => {
-      tl.kill();
-      preloaderHeaderSplit.revert();
-      headerSplit.revert();
-      footerSplit.revert();
+      ctx.revert();
+      splits.forEach((split) => split.revert());
     };
   }, [projects]);
 

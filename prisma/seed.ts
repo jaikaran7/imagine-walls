@@ -27,6 +27,7 @@ async function main() {
   for (const project of projects) {
     const data = {
       title: project.title,
+      client: project.client,
       location: project.location,
       category: project.category,
       year: project.year,

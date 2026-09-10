@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import clsx from "clsx";
 import { BrandLogo } from "@/components/brand-logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { useAdminNav } from "./admin-nav-context";
 
 type NavItem = {
@@ -212,9 +213,12 @@ export function AdminSidebar() {
       </nav>
 
       <div className="shrink-0 border-t border-white/10 px-4 py-4">
-        <p className="text-[12px] font-semibold text-[#cbd5e1]">
-          <span className="text-[#64748b]">Signed in · </span>Admin
-        </p>
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-[12px] font-semibold text-[#cbd5e1]">
+            <span className="text-[#64748b]">Signed in · </span>Admin
+          </p>
+          <ThemeToggle onDark />
+        </div>
         <div className="mt-3 flex items-center gap-3">
           <button
             type="button"
@@ -296,11 +300,11 @@ export function AdminMobileTopBar() {
   const label = mobileSectionLabel(pathname);
 
   return (
-    <div className="sticky top-0 z-[115] flex items-center justify-between gap-3 border-b border-[#d7dde8] bg-white px-4 py-3 md:hidden">
+    <div className="sticky top-0 z-[115] flex items-center justify-between gap-3 border-b border-[var(--admin-outline-variant,#d7dde8)] bg-[var(--admin-surface,#fff)] px-4 py-3 text-[var(--ink,#0f172a)] md:hidden">
       <button
         type="button"
         onClick={toggleMobile}
-        className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-[#cbd5e1] bg-[#f8fafc] px-3 py-2 text-[15px] font-semibold text-[#0f172a]"
+        className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-[var(--admin-outline-variant,#cbd5e1)] bg-[var(--admin-surface-low,#f8fafc)] px-3 py-2 text-[15px] font-semibold"
         aria-label="Open menu"
       >
         <span aria-hidden="true" className="text-lg leading-none">
@@ -308,9 +312,12 @@ export function AdminMobileTopBar() {
         </span>
         Menu
       </button>
-      <p className="min-w-0 truncate text-right text-[15px] font-bold text-[#0f172a]">
-        {isPending ? "Loading…" : label}
-      </p>
+      <div className="flex min-w-0 items-center gap-2">
+        <p className="min-w-0 truncate text-right text-[15px] font-bold">
+          {isPending ? "Loading…" : label}
+        </p>
+        <ThemeToggle />
+      </div>
     </div>
   );
 }

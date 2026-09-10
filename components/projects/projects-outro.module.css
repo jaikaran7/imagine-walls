@@ -8,8 +8,8 @@
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
-  background-color: #0c0c0b;
-  color: #f5f4f0;
+  background-color: var(--paper);
+  color: var(--ink);
 }
 
 .headline {

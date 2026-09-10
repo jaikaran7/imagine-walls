@@ -1,7 +1,7 @@
 import { Hero } from "@/components/home/hero";
 import { CommitmentSection } from "@/components/home/final-cta";
 import { ModularProjectSlider } from "@/components/home/modular-project-slider";
-import { ServicesPreview } from "@/components/home/services-preview";
+import { ServicesHeroSlider } from "@/components/services/services-hero-slider";
 import { ProcessTeaser } from "@/components/home/process-teaser";
 import { ReviewsSwiper } from "@/components/home/reviews-swiper";
 import { getFeaturedProjects, getProjects } from "@/lib/projects";
@@ -21,7 +21,7 @@ export default async function HomePage() {
       <Hero images={heroImages} />
       <CommitmentSection />
       <ModularProjectSlider projects={featuredProjects} />
-      <ServicesPreview />
+      <ServicesHeroSlider mode="home" />
       <ProcessTeaser />
       <ReviewsSwiper reviews={reviews} />
     </>

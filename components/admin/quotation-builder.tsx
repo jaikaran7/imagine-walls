@@ -41,10 +41,8 @@ import type {
 const projectTypes: QuotationProjectType[] = [
   "Residential",
   "Commercial",
-  "Modular Kitchen",
-  "Bedroom & Wardrobe",
-  "TV Unit & Feature Wall",
-  "Hospitality & Specialty",
+  "Kitchens & Custom Joinery",
+  "Lighting & Architectural Details",
   "Other",
 ];
 

@@ -75,7 +75,7 @@ function StaticHero({ cover }: { cover: string }) {
         data-home-hero-root
         className={styles.header}
         aria-label="Imagine Walls hero"
-        style={{ backgroundColor: "#0c0c0b" }}
+        style={{ backgroundColor: "var(--paper)" }}
       >
         <div className="absolute inset-0">
           <MediaImage
@@ -150,72 +150,96 @@ function LoaderHero({ covers }: { covers: [string, string, string, string] }) {
     if (!root) return;
 
     document.documentElement.setAttribute("data-home-hero", "loading");
+    // Returning to home mid-scroll must restart at the photo, not mid-dissolve
+    window.scrollTo(0, 0);
+    const prevHtmlOverflow = document.documentElement.style.overflow;
     const prevOverflow = document.body.style.overflow;
+    document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
 
-    const loadingLetters = Array.from(
-      root.querySelectorAll<HTMLElement>(`.${styles.letter}`),
-    ).filter((el) => getComputedStyle(el).display !== "none");
-    const box = root.querySelectorAll<HTMLElement>(`.${styles.box}`);
-    const growingImage = root.querySelectorAll<HTMLElement>(`.${styles.growingImage}`);
-    const headingStart = root.querySelectorAll<HTMLElement>(`.${styles.loaderStart}`);
-    const headingEnd = root.querySelectorAll<HTMLElement>(`.${styles.loaderEnd}`);
-    const coverExtras = root.querySelectorAll<HTMLElement>(`.${styles.coverExtra}`);
-    const headerLetters = root.querySelectorAll<HTMLElement>(`.${styles.finalLetter}`);
-    const tagline = root.querySelectorAll<HTMLElement>(`.${styles.tagline}`);
-    const ctaRow = root.querySelectorAll<HTMLElement>(`.${styles.ctaRow}`);
+    const unlockScroll = () => {
+      document.documentElement.style.overflow = prevHtmlOverflow;
+      document.body.style.overflow = prevOverflow;
+    };
 
-    // fromTo so remounts / cached reloads always re-hide then reveal (never stuck at 110%)
-    gsap.set(ctaRow, { opacity: 0 });
+    const preventScroll = (e: Event) => {
+      e.preventDefault();
+    };
+    window.addEventListener("wheel", preventScroll, { passive: false });
+    window.addEventListener("touchmove", preventScroll, { passive: false });
 
-    const tl = gsap.timeline({
-      defaults: { ease: "expo.inOut" },
-      onComplete: () => {
-        document.body.style.overflow = prevOverflow;
-        document.documentElement.setAttribute("data-home-hero", "ready");
-        root.classList.add(styles.isReady);
-        gsap.set(coverExtras, { opacity: 0, display: "none" });
-        if (brandRef.current) brandRef.current.style.opacity = "1";
-        setScrollReady(true);
-        requestAnimationFrame(() => ScrollTrigger.refresh());
-      },
-    });
+    const ctx = gsap.context(() => {
+      const loadingLetters = Array.from(
+        root.querySelectorAll<HTMLElement>(`.${styles.letter}`),
+      ).filter((el) => getComputedStyle(el).display !== "none");
+      const box = root.querySelectorAll<HTMLElement>(`.${styles.box}`);
+      const growingImage = root.querySelectorAll<HTMLElement>(`.${styles.growingImage}`);
+      const headingStart = root.querySelectorAll<HTMLElement>(`.${styles.loaderStart}`);
+      const headingEnd = root.querySelectorAll<HTMLElement>(`.${styles.loaderEnd}`);
+      const coverExtras = root.querySelectorAll<HTMLElement>(`.${styles.coverExtra}`);
+      const headerLetters = root.querySelectorAll<HTMLElement>(`.${styles.finalLetter}`);
+      const tagline = root.querySelectorAll<HTMLElement>(`.${styles.tagline}`);
+      const ctaRow = root.querySelectorAll<HTMLElement>(`.${styles.ctaRow}`);
 
-    tl.from(loadingLetters, {
-      yPercent: 100,
-      stagger: 0.025,
-      duration: 1.25,
-    });
+      // Explicit fromTo — `from()` breaks on remount/reload when kill leaves yPercent stuck
+      gsap.set(loadingLetters, { yPercent: 0 });
+      gsap.set(headerLetters, { yPercent: 110 });
+      gsap.set(tagline, { yPercent: 110 });
+      gsap.set(ctaRow, { opacity: 0 });
 
-    tl.fromTo(box, { width: "0em" }, { width: "1em", duration: 1.25 }, "< 1.25");
-    tl.fromTo(growingImage, { width: "0%" }, { width: "100%", duration: 1.25 }, "<");
-    tl.fromTo(headingStart, { x: "0em" }, { x: "-0.06em", duration: 1.25 }, "<");
-    tl.fromTo(headingEnd, { x: "0em" }, { x: "0.06em", duration: 1.25 }, "<");
+      const tl = gsap.timeline({
+        defaults: { ease: "expo.inOut" },
+        onComplete: () => {
+          unlockScroll();
+          window.removeEventListener("wheel", preventScroll);
+          window.removeEventListener("touchmove", preventScroll);
+          document.documentElement.setAttribute("data-home-hero", "ready");
+          // Leave growingImage at full 100vw — React isReady swaps to pin heroPhoto
+          // in the same paint (identical src). Do NOT resize to % of the letter box.
+          gsap.set(coverExtras, { opacity: 0, display: "none" });
+          if (brandRef.current) brandRef.current.style.opacity = "1";
+          setScrollReady(true);
+          requestAnimationFrame(() => ScrollTrigger.refresh());
+        },
+      });
 
-    tl.fromTo(
-      coverExtras,
-      { opacity: 1 },
-      { opacity: 0, duration: 0.05, ease: "none", stagger: 0.5 },
-      "-=0.05",
-    );
+      tl.fromTo(
+        loadingLetters,
+        { yPercent: 100 },
+        { yPercent: 0, stagger: 0.025, duration: 1.25 },
+      );
 
-    tl.to(growingImage, { width: "100vw", height: "100dvh", duration: 2 }, "< 1.25");
-    tl.to(box, { width: "110vw", duration: 2 }, "<");
+      tl.fromTo(box, { width: "0em" }, { width: "1em", duration: 1.25 }, "< 1.25");
+      tl.fromTo(growingImage, { width: "0%" }, { width: "100%", duration: 1.25 }, "<");
+      tl.fromTo(headingStart, { x: "0em" }, { x: "-0.06em", duration: 1.25 }, "<");
+      tl.fromTo(headingEnd, { x: "0em" }, { x: "0.06em", duration: 1.25 }, "<");
 
-    tl.fromTo(
-      headerLetters,
-      { yPercent: 110 },
-      { yPercent: 0, duration: 1.25, ease: "expo.out", stagger: 0.025 },
-      "< 1.2",
-    );
-    tl.fromTo(tagline, { yPercent: 110 }, { yPercent: 0, duration: 1.25, ease: "expo.out" }, "<");
-    tl.to(ctaRow, { opacity: 1, duration: 0.8, ease: "power2.out" }, "< 0.35");
+      tl.fromTo(
+        coverExtras,
+        { opacity: 1 },
+        { opacity: 0, duration: 0.05, ease: "none", stagger: 0.5 },
+        "-=0.05",
+      );
+
+      // Same pop-in as Willem / main: grow edge-to-edge and KEEP this image
+      tl.to(growingImage, { width: "100vw", height: "100dvh", duration: 2 }, "< 1.25");
+      tl.to(box, { width: "110vw", duration: 2 }, "<");
+
+      tl.fromTo(
+        headerLetters,
+        { yPercent: 110 },
+        { yPercent: 0, duration: 1.25, ease: "expo.out", stagger: 0.025 },
+        "< 1.2",
+      );
+      tl.fromTo(tagline, { yPercent: 110 }, { yPercent: 0, duration: 1.25, ease: "expo.out" }, "<");
+      tl.to(ctaRow, { opacity: 1, duration: 0.8, ease: "power2.out" }, "< 0.35");
+    }, root);
 
     return () => {
-      tl.kill();
-      gsap.set([headerLetters, tagline, ctaRow], { clearProps: "transform,opacity" });
-      root.classList.remove(styles.isReady);
-      document.body.style.overflow = prevOverflow;
+      ctx.revert();
+      unlockScroll();
+      window.removeEventListener("wheel", preventScroll);
+      window.removeEventListener("touchmove", preventScroll);
       document.documentElement.removeAttribute("data-home-hero");
     };
   }, []);
@@ -270,17 +294,19 @@ function LoaderHero({ covers }: { covers: [string, string, string, string] }) {
       <section
         ref={rootRef}
         data-home-hero-root
-        className={scrollReady ? styles.scrollShell : styles.header}
+        className={
+          scrollReady ? `${styles.scrollShell} ${styles.isReady}` : styles.header
+        }
         aria-label="Imagine Walls hero"
       >
         <div className={scrollReady ? styles.stickyPin : undefined}>
-          {/* True full-bleed photo — kills the black side gap after loader / on mobile */}
-          <div className={styles.fullBleedPhoto} aria-hidden="true">
+          {/* Settled full-bleed — same src as grow; revealed with isReady (no second pop) */}
+          <div className={styles.heroPhoto} aria-hidden="true">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className={styles.cover} src={main} alt="" />
           </div>
 
-          {/* Loader growing-image becomes the full-bleed hero photo — keep it mounted */}
+          {/* Willem grow — expands edge-to-edge, then yields to heroPhoto in one paint */}
           <div className={styles.loader} aria-hidden="true">
             <div className={styles.loaderTitle}>
               <div className={styles.loaderStart}>
@@ -342,14 +368,18 @@ function LoaderHero({ covers }: { covers: [string, string, string, string] }) {
                   </span>
                 </h1>
               </div>
-              <div className={styles.ctaRow}>
-                <Link href="/contact" className={styles.ctaPrimary}>
-                  Start a Project
-                </Link>
-                <Link href="/projects" className={styles.ctaSecondary}>
-                  View Projects →
-                </Link>
-                <p className={styles.tagline}>{siteSettings.dreamLine}</p>
+              <div className={styles.bottomBar}>
+                <div className={styles.ctaRow}>
+                  <Link href="/contact" className={styles.ctaPrimary}>
+                    Start a Project
+                  </Link>
+                  <Link href="/projects" className={styles.ctaSecondary}>
+                    View Projects →
+                  </Link>
+                </div>
+                <div className={styles.taglineMask}>
+                  <p className={styles.tagline}>{siteSettings.dreamLine}</p>
+                </div>
               </div>
             </div>
           </div>

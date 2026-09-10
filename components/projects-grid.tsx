@@ -13,10 +13,9 @@ import type { Project, ProjectCategory } from "@/lib/types";
 const categories: (ProjectCategory | "All")[] = [
   "All",
   "Residential Interiors",
-  "Modular Kitchen",
-  "Bedroom & Wardrobe",
-  "TV Units & Feature Walls",
   "Commercial Interiors",
+  "Kitchens & Custom Joinery",
+  "Lighting & Architectural Details",
 ];
 
 export function ProjectsGrid({ projects }: { projects: Project[] }) {

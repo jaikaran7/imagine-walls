@@ -24,6 +24,7 @@ export async function POST(request: Request) {
   const project = await addAdminProject({
     slug,
     title: body.title.trim(),
+    client: body.client?.trim() || "Private Client",
     location: body.location?.trim() || "Hyderabad",
     category: body.category || "Residential Interiors",
     year: body.year || new Date().getFullYear(),

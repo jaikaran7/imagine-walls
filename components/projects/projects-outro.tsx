@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { BrandLogo } from "@/components/brand-logo";
+import { useTheme } from "@/components/theme-provider";
 import styles from "./projects-outro.module.css";
 
 type Particle = {
@@ -42,6 +43,7 @@ type ProjectsOutroProps = {
 };
 
 export function ProjectsOutro({ images }: ProjectsOutroProps) {
+  const { theme } = useTheme();
   const sectionRef = useRef<HTMLElement>(null);
   const explosionRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<Particle[]>([]);
@@ -208,7 +210,7 @@ export function ProjectsOutro({ images }: ProjectsOutroProps) {
     <section ref={sectionRef} className={styles.outro} aria-label="Projects closing">
       <h2 className={styles.headline}>The space you imagined is now real.</h2>
       <div className={styles.logo}>
-        <BrandLogo height={44} invert />
+        <BrandLogo height={44} invert={theme === "dark"} />
       </div>
       <div ref={explosionRef} className={styles.explosion} aria-hidden="true" />
     </section>

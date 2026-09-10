@@ -165,9 +165,16 @@ function AnimatedSlider({ projects }: { projects: Project[] }) {
   return (
     <section
       ref={sectionRef}
-      className="relative z-[2] h-[100dvh] overflow-hidden bg-[#0f0f0f] text-white"
-      aria-label="Featured projects"
+      className="relative z-[2] h-[100dvh] overflow-hidden bg-paper text-ink"
+      aria-labelledby="featured-projects-heading"
     >
+      <h2
+        id="featured-projects-heading"
+        className="pointer-events-none absolute inset-x-0 top-[clamp(4.75rem,8vh,5.75rem)] z-[3] text-center font-display text-[clamp(2.25rem,5vw,3.75rem)] font-medium leading-none tracking-[-0.02em] text-ink"
+      >
+        Projects
+      </h2>
+
       <div className={styles.slider} role="presentation">
         <div
           ref={titlesRef}
@@ -195,19 +202,19 @@ function AnimatedSlider({ projects }: { projects: Project[] }) {
         </button>
       </div>
 
-      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] flex items-end justify-between gap-4 px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-6 mix-blend-difference md:px-10 md:py-8 lg:px-12">
+      <footer className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] flex items-end justify-between gap-4 px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-6 md:px-10 md:py-8 lg:px-12">
         <div className="pointer-events-auto flex flex-wrap gap-x-5 gap-y-2 text-[0.75rem] md:text-[0.8125rem]">
-          <Link href="/projects" className="text-white no-underline transition-opacity hover:opacity-70">
+          <Link href="/projects" className="text-ink no-underline transition-opacity hover:opacity-70">
             All projects
           </Link>
           <Link
             href={`/projects/${activeProject.slug}`}
-            className="text-white no-underline transition-opacity hover:opacity-70"
+            className="text-ink no-underline transition-opacity hover:opacity-70"
           >
             View project
           </Link>
         </div>
-        <p className="text-[0.75rem] text-white md:text-[0.8125rem]">
+        <p className="text-[0.75rem] text-ink md:text-[0.8125rem]">
           {String(displayNumber).padStart(2, "0")} / {String(totalSlides).padStart(2, "0")}
         </p>
       </footer>
@@ -222,9 +229,15 @@ function AnimatedSlider({ projects }: { projects: Project[] }) {
 function StaticFallback({ project }: { project: Project }) {
   return (
     <section
-      className="relative z-[2] flex min-h-[100dvh] flex-col justify-center bg-[#0f0f0f] px-6 py-20 text-white md:px-10"
-      aria-label="Featured projects"
+      className="relative z-[2] flex min-h-[100dvh] flex-col justify-center bg-paper px-6 py-20 text-ink md:px-10"
+      aria-labelledby="featured-projects-heading-static"
     >
+      <h2
+        id="featured-projects-heading-static"
+        className="mb-12 text-center font-display text-[clamp(2.25rem,5vw,3.75rem)] font-medium leading-none tracking-[-0.02em]"
+      >
+        Projects
+      </h2>
       <div className="mx-auto w-full max-w-lg">
         <Link href={`/projects/${project.slug}`} className="group block">
           <div className="relative aspect-[11/10] overflow-hidden opacity-50">

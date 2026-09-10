@@ -49,38 +49,53 @@ function IconArrowUpRight({ className }: { className?: string }) {
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [overProjectHero, setOverProjectHero] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const { open: openEnquiry, isOpen: isEnquiryOpen } = useEnquiry();
   const { theme } = useTheme();
+  const isProjectDetail = /^\/projects\/[^/]+$/.test(pathname);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 20);
+      // Light nav on full-bleed project hero (matches landscaping reference)
+      setOverProjectHero(isProjectDetail && y < window.innerHeight * 0.72);
+    };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isProjectDetail]);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
-  }, [pathname]);
+    setOverProjectHero(isProjectDetail);
+  }, [pathname, isProjectDetail]);
 
   useEffect(() => {
-    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+    const heroLoading = document.documentElement.getAttribute("data-home-hero") === "loading";
+    if (isMobileMenuOpen || heroLoading) {
+      document.body.style.overflow = "hidden";
+      return () => {
+        if (document.documentElement.getAttribute("data-home-hero") !== "loading") {
+          document.body.style.overflow = "";
+        }
+      };
+    }
+    document.body.style.overflow = "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [isMobileMenuOpen]);
 
   const shouldHide = isEnquiryOpen;
-  const isHome = pathname === "/";
-  // White frosted chrome over dark surfaces (hero / site dark theme).
-  // Dark chrome only on light theme once paper shows under the header.
-  const onDark = theme === "dark" || (isHome && !scrolled && !isMobileMenuOpen);
+  const onDark = theme === "dark" || overProjectHero;
 
   return (
     <>
       <header
+        id="site-nav"
         data-site-chrome
         className={`fixed left-0 right-0 top-0 z-[100] transition-transform duration-500 ease-in-out ${
           shouldHide ? "pointer-events-none -translate-y-full" : "translate-y-0"
@@ -95,7 +110,12 @@ export function Nav() {
             {/* Desktop logo */}
             <div className="order-1 hidden w-auto flex-shrink-0 justify-start md:flex">
               <Link href="/" className="pointer-events-auto relative z-50">
-                <BrandLogo height={72} invert={onDark} priority />
+                <BrandLogo
+                  height={72}
+                  invert={onDark}
+                  priority
+                  className={!onDark ? "drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]" : undefined}
+                />
               </Link>
             </div>
 
@@ -117,7 +137,7 @@ export function Nav() {
                   "flex items-center gap-1 rounded-full border p-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-xl",
                   onDark
                     ? "border-white/25 bg-white/15"
-                    : "border-black/10 bg-white/70",
+                    : "border-black/20 bg-white/95 shadow-[0_8px_28px_rgba(0,0,0,0.12)]",
                 )}
               >
                 {navItems.map((item) => {
@@ -153,11 +173,11 @@ export function Nav() {
             </div>
 
             {/* Desktop CTA */}
-            <div className="pointer-events-auto order-3 hidden w-auto justify-end md:flex">
+            <div className="pointer-events-auto order-3 hidden w-auto items-center justify-end gap-3 md:flex">
               <button
                 type="button"
                 onClick={openEnquiry}
-                className="group flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-medium uppercase tracking-widest transition-opacity duration-300 hover:opacity-90"
+                className="group flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-medium uppercase tracking-widest shadow-sm transition-opacity duration-300 hover:opacity-90"
                 style={{
                   backgroundColor: onDark ? chrome.cream : chrome.ink,
                   color: onDark ? chrome.ink : chrome.cream,
@@ -197,7 +217,9 @@ export function Nav() {
             exit={{ opacity: 0, y: "-100%" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="fixed inset-0 z-[90] flex flex-col items-center justify-center space-y-8 md:hidden"
-            style={{ backgroundColor: chrome.black }}
+            style={{
+              backgroundColor: theme === "dark" ? chrome.black : chrome.cream,
+            }}
           >
             {navItems.map((item) => (
               <Link
@@ -206,7 +228,14 @@ export function Nav() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="text-2xl font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
                 style={{
-                  color: pathname === item.href ? chrome.cream : "#ffffff",
+                  color:
+                    pathname === item.href
+                      ? theme === "dark"
+                        ? chrome.cream
+                        : chrome.ink
+                      : theme === "dark"
+                        ? "#ffffff"
+                        : chrome.ink,
                 }}
               >
                 {item.label}
@@ -219,7 +248,10 @@ export function Nav() {
                 openEnquiry();
               }}
               className="mt-8 flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold uppercase tracking-widest transition-opacity hover:opacity-90"
-              style={{ backgroundColor: chrome.cream, color: chrome.ink }}
+              style={{
+                backgroundColor: theme === "dark" ? chrome.cream : chrome.ink,
+                color: theme === "dark" ? chrome.ink : chrome.cream,
+              }}
             >
               Start a Project
               <IconArrowUpRight className="h-5 w-5" />

@@ -67,6 +67,20 @@ const config: Config = {
       transitionTimingFunction: {
         editorial: "cubic-bezier(0.16, 1, 0.3, 1)",
       },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        "marquee-reverse": {
+          "0%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+      },
+      animation: {
+        marquee: "marquee 48s linear infinite",
+        "marquee-reverse": "marquee-reverse 48s linear infinite",
+      },
       maxWidth: {
         edge: "1800px",
         display: "68.75rem",

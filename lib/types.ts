@@ -1,9 +1,8 @@
 export type ProjectCategory =
   | "Residential Interiors"
-  | "Modular Kitchen"
-  | "Bedroom & Wardrobe"
-  | "TV Units & Feature Walls"
-  | "Commercial Interiors";
+  | "Commercial Interiors"
+  | "Kitchens & Custom Joinery"
+  | "Lighting & Architectural Details";
 
 export interface ProjectImage {
   id: string;
@@ -17,6 +16,7 @@ export interface ProjectImage {
 export interface Project {
   slug: string;
   title: string;
+  client: string;
   location: string;
   category: ProjectCategory;
   year: number;
@@ -40,11 +40,14 @@ export interface ServiceFeature {
 export interface Service {
   slug: string;
   number: string;
+  tag: string;
   title: string;
   shortDescription: string;
   fullDescription: string;
   heroImage: ProjectImage;
+  gallery: ProjectImage[];
   features: ServiceFeature[];
+  included: string[];
   relatedProjectSlugs: string[];
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect } from "react";
 
 type Theme = "light" | "dark";
 
@@ -9,31 +9,22 @@ const ThemeContext = createContext<{
   toggle: () => void;
 }>({ theme: "dark", toggle: () => {} });
 
+/** Public site is dark-only. Toggle is a no-op outside admin overrides. */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
-
   useEffect(() => {
-    const attr = document.documentElement.getAttribute("data-theme") as Theme | null;
-    if (attr) {
-      setTheme(attr);
-      return;
+    document.documentElement.setAttribute("data-theme", "dark");
+    try {
+      localStorage.setItem("iw-theme", "dark");
+    } catch {
+      // ignore
     }
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setTheme(prefersDark ? "dark" : "light");
   }, []);
 
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    try {
-      localStorage.setItem("iw-theme", theme);
-    } catch {
-      // storage unavailable — theme still applies for this session
-    }
-  }, [theme]);
-
-  const toggle = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
-
-  return <ThemeContext.Provider value={{ theme, toggle }}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={{ theme: "dark", toggle: () => {} }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 }
 
 export function useTheme() {

@@ -7,32 +7,13 @@ import { useEnquiry } from "@/components/enquiry-provider";
 import { siteSettings } from "@/lib/data/site";
 import { chrome } from "@/lib/chrome";
 
-const ROOM_TYPES = [
-  "Living Room",
-  "Bedroom",
-  "Kitchen",
-  "Office / Commercial",
-  "Full Home",
-  "Other",
-] as const;
-
-const FINISH_OPTIONS = [
-  "Matte Laminate",
-  "Gloss / Acrylic",
-  "Wood Veneer",
-  "Wallpaper / Texture",
-  "Paint & Panel",
-  "Not sure yet",
-] as const;
+const SPACE_TYPES = ["Residential", "Commercial", "Hospitality"] as const;
 
 type FormState = {
   name: string;
   phone: string;
   email: string;
-  roomType: string;
-  location: string;
-  wallArea: string;
-  finishPreference: string;
+  spaceType: string;
   message: string;
   consent: boolean;
 };
@@ -41,10 +22,7 @@ const emptyForm: FormState = {
   name: "",
   phone: "",
   email: "",
-  roomType: "",
-  location: "",
-  wallArea: "",
-  finishPreference: "",
+  spaceType: "",
   message: "",
   consent: false,
 };
@@ -98,12 +76,12 @@ export function EnquiryPanel() {
     e.preventDefault();
     setError(null);
 
-    if (!form.name.trim() || !form.phone.trim() || !form.email.trim()) {
-      setError("Please fill in name, phone, and email.");
+    if (!form.name.trim() || !form.phone.trim()) {
+      setError("Please fill in name and phone.");
       return;
     }
-    if (!form.roomType) {
-      setError("Please select a room type.");
+    if (!form.spaceType) {
+      setError("Please select a space type.");
       return;
     }
     if (!form.consent) {
@@ -115,7 +93,7 @@ export function EnquiryPanel() {
       setTouched((t) => ({ ...t, phone: true }));
       return;
     }
-    if (!validateEmail(form.email)) {
+    if (form.email.trim() && !validateEmail(form.email)) {
       setError("Please enter a valid email address.");
       setTouched((t) => ({ ...t, email: true }));
       return;
@@ -130,10 +108,8 @@ export function EnquiryPanel() {
           name: form.name.trim(),
           phone: form.phone.replace(/\D/g, ""),
           email: form.email.trim(),
-          projectType: form.roomType,
-          location: form.location.trim() || siteSettings.location,
-          projectSize: form.wallArea.trim(),
-          budgetRange: form.finishPreference,
+          projectType: form.spaceType,
+          location: siteSettings.location,
           message: form.message.trim(),
         }),
       });
@@ -300,11 +276,10 @@ export function EnquiryPanel() {
                           <div>
                             <InputGroup
                               type="email"
-                              placeholder="Email Address *"
+                              placeholder="Email Address (optional)"
                               value={form.email}
                               onChange={(e) => setForm({ ...form, email: e.target.value })}
                               onBlur={() => setTouched({ ...touched, email: true })}
-                              required
                             />
                             {touched.email && form.email && !validateEmail(form.email) && (
                               <p className="mt-1 px-6 text-xs text-red-400">Please enter a valid email address</p>
@@ -315,49 +290,34 @@ export function EnquiryPanel() {
 
                       <div className="space-y-6">
                         <h3 className="text-lg font-normal text-white">2. Project Overview</h3>
-                        <p className="text-sm text-white/70">Room Type *</p>
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                          {ROOM_TYPES.map((opt) => (
-                            <OptionChip
-                              key={opt}
-                              label={opt}
-                              checked={form.roomType === opt}
-                              onSelect={() =>
-                                setForm({ ...form, roomType: form.roomType === opt ? "" : opt })
-                              }
-                            />
+                        <select
+                          value={form.spaceType}
+                          onChange={(e) => setForm({ ...form, spaceType: e.target.value })}
+                          required
+                          className="w-full appearance-none rounded-full border border-white/20 bg-white/5 px-6 py-4 text-base transition-all focus:outline-none focus:ring-0"
+                          style={{
+                            color: form.spaceType ? "#ffffff" : "rgba(255,255,255,0.4)",
+                            caretColor: chrome.cream,
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`,
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "right 1.5rem center",
+                          }}
+                          onFocus={(e) => {
+                            e.currentTarget.style.borderColor = chrome.cream;
+                          }}
+                          onBlur={(e) => {
+                            e.currentTarget.style.borderColor = "";
+                          }}
+                        >
+                          <option value="" disabled>
+                            Space type *
+                          </option>
+                          {SPACE_TYPES.map((opt) => (
+                            <option key={opt} value={opt} className="bg-black text-white">
+                              {opt}
+                            </option>
                           ))}
-                        </div>
-                        <InputGroup
-                          placeholder="City / Area"
-                          value={form.location}
-                          onChange={(e) => setForm({ ...form, location: e.target.value })}
-                        />
-                        <InputGroup
-                          placeholder="Approx. wall area (e.g. 120 sq.ft)"
-                          value={form.wallArea}
-                          onChange={(e) => setForm({ ...form, wallArea: e.target.value })}
-                        />
-                        <p className="text-sm text-white/70">Finish preference</p>
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                          {FINISH_OPTIONS.map((opt) => (
-                            <OptionChip
-                              key={opt}
-                              label={opt}
-                              checked={form.finishPreference === opt}
-                              onSelect={() =>
-                                setForm({
-                                  ...form,
-                                  finishPreference: form.finishPreference === opt ? "" : opt,
-                                })
-                              }
-                            />
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="space-y-6">
-                        <h3 className="text-lg font-normal text-white">3. Project Notes</h3>
+                        </select>
                         <textarea
                           className="h-32 w-full resize-none rounded-3xl border border-white/20 bg-white/5 px-6 py-4 text-base text-white placeholder:text-white/40 transition-all focus:outline-none focus:ring-0"
                           style={{ outlineColor: chrome.cream }}
@@ -367,14 +327,14 @@ export function EnquiryPanel() {
                           onBlur={(e) => {
                             e.currentTarget.style.borderColor = "";
                           }}
-                          placeholder="Brief description of your space"
+                          placeholder="Your query"
                           value={form.message}
                           onChange={(e) => setForm({ ...form, message: e.target.value })}
                         />
                       </div>
 
                       <div className="space-y-6">
-                        <h3 className="text-lg font-normal text-white">4. Consent</h3>
+                        <h3 className="text-lg font-normal text-white">3. Consent</h3>
                         <label className="group flex cursor-pointer items-start gap-3">
                           <input
                             type="checkbox"
@@ -501,42 +461,4 @@ function InputGroup({
   );
 }
 
-function OptionChip({
-  label,
-  checked,
-  onSelect,
-}: {
-  label: string;
-  checked: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <label
-      className="flex cursor-pointer items-center gap-3 rounded-2xl border p-4 transition-all duration-200"
-      style={
-        checked
-          ? { borderColor: chrome.cream, backgroundColor: "rgba(255,255,255,0.1)" }
-          : { borderColor: "rgba(255,255,255,0.2)", backgroundColor: "rgba(255,255,255,0.05)" }
-      }
-    >
-      <input type="checkbox" checked={checked} onChange={onSelect} className="sr-only" aria-hidden />
-      <span
-        className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded border transition-colors"
-        style={
-          checked
-            ? { borderColor: chrome.cream, backgroundColor: chrome.cream, color: chrome.ink }
-            : { borderColor: "rgba(255,255,255,0.3)", backgroundColor: "rgba(255,255,255,0.05)" }
-        }
-      >
-        {checked && <IconCheck className="h-4 w-4" />}
-      </span>
-      <span
-        className="text-sm font-medium"
-        style={{ color: checked ? "#ffffff" : "rgba(255,255,255,0.8)" }}
-      >
-        {label}
-      </span>
-    </label>
-  );
-}
 

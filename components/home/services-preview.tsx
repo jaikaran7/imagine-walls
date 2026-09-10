@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { MediaImage } from "@/components/media-image";
+import { useReducedMotion } from "@/components/motion/use-reduced-motion";
 import { homeServices } from "@/lib/data/home-services";
+import { easeEditorial } from "@/lib/motion";
 
 function ServicesHeader() {
   return (
@@ -28,6 +31,8 @@ function ServicesHeader() {
 }
 
 export function ServicesPreview() {
+  const reduced = useReducedMotion();
+
   return (
     <section
       className="relative z-[2] border-t border-line bg-paper py-section"
@@ -43,10 +48,14 @@ export function ServicesPreview() {
           className="-mx-0 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[1.25rem] pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           style={{ WebkitOverflowScrolling: "touch" }}
         >
-          {homeServices.map((service) => (
-            <article
+          {homeServices.map((service, index) => (
+            <motion.article
               key={service.number}
               className="w-[min(78vw,20rem)] shrink-0 snap-center overflow-hidden rounded-xl border border-line bg-surface"
+              initial={reduced ? false : { opacity: 0, y: 28 }}
+              whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.55, delay: index * 0.08, ease: easeEditorial }}
             >
               <div className="relative aspect-[4/3]">
                 <MediaImage
@@ -75,7 +84,7 @@ export function ServicesPreview() {
                   ↗
                 </Link>
               </div>
-            </article>
+            </motion.article>
           ))}
         </div>
         <p className="mt-3 px-[1.25rem] text-[11px] uppercase tracking-[0.14em] text-ink-faint">
@@ -86,10 +95,14 @@ export function ServicesPreview() {
       {/* Desktop: stacked rows */}
       <div className="container-edge mt-12 hidden md:block">
         <ol className="flex flex-col gap-4">
-          {homeServices.map((service) => (
-            <li
+          {homeServices.map((service, index) => (
+            <motion.li
               key={service.number}
               className="grid items-center gap-8 rounded-sm border border-line bg-surface px-8 py-7 md:grid-cols-[11rem_1fr_1fr_auto]"
+              initial={reduced ? false : { opacity: 0, y: 36 }}
+              whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.6, delay: index * 0.1, ease: easeEditorial }}
             >
               <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
                 <MediaImage
@@ -121,7 +134,7 @@ export function ServicesPreview() {
               >
                 ↗
               </Link>
-            </li>
+            </motion.li>
           ))}
         </ol>
       </div>

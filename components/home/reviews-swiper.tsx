@@ -6,7 +6,7 @@ import Core from "smooothy";
 import { useReducedMotion } from "@/components/motion/use-reduced-motion";
 import type { ReviewSlide } from "@/lib/data/reviews";
 
-const CARD_BORDER = "2px solid rgba(0, 0, 0, 0.6)";
+const CARD_BORDER = "2px solid rgba(245, 244, 240, 0.2)";
 const AUTO_SPEED = 0.55;
 
 export function ReviewsSwiper({ reviews }: { reviews: ReviewSlide[] }) {
@@ -16,14 +16,14 @@ export function ReviewsSwiper({ reviews }: { reviews: ReviewSlide[] }) {
 
   return (
     <section
-      className="relative z-[2] overflow-hidden bg-white text-black"
+      className="relative z-[2] overflow-hidden bg-paper text-ink"
       aria-labelledby="reviews-heading"
     >
       <div className="flex flex-col lg:h-screen lg:flex-row lg:items-center lg:gap-[2vw]">
         <div className="flex w-full shrink-0 flex-col items-start justify-center px-5 py-12 md:px-[4vw] md:py-16 lg:h-full lg:w-1/2 lg:py-0">
           <h2
             id="reviews-heading"
-            className="max-w-[10ch] font-display text-[clamp(2.75rem,12vw,9.5rem)] font-bold uppercase italic leading-[0.82] tracking-[-0.02em] text-black"
+            className="max-w-[10ch] font-display text-[clamp(2.75rem,12vw,9.5rem)] font-bold uppercase italic leading-[0.82] tracking-[-0.02em] text-ink"
           >
             Don&rsquo;t
             <br />
@@ -31,12 +31,12 @@ export function ReviewsSwiper({ reviews }: { reviews: ReviewSlide[] }) {
             <br />
             us?
           </h2>
-          <p className="mt-5 w-full max-w-[22rem] text-[clamp(0.95rem,1.5vw,1.35rem)] font-medium leading-snug text-black/60 md:mt-[2vw]">
+          <p className="mt-5 w-full max-w-[22rem] text-[clamp(0.95rem,1.5vw,1.35rem)] font-medium leading-snug text-ink-muted md:mt-[2vw]">
             See for yourself — real notes from homes and workspaces across Hyderabad.
           </p>
           <Link
             href="/contact"
-            className="mt-7 inline-flex items-center gap-2 rounded-full bg-black px-5 py-3 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-white transition-opacity hover:opacity-80 md:mt-[2vw] md:px-6 md:py-3.5 md:text-[0.75rem]"
+            className="mt-7 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-paper transition-opacity hover:opacity-80 md:mt-[2vw] md:px-6 md:py-3.5 md:text-[0.75rem]"
           >
             Start a project <span aria-hidden="true">↗</span>
           </Link>

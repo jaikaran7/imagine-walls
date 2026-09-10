@@ -40,6 +40,7 @@ export type AdminProjectMinAggregateOutputType = {
   id: string | null
   slug: string | null
   title: string | null
+  client: string | null
   location: string | null
   category: string | null
   year: number | null
@@ -56,6 +57,7 @@ export type AdminProjectMaxAggregateOutputType = {
   id: string | null
   slug: string | null
   title: string | null
+  client: string | null
   location: string | null
   category: string | null
   year: number | null
@@ -72,6 +74,7 @@ export type AdminProjectCountAggregateOutputType = {
   id: number
   slug: number
   title: number
+  client: number
   location: number
   category: number
   year: number
@@ -104,6 +107,7 @@ export type AdminProjectMinAggregateInputType = {
   id?: true
   slug?: true
   title?: true
+  client?: true
   location?: true
   category?: true
   year?: true
@@ -120,6 +124,7 @@ export type AdminProjectMaxAggregateInputType = {
   id?: true
   slug?: true
   title?: true
+  client?: true
   location?: true
   category?: true
   year?: true
@@ -136,6 +141,7 @@ export type AdminProjectCountAggregateInputType = {
   id?: true
   slug?: true
   title?: true
+  client?: true
   location?: true
   category?: true
   year?: true
@@ -243,6 +249,7 @@ export type AdminProjectGroupByOutputType = {
   id: string
   slug: string
   title: string
+  client: string
   location: string
   category: string
   year: number
@@ -286,6 +293,7 @@ export type AdminProjectWhereInput = {
   id?: Prisma.StringFilter<"AdminProject"> | string
   slug?: Prisma.StringFilter<"AdminProject"> | string
   title?: Prisma.StringFilter<"AdminProject"> | string
+  client?: Prisma.StringFilter<"AdminProject"> | string
   location?: Prisma.StringFilter<"AdminProject"> | string
   category?: Prisma.StringFilter<"AdminProject"> | string
   year?: Prisma.IntFilter<"AdminProject"> | number
@@ -306,6 +314,7 @@ export type AdminProjectOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  client?: Prisma.SortOrder
   location?: Prisma.SortOrder
   category?: Prisma.SortOrder
   year?: Prisma.SortOrder
@@ -329,6 +338,7 @@ export type AdminProjectWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.AdminProjectWhereInput[]
   NOT?: Prisma.AdminProjectWhereInput | Prisma.AdminProjectWhereInput[]
   title?: Prisma.StringFilter<"AdminProject"> | string
+  client?: Prisma.StringFilter<"AdminProject"> | string
   location?: Prisma.StringFilter<"AdminProject"> | string
   category?: Prisma.StringFilter<"AdminProject"> | string
   year?: Prisma.IntFilter<"AdminProject"> | number
@@ -349,6 +359,7 @@ export type AdminProjectOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  client?: Prisma.SortOrder
   location?: Prisma.SortOrder
   category?: Prisma.SortOrder
   year?: Prisma.SortOrder
@@ -377,6 +388,7 @@ export type AdminProjectScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"AdminProject"> | string
   slug?: Prisma.StringWithAggregatesFilter<"AdminProject"> | string
   title?: Prisma.StringWithAggregatesFilter<"AdminProject"> | string
+  client?: Prisma.StringWithAggregatesFilter<"AdminProject"> | string
   location?: Prisma.StringWithAggregatesFilter<"AdminProject"> | string
   category?: Prisma.StringWithAggregatesFilter<"AdminProject"> | string
   year?: Prisma.IntWithAggregatesFilter<"AdminProject"> | number
@@ -397,6 +409,7 @@ export type AdminProjectCreateInput = {
   id: string
   slug: string
   title: string
+  client?: string
   location: string
   category: string
   year: number
@@ -417,6 +430,7 @@ export type AdminProjectUncheckedCreateInput = {
   id: string
   slug: string
   title: string
+  client?: string
   location: string
   category: string
   year: number
@@ -437,6 +451,7 @@ export type AdminProjectUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  client?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.IntFieldUpdateOperationsInput | number
@@ -457,6 +472,7 @@ export type AdminProjectUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  client?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.IntFieldUpdateOperationsInput | number
@@ -477,6 +493,7 @@ export type AdminProjectCreateManyInput = {
   id: string
   slug: string
   title: string
+  client?: string
   location: string
   category: string
   year: number
@@ -497,6 +514,7 @@ export type AdminProjectUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  client?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.IntFieldUpdateOperationsInput | number
@@ -517,6 +535,7 @@ export type AdminProjectUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  client?: Prisma.StringFieldUpdateOperationsInput | string
   location?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.IntFieldUpdateOperationsInput | number
@@ -537,6 +556,7 @@ export type AdminProjectCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  client?: Prisma.SortOrder
   location?: Prisma.SortOrder
   category?: Prisma.SortOrder
   year?: Prisma.SortOrder
@@ -562,6 +582,7 @@ export type AdminProjectMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  client?: Prisma.SortOrder
   location?: Prisma.SortOrder
   category?: Prisma.SortOrder
   year?: Prisma.SortOrder
@@ -578,6 +599,7 @@ export type AdminProjectMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  client?: Prisma.SortOrder
   location?: Prisma.SortOrder
   category?: Prisma.SortOrder
   year?: Prisma.SortOrder
@@ -613,6 +635,7 @@ export type AdminProjectSelect<ExtArgs extends runtime.Types.Extensions.Internal
   id?: boolean
   slug?: boolean
   title?: boolean
+  client?: boolean
   location?: boolean
   category?: boolean
   year?: boolean
@@ -633,6 +656,7 @@ export type AdminProjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   slug?: boolean
   title?: boolean
+  client?: boolean
   location?: boolean
   category?: boolean
   year?: boolean
@@ -653,6 +677,7 @@ export type AdminProjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   slug?: boolean
   title?: boolean
+  client?: boolean
   location?: boolean
   category?: boolean
   year?: boolean
@@ -673,6 +698,7 @@ export type AdminProjectSelectScalar = {
   id?: boolean
   slug?: boolean
   title?: boolean
+  client?: boolean
   location?: boolean
   category?: boolean
   year?: boolean
@@ -689,7 +715,7 @@ export type AdminProjectSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AdminProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "location" | "category" | "year" | "featured" | "sortOrder" | "shortDescription" | "overview" | "designApproach" | "servicesInvolved" | "materialHighlights" | "coverImage" | "gallery" | "createdAt" | "updatedAt", ExtArgs["result"]["adminProject"]>
+export type AdminProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "client" | "location" | "category" | "year" | "featured" | "sortOrder" | "shortDescription" | "overview" | "designApproach" | "servicesInvolved" | "materialHighlights" | "coverImage" | "gallery" | "createdAt" | "updatedAt", ExtArgs["result"]["adminProject"]>
 
 export type $AdminProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "AdminProject"
@@ -698,6 +724,7 @@ export type $AdminProjectPayload<ExtArgs extends runtime.Types.Extensions.Intern
     id: string
     slug: string
     title: string
+    client: string
     location: string
     category: string
     year: number
@@ -1138,6 +1165,7 @@ export interface AdminProjectFieldRefs {
   readonly id: Prisma.FieldRef<"AdminProject", 'String'>
   readonly slug: Prisma.FieldRef<"AdminProject", 'String'>
   readonly title: Prisma.FieldRef<"AdminProject", 'String'>
+  readonly client: Prisma.FieldRef<"AdminProject", 'String'>
   readonly location: Prisma.FieldRef<"AdminProject", 'String'>
   readonly category: Prisma.FieldRef<"AdminProject", 'String'>
   readonly year: Prisma.FieldRef<"AdminProject", 'Int'>

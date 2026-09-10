@@ -7,11 +7,9 @@ type Status = "idle" | "submitting" | "success" | "error";
 
 const projectTypes = [
   "Residential Interiors",
-  "Modular Kitchen",
-  "Bedroom & Wardrobe",
-  "TV Unit & Feature Wall",
   "Commercial Interiors",
-  "Hospitality & Specialty",
+  "Kitchens & Custom Joinery",
+  "Lighting & Architectural Details",
   "Other",
 ];
 const budgetRanges = ["Under ₹5L", "₹5L – ₹10L", "₹10L – ₹20L", "₹20L – ₹40L", "₹40L+", "Not sure yet"];
