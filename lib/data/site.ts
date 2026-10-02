@@ -2,15 +2,21 @@ export const siteSettings = {
   studioName: "Imagine Walls",
   tagline: "Interior Design Studio",
   location: "Hyderabad",
+  address: "Sankalp Apartments, Osman Nagar, Hyderabad, Telangana 500107",
+  mapsHref: "https://maps.app.goo.gl/28bR9jpDJnCqqWy49",
+  mapQuery: "17.453921,78.281450",
   dreamLine: "We Design Your Dreams",
   positioning: "Designing Spaces. Creating Experiences.",
   phone: "+91 96520 15324",
   phoneHref: "tel:+919652015324",
   whatsappHref: "https://wa.me/919652015324",
+  phoneSecondary: "+91 99122 23302",
+  phoneSecondaryHref: "tel:+919912223302",
   email: "Theimaginewalls@gmail.com",
   instagram: "@theimagine_walls",
   instagramHref: "https://instagram.com/theimagine_walls",
-  projectsCompleted: "100+",
+  projectsCompletedCount: 85,
+  projectsCompleted: "85+",
 } as const;
 
 export const philosophyPillars = [
@@ -33,7 +39,7 @@ export const philosophyPillars = [
 
 export const whyImagineWalls = [
   {
-    title: "100+ Interior Projects",
+    title: "85+ Interior Projects",
     description: "Proven track record of delivering residential and commercial interiors in Hyderabad.",
   },
   {

@@ -28,10 +28,10 @@ export function PrintThemeChips({
             aria-selected={active}
             title={opt.blurb}
             onClick={() => onChange(opt.id)}
-            className={`shrink-0 rounded-full px-3 py-1.5 text-[12px] font-bold transition ${
+            className={`shrink-0 rounded-full px-3 py-1.5 text-[12px] font-bold transition shadow-xs ${
               active
-                ? "bg-[#2563eb] text-white ring-2 ring-white/30"
-                : "bg-white text-[#0f172a] hover:bg-[#e2e8f0]"
+                ? "bg-[#2563eb] text-white ring-2 ring-[#2563eb]/20"
+                : "border border-[#cbd5e1] bg-white text-[#334155] hover:border-[#94a3b8] hover:bg-[#f8fafc] hover:text-[#0f172a]"
             }`}
           >
             {opt.label}

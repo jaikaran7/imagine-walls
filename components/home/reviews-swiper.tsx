@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Link from "next/link";
+import { EnquiryButton } from "@/components/enquiry-button";
 import Core from "smooothy";
 import { useReducedMotion } from "@/components/motion/use-reduced-motion";
 import type { ReviewSlide } from "@/lib/data/reviews";
@@ -34,12 +34,9 @@ export function ReviewsSwiper({ reviews }: { reviews: ReviewSlide[] }) {
           <p className="mt-5 w-full max-w-[22rem] text-[clamp(0.95rem,1.5vw,1.35rem)] font-medium leading-snug text-ink-muted md:mt-[2vw]">
             See for yourself — real notes from homes and workspaces across Hyderabad.
           </p>
-          <Link
-            href="/contact"
-            className="mt-7 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-paper transition-opacity hover:opacity-80 md:mt-[2vw] md:px-6 md:py-3.5 md:text-[0.75rem]"
-          >
+          <EnquiryButton className="mt-7 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[0.7rem] font-medium uppercase tracking-[0.08em] text-paper transition-opacity hover:opacity-80 md:mt-[2vw] md:px-6 md:py-3.5 md:text-[0.75rem]">
             Start a project <span aria-hidden="true">↗</span>
-          </Link>
+          </EnquiryButton>
         </div>
 
         <div className="relative w-full flex-1 overflow-hidden pb-10 pt-2 lg:h-full lg:pb-0 lg:pt-0">

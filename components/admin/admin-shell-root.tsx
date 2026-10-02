@@ -8,7 +8,7 @@ function AdminMain({ children }: { children: React.ReactNode }) {
   const { isPending } = useAdminNav();
 
   return (
-    <div className="relative flex h-full min-w-0 flex-1 flex-col overflow-hidden bg-[var(--admin-bg,#eef1f6)] print:overflow-visible print:bg-white">
+    <div className="relative flex h-full min-w-0 flex-1 flex-col overflow-hidden bg-[#f8fafc] text-[#0f172a] print:overflow-visible print:bg-white">
       <div className="print:hidden md:hidden">
         <AdminMobileTopBar />
       </div>
@@ -31,7 +31,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
   return (
     <AdminNavProvider>
-      <div className="fixed inset-0 z-[100] flex h-[100dvh] max-h-[100dvh] w-full min-w-0 overflow-hidden bg-[#0b1220] font-admin text-[16px] font-medium text-[#0f172a] antialiased print:static print:h-auto print:max-h-none print:min-h-0 print:overflow-visible print:bg-white">
+      <div className="fixed inset-0 z-[100] flex h-[100dvh] max-h-[100dvh] w-full min-w-0 overflow-hidden bg-[#f8fafc] font-admin text-[16px] font-medium text-[#0f172a] antialiased print:static print:h-auto print:max-h-none print:min-h-0 print:overflow-visible print:bg-white">
         <AdminSidebar />
         <AdminMain>{children}</AdminMain>
       </div>

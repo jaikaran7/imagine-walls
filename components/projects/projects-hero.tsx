@@ -113,14 +113,16 @@ function AnimatedProjectsHero({ projects }: { projects: Project[] }) {
             const counter = { value: 0 };
 
             gsap.to(counter, {
-              value: 100,
+              value: siteSettings.projectsCompletedCount,
               duration: 2,
               delay: 0.5,
               ease: "power2.inOut",
               onUpdate: () => {
                 const rounded = Math.round(counter.value);
                 counterEl.textContent =
-                  rounded >= 100 ? siteSettings.projectsCompleted : String(rounded).padStart(3, "0");
+                  rounded >= siteSettings.projectsCompletedCount
+                    ? siteSettings.projectsCompleted
+                    : String(rounded).padStart(2, "0");
               },
             });
           },

@@ -11,7 +11,6 @@ const menuLinks = [
   { href: "/projects", label: "Projects" },
   { href: "/services", label: "Services" },
   { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
 ];
 
 export function ProjectShowcaseHeader() {
@@ -21,8 +20,8 @@ export function ProjectShowcaseHeader() {
     <header className="relative z-20 shrink-0 px-6 pt-5 md:px-10 md:pt-7 lg:px-12">
       <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-4">
         <Link href="/" className="justify-self-start">
-          <BrandLogo height={40} className="md:hidden" />
-          <BrandLogo height={52} className="hidden md:block" />
+          <BrandLogo height={40} invert className="md:hidden" />
+          <BrandLogo height={52} invert className="hidden md:block" />
         </Link>
 
         <p className="hidden max-w-[15rem] text-center text-[0.5625rem] uppercase leading-[1.7] tracking-[0.15em] text-ink md:block md:text-[0.625rem]">

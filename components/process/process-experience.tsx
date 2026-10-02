@@ -2,6 +2,7 @@
 
 import { useRef, useState, useCallback } from "react";
 import Link from "next/link";
+import { EnquiryButton } from "@/components/enquiry-button";
 import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { ProcessArchitecturalModel } from "@/components/process/process-architectural-model";
 import { ProcessModelStatic } from "@/components/process/process-model-static";
@@ -208,9 +209,7 @@ function ProcessOutro() {
           <Link href="/projects" className="link-arrow text-ink-muted hover:text-ink">
             Explore our work <span aria-hidden="true">&rarr;</span>
           </Link>
-          <Link href="/contact" className="btn-outline w-fit">
-            Start a Project
-          </Link>
+          <EnquiryButton className="btn-outline w-fit">Start a Project</EnquiryButton>
         </div>
       </div>
     </section>

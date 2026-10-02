@@ -112,9 +112,8 @@ export function Nav() {
               <Link href="/" className="pointer-events-auto relative z-50">
                 <BrandLogo
                   height={72}
-                  invert={onDark}
+                  invert={true}
                   priority
-                  className={!onDark ? "drop-shadow-[0_1px_2px_rgba(0,0,0,0.2)]" : undefined}
                 />
               </Link>
             </div>
@@ -126,7 +125,7 @@ export function Nav() {
                 className="pointer-events-auto"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <BrandLogo height={32} invert={onDark} priority />
+                <BrandLogo height={32} invert={true} priority />
               </Link>
             </div>
 
@@ -247,7 +246,20 @@ export function Nav() {
                 setIsMobileMenuOpen(false);
                 openEnquiry();
               }}
-              className="mt-8 flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold uppercase tracking-widest transition-opacity hover:opacity-90"
+              className="text-2xl font-bold uppercase tracking-widest transition-opacity hover:opacity-80"
+              style={{
+                color: theme === "dark" ? "#ffffff" : chrome.ink,
+              }}
+            >
+              Contact
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                openEnquiry();
+              }}
+              className="mt-4 flex items-center gap-2 rounded-full px-8 py-4 text-sm font-bold uppercase tracking-widest transition-opacity hover:opacity-90"
               style={{
                 backgroundColor: theme === "dark" ? chrome.cream : chrome.ink,
                 color: theme === "dark" ? chrome.ink : chrome.cream,

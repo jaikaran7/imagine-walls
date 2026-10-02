@@ -9,6 +9,7 @@ import {
   AdminSelect,
   AdminTextarea,
 } from "@/components/admin/admin-shell";
+import { useDraftLeaveGuard } from "@/components/admin/draft-leave-guard";
 import {
   formatCurrency,
   invoiceDiscountAmount,
@@ -37,7 +38,58 @@ export function NewInvoiceClient({
   const [discountValue, setDiscountValue] = useState(0);
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const [leaveArmed, setLeaveArmed] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const hasDraftContent =
+    mode === "quotation"
+      ? Boolean(selectedId || notes.trim() || totalAmount > 0 || discountType !== "none")
+      : Boolean(
+          clientName.trim() ||
+            clientPhone.trim() ||
+            clientEmail.trim() ||
+            projectTitle.trim() ||
+            notes.trim() ||
+            totalAmount > 0 ||
+            discountType !== "none",
+        );
+
+  const leaveGuard = useDraftLeaveGuard({
+    active: leaveArmed && hasDraftContent,
+    saveUrl: "/api/admin/invoices",
+    fallbackHref: "/admin/invoices",
+    label: "invoice",
+    getBody: () => {
+      if (mode === "quotation" && selected) {
+        return {
+          quotationId: selected.id,
+          clientName: selected.clientName,
+          clientPhone: selected.clientPhone,
+          clientEmail: selected.clientEmail,
+          projectTitle: selected.projectTitle,
+          totalAmount,
+          discountType,
+          discountValue: discountType === "none" ? 0 : discountValue,
+          payments: [],
+          notes,
+          allowIncomplete: true,
+        };
+      }
+      return {
+        quotationId: "",
+        clientName: clientName.trim(),
+        clientPhone: clientPhone.trim(),
+        clientEmail: clientEmail.trim(),
+        projectTitle: projectTitle.trim(),
+        totalAmount,
+        discountType,
+        discountValue: discountType === "none" ? 0 : discountValue,
+        payments: [],
+        notes,
+        allowIncomplete: true,
+      };
+    },
+  });
 
   const selected = quotations.find((q) => q.id === selectedId);
   const discountAmt = invoiceDiscountAmount(totalAmount, discountType, discountValue);
@@ -56,6 +108,7 @@ export function NewInvoiceClient({
   }
 
   async function createInvoice() {
+    setLeaveArmed(false);
     setSaving(true);
     setError(null);
 
@@ -89,12 +142,14 @@ export function NewInvoiceClient({
           };
 
     if (!payload) {
+      setLeaveArmed(true);
       setError("Select a quotation first.");
       setSaving(false);
       return;
     }
 
     if (!payload.clientName) {
+      setLeaveArmed(true);
       setError("Client name is required.");
       setSaving(false);
       return;
@@ -109,6 +164,7 @@ export function NewInvoiceClient({
 
       if (!res.ok) {
         const body = await res.json().catch(() => null);
+        setLeaveArmed(true);
         setError(body?.error || "Couldn't create invoice. Please try again.");
         return;
       }
@@ -116,6 +172,7 @@ export function NewInvoiceClient({
       const invoice = await res.json();
       router.push(`/admin/invoices/${invoice.id}`);
     } catch {
+      setLeaveArmed(true);
       setError("Couldn't reach the server. Check your connection and try again.");
     } finally {
       setSaving(false);
@@ -124,6 +181,7 @@ export function NewInvoiceClient({
 
   return (
     <div className="max-w-xl space-y-6">
+      {leaveGuard.dialog}
       <div className="flex gap-2 rounded-xl border border-[#e2e5ea] bg-white p-2 shadow-sm">
         <button
           type="button"
@@ -148,14 +206,14 @@ export function NewInvoiceClient({
       <div className="space-y-4 rounded-xl border border-[#e2e5ea] bg-white p-6 shadow-sm">
         {mode === "quotation" ? (
           quotations.length === 0 ? (
-            <div className="rounded-xl border-2 border-dashed border-[#d1d5db] bg-[#f9fafb] p-8 text-center">
-              <p className="text-lg font-semibold text-[#111318]">No finalized quotations</p>
-              <p className="mt-2 text-[15px] text-[#6b7280]">
+            <div className="rounded-2xl border-2 border-dashed border-[#cbd5e1] bg-[#f8fafc] p-8 text-center">
+              <p className="text-lg font-bold text-[#0f172a]">No finalized quotations</p>
+              <p className="mt-2 text-[15px] font-medium text-[#475569]">
                 Finalize a quotation first, or switch to Direct invoice.
               </p>
               <Link
                 href="/admin/quotations/new"
-                className="mt-4 inline-block text-[15px] text-[#2563eb] underline underline-offset-4"
+                className="mt-4 inline-block text-[15px] font-bold text-[#2563eb] underline underline-offset-4"
               >
                 Create quotation
               </Link>
@@ -177,13 +235,13 @@ export function NewInvoiceClient({
               </AdminSelect>
 
               {selected && (
-                <div className="rounded-lg bg-[#f9fafb] p-4 text-[15px]">
-                  <p>
-                    <span className="text-[#6b7280]">Client:</span> {selected.clientName} ·{" "}
+                <div className="rounded-xl border border-[#e2e8f0] bg-[#f8fafc] p-4 text-[15px]">
+                  <p className="font-semibold text-[#0f172a]">
+                    <span className="font-bold text-[#475569]">Client: </span> {selected.clientName} ·{" "}
                     {selected.clientPhone}
                   </p>
-                  <p className="mt-1">
-                    <span className="text-[#6b7280]">Project:</span> {selected.projectTitle}
+                  <p className="mt-1 font-semibold text-[#0f172a]">
+                    <span className="font-bold text-[#475569]">Project: </span> {selected.projectTitle}
                   </p>
                 </div>
               )}
@@ -267,14 +325,14 @@ export function NewInvoiceClient({
             </div>
 
             {(discountAmt > 0 || discountType !== "none") && (
-              <div className="rounded-lg bg-[#f9fafb] px-4 py-3 text-[14px]">
-                <div className="flex justify-between text-[#6b7280]">
+              <div className="mt-4 rounded-xl border border-[#e2e8f0] bg-[#f8fafc] px-4 py-3 text-[14px]">
+                <div className="flex justify-between font-medium text-[#475569]">
                   <span>Discount</span>
-                  <span className="tabular-nums text-[#b45309]">
+                  <span className="tabular-nums font-bold text-[#b45309]">
                     {discountAmt > 0 ? `− ${formatCurrency(discountAmt)}` : "—"}
                   </span>
                 </div>
-                <div className="mt-1 flex justify-between font-semibold text-[#111318]">
+                <div className="mt-1.5 flex justify-between border-t border-[#e2e8f0] pt-1.5 text-[15px] font-bold text-[#0f172a]">
                   <span>Grand total</span>
                   <span className="tabular-nums">{formatCurrency(grandTotal)}</span>
                 </div>

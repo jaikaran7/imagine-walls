@@ -44,31 +44,31 @@ export function AdminLoginForm() {
   return (
     <form
       onSubmit={onSubmit}
-      className="mx-auto w-full max-w-md space-y-5 rounded-admin-lg border border-admin-outline-variant/60 bg-admin-surface p-8 shadow-sm"
+      className="mx-auto w-full max-w-md space-y-5 rounded-2xl border border-[#cbd5e1] bg-white p-8 shadow-md"
     >
       <div>
         <BrandLogo height={40} />
-        <h1 className="mt-5 text-[28px] font-normal tracking-[-0.02em] text-admin-primary">Admin login</h1>
-        <p className="mt-2 text-[14px] text-[var(--ink-muted)]">
+        <h1 className="mt-5 text-[28px] font-bold tracking-[-0.02em] text-[#0f172a]">Admin login</h1>
+        <p className="mt-2 text-[14px] font-medium text-[#475569]">
           Sign in to manage leads, projects, quotes, and invoices.
         </p>
       </div>
 
       <label className="block">
-        <span className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.08em] text-[var(--ink-muted)]">
+        <span className="mb-1.5 block text-[12px] font-bold uppercase tracking-[0.08em] text-[#334155]">
           ID
         </span>
         <input
           value={id}
           onChange={(e) => setId(e.target.value)}
           autoComplete="username"
-          className="h-11 w-full rounded-admin border border-admin-outline-variant bg-admin-bg px-4 text-[14px] outline-none focus:border-admin-primary-container focus:bg-admin-surface"
+          className="h-11 w-full rounded-xl border border-[#cbd5e1] bg-white px-4 text-[14px] font-semibold text-[#0f172a] outline-none placeholder:text-[#94a3b8] focus:border-[#2563eb] focus:ring-4 focus:ring-[#2563eb]/15"
           required
         />
       </label>
 
       <label className="block">
-        <span className="mb-1.5 block text-[12px] font-semibold uppercase tracking-[0.08em] text-[var(--ink-muted)]">
+        <span className="mb-1.5 block text-[12px] font-bold uppercase tracking-[0.08em] text-[#334155]">
           Password
         </span>
         <input
@@ -76,13 +76,13 @@ export function AdminLoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           autoComplete="current-password"
-          className="h-11 w-full rounded-admin border border-admin-outline-variant bg-admin-bg px-4 text-[14px] outline-none focus:border-admin-primary-container focus:bg-admin-surface"
+          className="h-11 w-full rounded-xl border border-[#cbd5e1] bg-white px-4 text-[14px] font-semibold text-[#0f172a] outline-none placeholder:text-[#94a3b8] focus:border-[#2563eb] focus:ring-4 focus:ring-[#2563eb]/15"
           required
         />
       </label>
 
       {error && (
-        <p className="rounded-admin border border-[#fca5a5] bg-admin-danger-bg px-3 py-2 text-[14px] text-admin-danger">
+        <p className="rounded-xl border border-[#fca5a5] bg-[#fef2f2] px-3.5 py-2.5 text-[14px] font-bold text-[#b91c1c]">
           {error}
         </p>
       )}
@@ -90,7 +90,7 @@ export function AdminLoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="flex h-11 w-full items-center justify-center rounded-admin bg-admin-primary-container px-4 text-[14px] font-medium text-admin-on-primary hover:bg-admin-primary disabled:opacity-50"
+        className="flex h-11 w-full items-center justify-center rounded-xl bg-[#0f172a] px-4 text-[14px] font-bold text-white shadow-xs transition-colors hover:bg-[#1e293b] disabled:opacity-50"
       >
         {loading ? "Signing in…" : "Sign in"}
       </button>

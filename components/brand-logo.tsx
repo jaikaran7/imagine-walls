@@ -1,12 +1,14 @@
 import Image from "next/image";
 
 /** Cache-bust so browsers pick up regenerated brand PNGs. */
-const V = "20260909b";
+const V = "20261002white";
 
 export const BRAND_LOGO_SRC = `/brand/imagine-walls-logo.png?v=${V}`;
 export const BRAND_MARK_SRC = `/brand/imagine-walls-mark.png?v=${V}`;
 export const BRAND_LOGO_LIGHT_SRC = `/brand/imagine-walls-logo-light.png?v=${V}`;
 export const BRAND_MARK_LIGHT_SRC = `/brand/imagine-walls-mark-light.png?v=${V}`;
+export const BRAND_LOGO_WHITE_SRC = `/brand/imagine-walls-logo-white.png?v=${V}`;
+export const BRAND_MARK_WHITE_SRC = `/brand/imagine-walls-mark-white.png?v=${V}`;
 
 type BrandLogoProps = {
   className?: string;
@@ -14,7 +16,7 @@ type BrandLogoProps = {
   height?: number;
   /** Use mark-only crop (icon without wordmark). */
   markOnly?: boolean;
-  /** Light lockup for dark backgrounds (keeps teal/slate brand colors). */
+  /** Solid white lockup for dark backgrounds (default true for public site). */
   invert?: boolean;
   priority?: boolean;
 };
@@ -30,7 +32,7 @@ export function BrandLogo({
   className = "",
   height = 28,
   markOnly = false,
-  invert = false,
+  invert = true,
   priority = false,
 }: BrandLogoProps) {
   const aspect = markOnly ? MARK_ASPECT : LOGO_ASPECT;

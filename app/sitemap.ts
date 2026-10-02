@@ -7,7 +7,7 @@ const base = "https://imaginewalls.example";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const projects = await getProjects();
 
-  const staticRoutes = ["", "/about", "/services", "/projects", "/contact"].map(
+  const staticRoutes = ["", "/about", "/services", "/projects"].map(
     (route) => ({ url: `${base}${route}`, lastModified: new Date() }),
   );
 

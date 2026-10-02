@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { EnquiryButton } from "@/components/enquiry-button";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MediaImage } from "@/components/media-image";
 import { useReducedMotion } from "@/components/motion/use-reduced-motion";
+import { CountUp } from "@/components/count-up";
 import { siteSettings } from "@/lib/data/site";
 import { stock } from "@/lib/images";
 import { HeroDissolveCanvas } from "@/components/home/hero-dissolve-canvas";
@@ -38,9 +40,10 @@ function StudioIntroStatic() {
       <div className="grid gap-16 md:grid-cols-12 md:gap-20">
         <div className="md:col-span-4">
           <p className="label mb-10">About the Studio</p>
-          <p className="font-display text-[clamp(3rem,6vw,5rem)] font-medium leading-none">
-            {siteSettings.projectsCompleted}
-          </p>
+          <CountUp
+            to={siteSettings.projectsCompletedCount}
+            className="numeral block text-[clamp(3rem,6vw,5rem)] font-medium leading-none"
+          />
           <p className="body-text mt-6 max-w-meta">
             Interior projects completed across residential &amp; commercial spaces in{" "}
             {siteSettings.location}.
@@ -114,9 +117,7 @@ function StaticHero({ cover }: { cover: string }) {
             </h1>
           </div>
           <div className={styles.ctaRow} style={{ opacity: 1 }}>
-            <Link href="/contact" className={styles.ctaPrimary}>
-              Start a Project
-            </Link>
+            <EnquiryButton className={styles.ctaPrimary}>Start a Project</EnquiryButton>
             <Link href="/projects" className={styles.ctaSecondary}>
               View Projects →
             </Link>
@@ -142,6 +143,8 @@ function LoaderHero({ covers }: { covers: [string, string, string, string] }) {
   const introRef = useRef<HTMLDivElement>(null);
   const wordsRef = useRef<HTMLSpanElement[]>([]);
   const [scrollReady, setScrollReady] = useState(false);
+  const [statReady, setStatReady] = useState(false);
+  const statArmed = useRef(false);
   const [extra1, extra2, extra3, main] = covers;
   const introWords = INTRO_LEAD.split(/\s+/);
 
@@ -270,6 +273,10 @@ function LoaderHero({ covers }: { covers: [string, string, string, string] }) {
       const fade = Math.min(1, Math.max(0, (progress - 0.52) / 0.38));
       intro.style.opacity = String(fade);
       intro.style.pointerEvents = fade > 0.55 ? "auto" : "none";
+      if (!statArmed.current && fade > 0.45) {
+        statArmed.current = true;
+        setStatReady(true);
+      }
     }
 
     const words = wordsRef.current.filter(Boolean);
@@ -370,9 +377,7 @@ function LoaderHero({ covers }: { covers: [string, string, string, string] }) {
               </div>
               <div className={styles.bottomBar}>
                 <div className={styles.ctaRow}>
-                  <Link href="/contact" className={styles.ctaPrimary}>
-                    Start a Project
-                  </Link>
+                  <EnquiryButton className={styles.ctaPrimary}>Start a Project</EnquiryButton>
                   <Link href="/projects" className={styles.ctaSecondary}>
                     View Projects →
                   </Link>
@@ -411,7 +416,9 @@ function LoaderHero({ covers }: { covers: [string, string, string, string] }) {
                   ))}
                 </p>
                 <div className={styles.introMeta}>
-                  <p className={styles.introStat}>{siteSettings.projectsCompleted}</p>
+                  <p className={styles.introStat}>
+                    <CountUp to={siteSettings.projectsCompletedCount} active={statReady} />
+                  </p>
                   <p className={styles.introBody}>
                     We unite aesthetics, ergonomics and detail-oriented craftsmanship to shape warm,
                     enduring environments — from 3D planning to fabrication and on-site finishing.

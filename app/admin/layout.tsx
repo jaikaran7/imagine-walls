@@ -1,6 +1,7 @@
 import { Outfit } from "next/font/google";
 import { AdminDbGate } from "@/components/admin/admin-db-gate";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { AdminThemeLock } from "@/components/admin/admin-theme-lock";
 import { hasDatabaseUrl } from "@/lib/db";
 
 const outfit = Outfit({
@@ -22,7 +23,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const configured = hasDatabaseUrl();
 
   return (
-    <div className={`${outfit.variable} admin-root font-admin`} data-admin="true">
+    <div
+      className={`${outfit.variable} admin-root font-admin min-h-screen bg-[#f8fafc] text-[#0f172a]`}
+      data-admin="true"
+      data-theme="light"
+    >
+      <AdminThemeLock />
       {/* Material Symbols — matches Stitch reference iconography */}
       {/* eslint-disable-next-line @next/next/no-page-custom-font */}
       <link

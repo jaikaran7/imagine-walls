@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import clsx from "clsx";
 import { BrandLogo } from "@/components/brand-logo";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { useAdminNav } from "./admin-nav-context";
 
 type NavItem = {
@@ -137,7 +136,7 @@ export function AdminSidebar() {
   }
 
   const rail = (
-    <aside className="flex h-full w-[16.5rem] flex-col bg-[#0b1220] text-white">
+    <aside className="flex h-full w-[16.5rem] flex-col border-r border-[#e2e8f0] bg-white text-[#0f172a] shadow-xs">
       <div className="shrink-0 px-5 pb-5 pt-6">
         <Link
           href="/admin"
@@ -148,15 +147,15 @@ export function AdminSidebar() {
           }}
           className="block"
         >
-          <BrandLogo invert height={36} className="max-w-full" />
-          <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
-            Admin
+          <BrandLogo height={36} className="max-w-full" />
+          <p className="mt-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#64748b]">
+            Admin Studio
           </p>
         </Link>
       </div>
 
       <nav className="min-h-0 flex-1 overflow-y-auto px-3 pb-4">
-        <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#64748b]">Menu</p>
+        <p className="mb-2 px-3 text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748b]">Menu</p>
         <ul className="space-y-0.5">
           {primaryNav.map((item) => {
             const active = isActive(pathname, item);
@@ -173,14 +172,14 @@ export function AdminSidebar() {
                   className={clsx(
                     "relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-[14px] font-semibold transition-colors",
                     active
-                      ? "bg-white/10 text-white"
-                      : "text-[#94a3b8] hover:bg-white/[0.06] hover:text-[#e2e8f0]",
+                      ? "bg-[#eff6ff] text-[#1d4ed8]"
+                      : "text-[#334155] hover:bg-[#f1f5f9] hover:text-[#0f172a]",
                   )}
                 >
                   {active && (
-                    <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-full bg-[#3b82f6]" aria-hidden />
+                    <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-full bg-[#2563eb]" aria-hidden />
                   )}
-                  <span className={clsx("shrink-0", active ? "text-[#93c5fd]" : "text-[#64748b]")} aria-hidden>
+                  <span className={clsx("shrink-0", active ? "text-[#2563eb]" : "text-[#64748b]")} aria-hidden>
                     {item.icon}
                   </span>
                   {item.label}
@@ -191,8 +190,8 @@ export function AdminSidebar() {
         </ul>
 
         <div className="mt-6 px-3">
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#64748b]">Create</p>
-          <div className="flex flex-wrap gap-x-3 gap-y-1">
+          <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748b]">Create</p>
+          <div className="flex flex-wrap gap-2">
             {quickActions.map((item) => (
               <Link
                 key={item.href}
@@ -203,7 +202,7 @@ export function AdminSidebar() {
                   e.preventDefault();
                   navigate(item.href);
                 }}
-                className="text-[13px] font-semibold text-[#60a5fa] transition-colors hover:text-white"
+                className="inline-flex items-center rounded-lg border border-[#cbd5e1] bg-[#f8fafc] px-2.5 py-1 text-[13px] font-semibold text-[#1d4ed8] transition-colors hover:border-[#93c5fd] hover:bg-[#eff6ff] hover:text-[#1e40af]"
               >
                 + {item.label}
               </Link>
@@ -212,26 +211,28 @@ export function AdminSidebar() {
         </div>
       </nav>
 
-      <div className="shrink-0 border-t border-white/10 px-4 py-4">
+      <div className="shrink-0 border-t border-[#e2e8f0] bg-white px-4 py-4">
         <div className="flex items-center justify-between gap-3">
-          <p className="text-[12px] font-semibold text-[#cbd5e1]">
+          <p className="text-[13px] font-semibold text-[#0f172a]">
             <span className="text-[#64748b]">Signed in · </span>Admin
           </p>
-          <ThemeToggle onDark />
+          <span className="inline-flex items-center rounded-md border border-[#a7f3d0] bg-[#ecfdf5] px-2 py-0.5 text-[11px] font-bold text-[#047857]">
+            White Theme
+          </span>
         </div>
         <div className="mt-3 flex items-center gap-3">
           <button
             type="button"
             onClick={logout}
             disabled={loggingOut}
-            className="text-[13px] font-semibold text-[#94a3b8] transition-colors hover:text-white disabled:opacity-50"
+            className="text-[13px] font-semibold text-[#dc2626] transition-colors hover:text-[#b91c1c] disabled:opacity-50"
           >
             {loggingOut ? "Signing out…" : "Log out"}
           </button>
-          <span className="text-[#334155]" aria-hidden>
+          <span className="text-[#cbd5e1]" aria-hidden>
             ·
           </span>
-          <Link href="/" className="text-[13px] font-semibold text-[#94a3b8] transition-colors hover:text-white">
+          <Link href="/" className="text-[13px] font-semibold text-[#2563eb] transition-colors hover:underline">
             Website
           </Link>
         </div>
@@ -300,11 +301,11 @@ export function AdminMobileTopBar() {
   const label = mobileSectionLabel(pathname);
 
   return (
-    <div className="sticky top-0 z-[115] flex items-center justify-between gap-3 border-b border-[var(--admin-outline-variant,#d7dde8)] bg-[var(--admin-surface,#fff)] px-4 py-3 text-[var(--ink,#0f172a)] md:hidden">
+    <div className="sticky top-0 z-[115] flex items-center justify-between gap-3 border-b border-[#e2e8f0] bg-white px-4 py-3 text-[#0f172a] shadow-xs md:hidden">
       <button
         type="button"
         onClick={toggleMobile}
-        className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-[var(--admin-outline-variant,#cbd5e1)] bg-[var(--admin-surface-low,#f8fafc)] px-3 py-2 text-[15px] font-semibold"
+        className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-[#cbd5e1] bg-[#f8fafc] px-3 py-2 text-[15px] font-semibold text-[#0f172a] transition-colors hover:bg-[#f1f5f9]"
         aria-label="Open menu"
       >
         <span aria-hidden="true" className="text-lg leading-none">
@@ -313,10 +314,9 @@ export function AdminMobileTopBar() {
         Menu
       </button>
       <div className="flex min-w-0 items-center gap-2">
-        <p className="min-w-0 truncate text-right text-[15px] font-bold">
+        <p className="min-w-0 truncate text-right text-[15px] font-bold text-[#0f172a]">
           {isPending ? "Loading…" : label}
         </p>
-        <ThemeToggle />
       </div>
     </div>
   );

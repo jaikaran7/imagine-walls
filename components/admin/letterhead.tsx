@@ -10,9 +10,11 @@ export function Letterhead({ date }: { date?: string }) {
           <p className="mt-3 text-xs text-[#8a8780]">
             {siteSettings.phone}
             <span className="mx-1.5 opacity-40">·</span>
+            {siteSettings.phoneSecondary}
+            <span className="mx-1.5 opacity-40">·</span>
             {siteSettings.email}
             <br />
-            {siteSettings.location}
+            {siteSettings.address}
           </p>
         </div>
         <div className="text-right text-xs text-[#8a8780]">

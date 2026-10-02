@@ -51,20 +51,20 @@ export default async function AdminDashboardPage() {
 
         <div className="mt-6 grid gap-5 lg:grid-cols-2">
           <AdminCard>
-            <p className="text-[13px] font-medium text-[#6b7280]">Quotation value</p>
-            <p className="mt-2 text-[1.75rem] font-semibold tracking-tight text-[#111318]">{formatCurrency(totalQuoted)}</p>
-            <p className="mt-1.5 text-[13px] text-[#9ca3af]">From finalized quotations</p>
+            <p className="text-[13px] font-bold uppercase tracking-[0.1em] text-[#475569]">Quotation value</p>
+            <p className="mt-2 text-[1.85rem] font-bold tracking-tight text-[#0f172a]">{formatCurrency(totalQuoted)}</p>
+            <p className="mt-1.5 text-[13px] font-medium text-[#64748b]">From finalized quotations</p>
           </AdminCard>
           <AdminCard>
-            <p className="text-[13px] font-medium text-[#6b7280]">Payments</p>
+            <p className="text-[13px] font-bold uppercase tracking-[0.1em] text-[#475569]">Payments</p>
             <div className="mt-3 flex flex-wrap gap-8">
               <div>
-                <p className="text-[1.75rem] font-semibold text-[#047857]">{formatCurrency(totalReceived)}</p>
-                <p className="text-[13px] text-[#9ca3af]">Received</p>
+                <p className="text-[1.85rem] font-bold text-[#047857]">{formatCurrency(totalReceived)}</p>
+                <p className="mt-1 text-[13px] font-bold text-[#64748b]">Received</p>
               </div>
               <div>
-                <p className="text-[1.75rem] font-semibold text-[#b45309]">{formatCurrency(totalPending)}</p>
-                <p className="text-[13px] text-[#9ca3af]">Pending</p>
+                <p className="text-[1.85rem] font-bold text-[#b45309]">{formatCurrency(totalPending)}</p>
+                <p className="mt-1 text-[13px] font-bold text-[#64748b]">Pending</p>
               </div>
             </div>
           </AdminCard>
@@ -73,14 +73,14 @@ export default async function AdminDashboardPage() {
         {enquiries.length > 0 && (
           <div className="mt-8">
             <div className="mb-4 flex items-center justify-between gap-3">
-              <h2 className="text-[15px] font-semibold text-[#374151]">Recent leads</h2>
-              <Link href="/admin/leads" className="text-[14px] font-medium text-[#2563eb] hover:underline">
-                View all
+              <h2 className="text-[16px] font-bold text-[#0f172a]">Recent leads</h2>
+              <Link href="/admin/leads" className="text-[14px] font-bold text-[#2563eb] hover:underline">
+                View all leads →
               </Link>
             </div>
-            <div className="overflow-x-auto rounded-xl border border-[#e2e5ea] bg-white shadow-sm">
+            <div className="overflow-x-auto rounded-xl border border-[#e2e8f0] bg-white shadow-xs">
               <table className="w-full min-w-[520px] text-left">
-                <thead className="border-b border-[#e2e5ea] bg-[#f9fafb] text-[13px] font-medium text-[#6b7280]">
+                <thead className="border-b border-[#e2e8f0] bg-[#f8fafc] text-[13px] font-bold uppercase tracking-[0.06em] text-[#475569]">
                   <tr>
                     <th className="px-5 py-3.5">Name</th>
                     <th className="px-5 py-3.5">Project</th>
@@ -90,15 +90,19 @@ export default async function AdminDashboardPage() {
                 </thead>
                 <tbody>
                   {enquiries.slice(0, 5).map((e) => (
-                    <tr key={e.id} className="border-b border-[#f3f4f6] last:border-0">
-                      <td className="px-5 py-4 text-[15px] font-medium text-[#111318]">
+                    <tr key={e.id} className="border-b border-[#f1f5f9] last:border-0 hover:bg-[#f8fafc]">
+                      <td className="px-5 py-4 text-[15px] font-bold text-[#0f172a]">
                         <Link href="/admin/leads" className="hover:text-[#2563eb] hover:underline">
                           {e.name}
                         </Link>
                       </td>
-                      <td className="px-5 py-4 text-[15px] text-[#6b7280]">{e.projectType}</td>
-                      <td className="px-5 py-4 text-[15px] text-[#6b7280]">{e.location}</td>
-                      <td className="px-5 py-4 text-[15px] text-[#6b7280]">{e.status}</td>
+                      <td className="px-5 py-4 text-[15px] font-medium text-[#334155]">{e.projectType}</td>
+                      <td className="px-5 py-4 text-[15px] font-medium text-[#334155]">{e.location}</td>
+                      <td className="px-5 py-4">
+                        <span className="inline-flex rounded-md bg-[#eff6ff] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.05em] text-[#1d4ed8] border border-[#bfdbfe]">
+                          {e.status}
+                        </span>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

@@ -78,20 +78,20 @@ export function ProjectsList({ initialProjects }: { initialProjects: AdminProjec
               </div>
             )}
             <div className="p-5">
-              <p className="text-[13px] font-medium text-[#2563eb]">{project.category}</p>
-              <h2 className="mt-1 text-[17px] font-semibold text-[#111318]">{project.title}</h2>
-              <p className="mt-1.5 text-[14px] text-[#6b7280]">
+              <p className="text-[13px] font-bold text-[#2563eb]">{project.category}</p>
+              <h2 className="mt-1 text-[17px] font-bold text-[#0f172a]">{project.title}</h2>
+              <p className="mt-1 text-[14px] font-medium text-[#475569]">
                 {project.location} · {project.year}
               </p>
               {project.shortDescription && (
-                <p className="mt-3 line-clamp-2 text-[14px] leading-relaxed text-[#6b7280]">
+                <p className="mt-2.5 line-clamp-2 text-[14px] leading-relaxed text-[#334155]">
                   {project.shortDescription}
                 </p>
               )}
               <div className="mt-5 flex gap-2">
                 <Link
                   href={`/admin/projects/${project.id}/edit`}
-                  className="flex-1 rounded-lg border border-[#d1d5db] bg-white px-4 py-2.5 text-center text-[14px] font-medium text-[#374151] transition-colors hover:bg-[#f9fafb]"
+                  className="flex-1 rounded-xl border-2 border-[#cbd5e1] bg-white px-4 py-2.5 text-center text-[14px] font-bold text-[#0f172a] shadow-xs transition-colors hover:border-[#64748b] hover:bg-[#f8fafc]"
                 >
                   Edit
                 </Link>

@@ -87,35 +87,40 @@ body {
   overflow-x: clip;
 }
 
-/* Admin — Stitch Architectural Atelier tokens (cool atelier surfaces + navy) */
-.admin-root {
-  color-scheme: light;
-  --paper: #f9f9ff;
-  --surface: #ffffff;
-  --ink: #181c23;
-  --ink-muted: #43474e;
-  --ink-faint: #74777f;
-  --line: #c4c6cf;
-  --line-strong: #74777f;
-  --admin-bg: #f9f9ff;
-  --admin-surface: #ffffff;
-  --admin-surface-low: #f1f3fd;
-  --admin-surface-high: #e5e8f2;
-  --admin-surface-highest: #dfe2ec;
-  --admin-primary: #022448;
-  --admin-primary-container: #1e3a5f;
-  --admin-on-primary: #ffffff;
-  --admin-secondary: #0051d5;
-  --admin-secondary-container: #316bf3;
-  --admin-outline: #74777f;
-  --admin-outline-variant: #c4c6cf;
-  --admin-success: #059669;
-  --admin-success-bg: #ecfdf5;
-  --admin-warning: #d97706;
-  --admin-warning-bg: #fffbeb;
-  --admin-danger: #dc2626;
-  --admin-danger-bg: #fef2f2;
-  --admin-sidebar-w: 18rem;
+/* Admin — Crisp, high-contrast pure white/light mode (strictly white theme) */
+.admin-root,
+[data-admin="true"],
+:root[data-theme="dark"] .admin-root,
+:root[data-theme="dark"] [data-admin="true"] {
+  color-scheme: light !important;
+  --paper: #f8fafc !important;
+  --surface: #ffffff !important;
+  --ink: #0f172a !important;
+  --ink-muted: #334155 !important;
+  --ink-faint: #475569 !important;
+  --line: #cbd5e1 !important;
+  --line-strong: #94a3b8 !important;
+  --admin-bg: #f8fafc !important;
+  --admin-surface: #ffffff !important;
+  --admin-surface-low: #f1f5f9 !important;
+  --admin-surface-high: #e2e8f0 !important;
+  --admin-surface-highest: #cbd5e1 !important;
+  --admin-primary: #0f172a !important;
+  --admin-primary-container: #1e293b !important;
+  --admin-on-primary: #ffffff !important;
+  --admin-secondary: #2563eb !important;
+  --admin-secondary-container: #1d4ed8 !important;
+  --admin-outline: #64748b !important;
+  --admin-outline-variant: #cbd5e1 !important;
+  --admin-success: #059669 !important;
+  --admin-success-bg: #ecfdf5 !important;
+  --admin-warning: #d97706 !important;
+  --admin-warning-bg: #fffbeb !important;
+  --admin-danger: #dc2626 !important;
+  --admin-danger-bg: #fef2f2 !important;
+  --admin-sidebar-w: 16.5rem;
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
 }
 
 .admin-root .material-symbols-outlined {
@@ -137,33 +142,12 @@ body {
 
 .admin-root input,
 .admin-root select,
-.admin-root textarea {
-  color-scheme: light;
-}
-
-/* Admin dark — same paper/ink family as the site */
-:root[data-theme="dark"] .admin-root {
-  color-scheme: dark;
-  --paper: #0a0a09;
-  --surface: #141412;
-  --ink: #f5f4f0;
-  --ink-muted: #c8c5bc;
-  --ink-faint: #9a9790;
-  --line: rgba(245, 244, 240, 0.14);
-  --line-strong: rgba(245, 244, 240, 0.3);
-  --admin-bg: #0a0a09;
-  --admin-surface: #141412;
-  --admin-surface-low: #1a1a17;
-  --admin-surface-high: #22221e;
-  --admin-surface-highest: #2a2a25;
-  --admin-outline: #9a9790;
-  --admin-outline-variant: rgba(245, 244, 240, 0.2);
-}
-
+.admin-root textarea,
 :root[data-theme="dark"] .admin-root input,
 :root[data-theme="dark"] .admin-root select,
 :root[data-theme="dark"] .admin-root textarea {
-  color-scheme: dark;
+  color-scheme: light !important;
+  color: #0f172a !important;
 }
 
 ::selection {
@@ -178,6 +162,14 @@ html[data-home-hero="loading"] body {
   overscroll-behavior: none;
   touch-action: none;
   height: 100%;
+}
+
+/* Modal / Overlay scroll lock */
+html[data-scroll-locked],
+html[data-scroll-locked] body {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none;
 }
 
 /* Home hero loader: hide site chrome until the sequence finishes */
@@ -245,6 +237,13 @@ html[data-home-hero="ready"] [data-site-chrome] {
   line-height: 1.12;
   letter-spacing: -0.008em;
   font-weight: 500;
+}
+
+.numeral {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+  letter-spacing: -0.03em;
 }
 
 .body-lg {
@@ -326,6 +325,10 @@ html[data-home-hero="ready"] [data-site-chrome] {
 
 .btn-outline {
   display: inline-block;
+  background: transparent;
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
   border: 1px solid var(--ink);
   padding: 0.875rem 2rem;
   font-size: 0.75rem;

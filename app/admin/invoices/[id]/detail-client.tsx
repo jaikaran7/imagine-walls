@@ -275,9 +275,9 @@ export function InvoiceDetailClient({ invoice: initial }: { invoice: Invoice }) 
             </AdminButton>
           </div>
 
-          <div className="space-y-2 rounded-xl border border-[#0b1220] bg-[#0b1220] p-4 shadow-sm">
-            <div className="rounded-xl bg-white/5 p-2.5">
-              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#94a3b8]">
+          <div className="space-y-3 rounded-xl border border-[#d7dde8] bg-white p-5 shadow-sm">
+            <div className="rounded-xl border border-[#e2e8f0] bg-[#f8fafc] p-3">
+              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#475569]">
                 Print theme
               </p>
               <PrintThemeChips value={printTheme} onChange={setPrintTheme} />
@@ -285,21 +285,21 @@ export function InvoiceDetailClient({ invoice: initial }: { invoice: Invoice }) 
             <button
               type="button"
               onClick={handlePrint}
-              className="flex min-h-11 w-full items-center justify-center rounded-xl border border-white/20 bg-transparent px-4 text-[14px] font-bold text-white hover:bg-white/10"
+              className="flex min-h-11 w-full items-center justify-center rounded-xl border-2 border-[#cbd5e1] bg-white px-4 text-[14px] font-bold text-[#0f172a] shadow-xs transition-colors hover:border-[#64748b] hover:bg-[#f8fafc]"
             >
               Print invoice
             </button>
             <button
               type="button"
               onClick={() => setShowPreview((v) => !v)}
-              className="flex min-h-11 w-full items-center justify-center rounded-xl border border-white/20 bg-white px-4 text-[14px] font-bold text-[#0f172a] hover:bg-[#f8fafc]"
+              className="flex min-h-11 w-full items-center justify-center rounded-xl border-2 border-[#cbd5e1] bg-white px-4 text-[14px] font-bold text-[#0f172a] shadow-xs transition-colors hover:border-[#64748b] hover:bg-[#f8fafc]"
             >
               {showPreview ? "Hide preview" : "Show print preview"}
             </button>
           </div>
 
           <div className="space-y-3 rounded-xl border border-[#e2e5ea] bg-white p-5 shadow-sm">
-            <p className="text-[13px] font-semibold uppercase tracking-wider text-[#6b7280]">Record payment</p>
+            <p className="text-[13px] font-bold uppercase tracking-wider text-[#475569]">Record payment</p>
             <AdminInput label="Date" type="date" value={paymentDate} onChange={(e) => setPaymentDate(e.target.value)} />
             <AdminInput
               label="Amount (₹)"

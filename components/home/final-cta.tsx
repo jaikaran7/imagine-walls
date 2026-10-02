@@ -2,6 +2,8 @@
 
 import { useRef } from "react";
 import Link from "next/link";
+import { CountUp } from "@/components/count-up";
+import { EnquiryButton } from "@/components/enquiry-button";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { MediaImage } from "@/components/media-image";
 import { useReducedMotion } from "@/components/motion/use-reduced-motion";
@@ -47,12 +49,9 @@ export function FinalCta() {
             Let&rsquo;s design a space that feels <span className="italic">like you.</span>
           </h2>
           <div className="mt-12 flex flex-wrap items-center justify-center gap-8">
-            <Link
-              href="/contact"
-              className="border border-paper px-8 py-3.5 text-[0.75rem] uppercase tracking-editorial text-paper transition-colors duration-300 hover:bg-paper hover:text-ink"
-            >
+            <EnquiryButton className="border border-paper px-8 py-3.5 text-[0.75rem] uppercase tracking-editorial text-paper transition-colors duration-300 hover:bg-paper hover:text-ink">
               Start a Project
-            </Link>
+            </EnquiryButton>
             <Link href="/about#process" className="link-arrow text-[#c4c1b8] hover:text-paper">
               See Our Process <span aria-hidden="true">&rarr;</span>
             </Link>
@@ -69,7 +68,10 @@ export function StudioIntro() {
       <div className="grid gap-16 md:grid-cols-12 md:gap-20">
         <div className="md:col-span-4">
           <p className="label mb-10">About the Studio</p>
-          <p className="font-display text-[clamp(3rem,6vw,5rem)] font-medium leading-none">{siteSettings.projectsCompleted}</p>
+          <CountUp
+            to={siteSettings.projectsCompletedCount}
+            className="numeral block text-[clamp(3rem,6vw,5rem)] font-medium leading-none"
+          />
           <p className="body-text mt-6 max-w-meta">
             Interior projects completed across residential &amp; commercial spaces in {siteSettings.location}.
           </p>
@@ -90,9 +92,22 @@ export function StudioIntro() {
   );
 }
 
+function TitleWithClearNumbers({ title }: { title: string }) {
+  const parts = title.split(/(100\+)/);
+  return parts.map((part, index) =>
+    part === "85+" ? (
+      <span key={index} className="numeral">
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  );
+}
+
 export function CommitmentSection() {
   const items = [
-    { num: "01", title: "100+ Interior Projects", desc: "Proven track record across Hyderabad." },
+    { num: "01", title: "85+ Interior Projects", desc: "Proven track record across Hyderabad." },
     { num: "02", title: "Personalised Design", desc: "Floor plans and materials shaped around your life." },
     { num: "03", title: "Complete Solutions", desc: "End-to-end design, fabrication, and finishing." },
     { num: "04", title: "Attention to Detail", desc: "Alignment, lighting, and refined textures." },
@@ -106,9 +121,9 @@ export function CommitmentSection() {
         <ul className="divide-y divide-line border-y border-line md:hidden">
           {items.map((item) => (
             <li key={item.num} className="flex items-baseline gap-4 py-3.5">
-              <span className="w-8 shrink-0 font-display text-[1.125rem] text-ink-faint">{item.num}</span>
+              <span className="numeral w-8 shrink-0 text-[1.125rem] font-medium text-ink-faint">{item.num}</span>
               <span className="font-display text-[1.0625rem] font-medium leading-snug text-ink">
-                {item.title}
+                <TitleWithClearNumbers title={item.title} />
               </span>
             </li>
           ))}
@@ -116,8 +131,10 @@ export function CommitmentSection() {
         <div className="hidden gap-px bg-line md:grid md:grid-cols-2 lg:grid-cols-4">
           {items.map((item) => (
             <div key={item.num} className="bg-paper px-8 py-12 md:px-10 md:py-14">
-              <p className="font-display text-[clamp(1.75rem,3vw,2.25rem)] text-ink-faint">{item.num}</p>
-              <h3 className="mt-6 font-display text-[clamp(1.25rem,2vw,1.5rem)] font-medium">{item.title}</h3>
+              <p className="numeral text-[clamp(1.75rem,3vw,2.25rem)] font-medium text-ink-faint">{item.num}</p>
+              <h3 className="mt-6 font-display text-[clamp(1.25rem,2vw,1.5rem)] font-medium">
+                <TitleWithClearNumbers title={item.title} />
+              </h3>
               <p className="body-text mt-4 max-w-meta">{item.desc}</p>
             </div>
           ))}

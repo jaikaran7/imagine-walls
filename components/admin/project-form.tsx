@@ -285,7 +285,12 @@ export function ProjectForm({ project, onSaved }: { project?: AdminProject; onSa
             onChange={(e) => setGalleryUrl(e.target.value)}
             className="flex-1"
           />
-          <AdminButton type="button" variant="secondary" onClick={addGalleryImage}>
+          <AdminButton
+            type="button"
+            variant="secondary"
+            className="border-2 border-[#cbd5e1] bg-white text-[#0f172a] hover:border-[#2563eb] hover:bg-[#eff6ff] hover:text-[#1d4ed8]"
+            onClick={addGalleryImage}
+          >
             Add photo
           </AdminButton>
         </div>
@@ -324,7 +329,7 @@ export function ProjectForm({ project, onSaved }: { project?: AdminProject; onSa
       </AdminCard>
 
       {error && (
-        <p className="rounded-lg border border-[#fca5a5] bg-[#fef2f2] px-4 py-3 text-[14px] font-medium text-[#b91c1c]">
+        <p className="rounded-lg border border-[#fca5a5] bg-[#fef2f2] px-4 py-3 text-[14px] font-bold text-[#b91c1c]">
           {error}
         </p>
       )}
@@ -333,11 +338,14 @@ export function ProjectForm({ project, onSaved }: { project?: AdminProject; onSa
         <button
           type="submit"
           disabled={saving}
-          className="rounded-lg border border-[#2563eb] bg-[#2563eb] px-7 py-3 text-[15px] font-medium text-white shadow-sm transition-colors hover:bg-[#1d4ed8] disabled:opacity-50"
+          className="rounded-xl border border-[#2563eb] bg-[#2563eb] px-7 py-3 text-[15px] font-bold text-white shadow-xs transition-colors hover:bg-[#1d4ed8] disabled:opacity-50"
         >
           {saving ? "Saving…" : project ? "Update project" : "Create project"}
         </button>
-        <Link href="/admin/projects" className="rounded-lg px-5 py-3 text-[15px] font-medium text-[#6b7280] hover:text-[#111318]">
+        <Link
+          href="/admin/projects"
+          className="inline-flex items-center justify-center rounded-xl border-2 border-[#cbd5e1] bg-white px-6 py-3 text-[15px] font-bold text-[#0f172a] shadow-xs transition-colors hover:border-[#64748b] hover:bg-[#f8fafc]"
+        >
           Cancel
         </Link>
       </div>

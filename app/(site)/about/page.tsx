@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { CountUp } from "@/components/count-up";
+import { EnquiryButton } from "@/components/enquiry-button";
 import { AboutMaterialsSection } from "@/components/about/about-materials-section";
 import { AboutProcessSection } from "@/components/about/about-process-section";
 import { CommitmentSection } from "@/components/home/final-cta";
-import { MediaImage } from "@/components/media-image";
-import { ImageMotion } from "@/components/motion/image-motion";
-import { stock } from "@/lib/images";
 import { philosophyPillars, siteSettings } from "@/lib/data/site";
 
 export const metadata: Metadata = {
@@ -35,7 +33,10 @@ export default function AboutPage() {
             </p>
           </div>
           <div className="border-t border-line pt-10 md:col-span-5 md:border-t-0 md:border-l md:pl-12 md:pt-0">
-            <p className="font-display text-[clamp(3rem,6vw,5rem)] font-medium leading-none">{siteSettings.projectsCompleted}</p>
+            <CountUp
+              to={siteSettings.projectsCompletedCount}
+              className="numeral block text-[clamp(3rem,6vw,5rem)] font-medium leading-none"
+            />
             <p className="body-text mt-6 max-w-meta">
               Interior projects completed across residential &amp; commercial spaces in {siteSettings.location}.
             </p>
@@ -48,24 +49,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="mt-section-sm">
-        <ImageMotion variant="clipUp" className="relative aspect-[16/9] w-full overflow-hidden bg-surface md:aspect-[21/9]">
-          <MediaImage
-            src={stock.heroLiving}
-            alt="Finished residential project, Hyderabad"
-            fill
-            sizes="100vw"
-            className="object-cover"
-          />
-        </ImageMotion>
-      </section>
-
-      <section className="container-edge pt-section pb-8">
+      <section className="container-edge pt-16 pb-8 md:pt-24">
         <p className="label mb-section-sm">Studio Principles</p>
         <div className="grid gap-16 md:grid-cols-3">
           {philosophyPillars.map((pillar) => (
             <div key={pillar.number} className="border-t border-line pt-8">
-              <p className="font-display text-[clamp(1.75rem,3vw,2.25rem)] text-ink-faint">{pillar.number}</p>
+              <p className="numeral text-[clamp(1.75rem,3vw,2.25rem)] font-medium text-ink-faint">{pillar.number}</p>
               <h3 className="mt-4 display-sm">{pillar.title}</h3>
               <p className="body-text mt-4">{pillar.description}</p>
             </div>
@@ -82,9 +71,7 @@ export default function AboutPage() {
         <p className="display-md mx-auto max-w-display italic">
           &ldquo;{siteSettings.dreamLine}&rdquo;
         </p>
-        <Link href="/contact" className="btn-outline mt-12 inline-block">
-          Start a Project
-        </Link>
+        <EnquiryButton className="btn-outline mt-12 inline-block">Start a Project</EnquiryButton>
       </section>
     </div>
   );

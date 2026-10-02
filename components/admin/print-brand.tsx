@@ -36,12 +36,14 @@ export function PrintStudioContact({ theme }: { theme: PrintThemeTokens }) {
       <p className="mt-2">
         {siteSettings.phone}
         <span className="mx-1.5 opacity-40">·</span>
+        {siteSettings.phoneSecondary}
+        <span className="mx-1.5 opacity-40">·</span>
         {siteSettings.email}
       </p>
       <p className="mt-0.5">
         {siteSettings.instagram}
         <span className="mx-1.5 opacity-40">·</span>
-        {siteSettings.location}
+        {siteSettings.address}
       </p>
     </footer>
   );

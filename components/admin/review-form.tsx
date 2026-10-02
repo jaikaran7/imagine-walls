@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   AdminButton,
   AdminCard,
@@ -180,10 +181,16 @@ export function ReviewForm({ review, onSaved }: { review?: AdminReview; onSaved:
 
       {error && <p className="text-[14px] text-red-600">{error}</p>}
 
-      <div className="flex flex-col gap-3 sm:flex-row">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <AdminButton type="submit" disabled={saving} className="w-full sm:w-auto">
           {saving ? "Saving…" : review ? "Save changes" : "Create review"}
         </AdminButton>
+        <Link
+          href="/admin/reviews"
+          className="inline-flex min-h-10 items-center justify-center rounded-xl border-2 border-[#cbd5e1] bg-white px-6 py-2.5 text-[14px] font-bold text-[#0f172a] shadow-xs transition-colors hover:border-[#64748b] hover:bg-[#f8fafc]"
+        >
+          Cancel
+        </Link>
       </div>
     </form>
   );

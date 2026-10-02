@@ -79,25 +79,25 @@ export function QuotationsList({ initialQuotations }: { initialQuotations: Quota
 
             <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-[13px]">
               <div>
-                <dt className="font-medium text-[#9ca3af]">Type</dt>
-                <dd className="mt-0.5 font-medium text-[#374151]">{q.projectType}</dd>
+                <dt className="font-bold uppercase tracking-[0.05em] text-[#475569]">Type</dt>
+                <dd className="mt-0.5 font-semibold text-[#334155]">{q.projectType}</dd>
               </div>
               <div>
-                <dt className="font-medium text-[#9ca3af]">Amount</dt>
-                <dd className="mt-0.5 font-semibold tabular-nums text-[#111318]">
+                <dt className="font-bold uppercase tracking-[0.05em] text-[#475569]">Amount</dt>
+                <dd className="mt-0.5 font-bold tabular-nums text-[#0f172a]">
                   {formatCurrency(q.totalAmount)}
                 </dd>
               </div>
               <div className="col-span-2">
-                <dt className="font-medium text-[#9ca3af]">Updated</dt>
-                <dd className="mt-0.5 text-[#6b7280]">{formatDate(q.updatedAt)}</dd>
+                <dt className="font-bold uppercase tracking-[0.05em] text-[#475569]">Updated</dt>
+                <dd className="mt-0.5 font-medium text-[#334155]">{formatDate(q.updatedAt)}</dd>
               </div>
             </dl>
 
             <div className="mt-4 flex gap-2">
               <Link
                 href={`/admin/quotations/${q.id}`}
-                className="flex-1 rounded-lg border border-[#d1d5db] bg-white px-3 py-2.5 text-center text-[14px] font-medium text-[#374151] transition-colors hover:bg-[#f9fafb]"
+                className="flex-1 rounded-xl border-2 border-[#cbd5e1] bg-white px-3 py-2 text-center text-[14px] font-bold text-[#0f172a] shadow-xs transition-colors hover:border-[#64748b] hover:bg-[#f8fafc]"
               >
                 {q.status === "draft" ? "Edit" : "View"}
               </Link>
@@ -112,10 +112,10 @@ export function QuotationsList({ initialQuotations }: { initialQuotations: Quota
       </ul>
 
       {/* Desktop table */}
-      <div className="hidden overflow-hidden rounded-xl border border-[#e2e5ea] bg-white shadow-sm md:block">
+      <div className="hidden overflow-hidden rounded-2xl border border-[#e2e8f0] bg-white shadow-xs md:block">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[720px] text-left">
-            <thead className="border-b border-[#e2e5ea] bg-[#f9fafb] text-[13px] font-medium text-[#6b7280]">
+            <thead className="border-b border-[#e2e8f0] bg-[#f8fafc] text-[13px] font-bold uppercase tracking-[0.06em] text-[#475569]">
               <tr>
                 <th className="px-5 py-3.5">Client</th>
                 <th className="px-5 py-3.5">Project</th>
@@ -128,18 +128,18 @@ export function QuotationsList({ initialQuotations }: { initialQuotations: Quota
             </thead>
             <tbody>
               {quotations.map((q) => (
-                <tr key={q.id} className="border-b border-[#f3f4f6] last:border-0">
-                  <td className="px-5 py-4 text-[15px] font-medium text-[#111318]">
+                <tr key={q.id} className="border-b border-[#f1f5f9] last:border-0 hover:bg-[#f8fafc]">
+                  <td className="px-5 py-4 text-[15px] font-bold text-[#0f172a]">
                     {q.clientName || "—"}
                   </td>
-                  <td className="max-w-[16rem] px-5 py-4 text-[15px] text-[#6b7280]">
+                  <td className="max-w-[16rem] px-5 py-4 text-[15px] font-medium text-[#334155]">
                     <span className="line-clamp-2">{q.projectTitle || "—"}</span>
                   </td>
-                  <td className="px-5 py-4 text-[15px] text-[#6b7280]">{q.projectType}</td>
-                  <td className="px-5 py-4 text-[15px] tabular-nums text-[#111318]">
+                  <td className="px-5 py-4 text-[15px] font-medium text-[#334155]">{q.projectType}</td>
+                  <td className="px-5 py-4 text-[15px] font-bold tabular-nums text-[#0f172a]">
                     {formatCurrency(q.totalAmount)}
                   </td>
-                  <td className="px-5 py-4 text-[14px] text-[#9ca3af]">{formatDate(q.updatedAt)}</td>
+                  <td className="px-5 py-4 text-[14px] font-medium text-[#475569]">{formatDate(q.updatedAt)}</td>
                   <td className="px-5 py-4">
                     <StatusBadge status={q.status} />
                   </td>
@@ -147,7 +147,7 @@ export function QuotationsList({ initialQuotations }: { initialQuotations: Quota
                     <div className="flex items-center gap-2">
                       <Link
                         href={`/admin/quotations/${q.id}`}
-                        className="rounded-lg border border-[#d1d5db] bg-white px-3 py-1.5 text-[13px] font-medium text-[#374151] transition-colors hover:bg-[#f9fafb]"
+                        className="rounded-lg border-2 border-[#cbd5e1] bg-white px-3.5 py-1.5 text-[13px] font-bold text-[#0f172a] shadow-xs transition-colors hover:border-[#64748b] hover:bg-[#f8fafc]"
                       >
                         {q.status === "draft" ? "Edit" : "View"}
                       </Link>

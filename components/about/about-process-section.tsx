@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { EnquiryButton } from "@/components/enquiry-button";
 import { processSteps } from "@/lib/data/process";
 
 export function AboutProcessSection() {
@@ -12,9 +12,7 @@ export function AboutProcessSection() {
             <p className="body-text mt-6 max-w-body">
               Our systematic nine-step framework for smooth, stress-free interior delivery.
             </p>
-            <Link href="/contact" className="btn-outline mt-8 inline-block">
-              Start a Project
-            </Link>
+            <EnquiryButton className="btn-outline mt-8 inline-block">Start a Project</EnquiryButton>
           </div>
 
           <ol className="md:col-span-8">

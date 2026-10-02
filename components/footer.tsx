@@ -1,21 +1,25 @@
+"use client";
+
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
 import { siteSettings } from "@/lib/data/site";
+import { useEnquiry } from "@/components/enquiry-provider";
 
 const links = [
   { href: "/projects", label: "Projects" },
   { href: "/services", label: "Services" },
   { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
 ];
 
 export function Footer() {
+  const { open: openEnquiry } = useEnquiry();
+
   return (
     <footer data-site-chrome className="rule mt-section pb-12 pt-section-sm">
       <div className="container-edge">
         <div className="grid gap-16 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <BrandLogo height={48} />
+            <BrandLogo height={48} invert />
             <p className="body-text mt-4">
               Interior Design Studio · {siteSettings.location}
             </p>
@@ -34,6 +38,15 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <button
+                  type="button"
+                  onClick={openEnquiry}
+                  className="body-text text-left transition-colors hover:text-ink"
+                >
+                  Contact
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -43,6 +56,16 @@ export function Footer() {
               <li>
                 <a href={siteSettings.whatsappHref} className="transition-colors hover:text-ink" target="_blank" rel="noreferrer">
                   WhatsApp {siteSettings.phone}
+                </a>
+              </li>
+              <li>
+                <a href={siteSettings.phoneSecondaryHref} className="transition-colors hover:text-ink">
+                  {siteSettings.phoneSecondary}
+                </a>
+              </li>
+              <li>
+                <a href={siteSettings.mapsHref} className="transition-colors hover:text-ink" target="_blank" rel="noreferrer">
+                  {siteSettings.address}
                 </a>
               </li>
               <li>

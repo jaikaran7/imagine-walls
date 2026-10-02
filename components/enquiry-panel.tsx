@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useEnquiry } from "@/components/enquiry-provider";
 import { siteSettings } from "@/lib/data/site";
 import { chrome } from "@/lib/chrome";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 
 const SPACE_TYPES = ["Residential", "Commercial", "Hospitality"] as const;
 
@@ -51,13 +52,24 @@ export function EnquiryPanel() {
   const [error, setError] = useState<string | null>(null);
   const [touched, setTouched] = useState({ phone: false, email: false });
   const [form, setForm] = useState<FormState>(emptyForm);
+  const backdropRef = useRef<HTMLDivElement>(null);
 
+  useScrollLock(isOpen);
+
+  // Prevent any wheel or touch scrolling through the blurred backdrop to the website underneath
   useEffect(() => {
     if (!isOpen) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const el = backdropRef.current;
+    if (!el) return;
+    const prevent = (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    el.addEventListener("wheel", prevent, { passive: false });
+    el.addEventListener("touchmove", prevent, { passive: false });
     return () => {
-      document.body.style.overflow = prev;
+      el.removeEventListener("wheel", prevent);
+      el.removeEventListener("touchmove", prevent);
     };
   }, [isOpen]);
 
@@ -133,6 +145,7 @@ export function EnquiryPanel() {
       {isOpen && (
         <>
           <motion.div
+            ref={backdropRef}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -146,15 +159,15 @@ export function EnquiryPanel() {
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.8 }}
             onClick={(e) => e.stopPropagation()}
-            className="fixed right-0 top-0 z-[120] flex h-full w-full flex-col overflow-y-auto border-l border-white/10 bg-black shadow-2xl md:w-[60vw] lg:w-[50vw]"
+            className="fixed inset-0 z-[120] flex h-[100dvh] w-full flex-col overflow-y-auto overscroll-contain bg-black shadow-2xl md:inset-y-0 md:left-auto md:right-0 md:w-[50vw] md:border-l md:border-white/10"
             role="dialog"
             aria-modal="true"
             aria-labelledby="enquiry-panel-title"
           >
-            <div className="flex items-start justify-between p-8 md:p-12">
+            <div className="flex items-start justify-between p-6 sm:p-8 md:p-12">
               <h2
                 id="enquiry-panel-title"
-                className="max-w-[16ch] text-4xl font-light leading-tight text-white md:text-5xl"
+                className="max-w-[16ch] text-3xl font-light leading-tight text-white sm:text-4xl md:text-5xl"
               >
                 Let&apos;s Work{" "}
                 <span className="font-display italic" style={{ color: chrome.cream }}>
@@ -172,7 +185,7 @@ export function EnquiryPanel() {
             </div>
 
             {!showSuccess && (
-              <div className="flex gap-4 border-b border-white/10 px-8 pb-4 md:px-12">
+              <div className="flex gap-4 border-b border-white/10 px-6 pb-4 sm:px-8 md:px-12">
                 <button
                   type="button"
                   onClick={() => setActiveTab("form")}
@@ -386,17 +399,31 @@ export function EnquiryPanel() {
                       <h3 className="mb-1 text-2xl font-light text-white">{siteSettings.email}</h3>
                       <a
                         href={siteSettings.phoneHref}
-                        className="text-2xl font-light transition-opacity hover:opacity-80"
+                        className="block text-2xl font-light transition-opacity hover:opacity-80"
                         style={{ color: chrome.cream }}
                       >
                         {siteSettings.phone}
                       </a>
+                      <a
+                        href={siteSettings.phoneSecondaryHref}
+                        className="mt-1 block text-2xl font-light transition-opacity hover:opacity-80"
+                        style={{ color: chrome.cream }}
+                      >
+                        {siteSettings.phoneSecondary}
+                      </a>
                     </div>
-                    <p className="font-light text-white/60">{siteSettings.location}</p>
+                    <a
+                      href={siteSettings.mapsHref}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="block font-light text-white/60 transition-opacity hover:opacity-80"
+                    >
+                      {siteSettings.address}
+                    </a>
                     <div className="relative mt-6 h-48 w-full overflow-hidden rounded-xl border border-white/10">
                       <iframe
                         title="Imagine Walls location"
-                        src={`https://maps.google.com/maps?q=${encodeURIComponent(`${siteSettings.studioName} ${siteSettings.location}`)}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                        src={`https://maps.google.com/maps?q=${encodeURIComponent(siteSettings.mapQuery)}&z=16&output=embed`}
                         width="100%"
                         height="100%"
                         style={{ border: 0 }}

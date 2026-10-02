@@ -9,6 +9,7 @@ import {
   AdminSelect,
   AdminTextarea,
 } from "@/components/admin/admin-shell";
+import { useDraftLeaveGuard } from "@/components/admin/draft-leave-guard";
 import {
   QuotationDocument,
   type QuotationPrintTheme,
@@ -109,6 +110,54 @@ export function QuotationBuilder({
   const [fieldErrors, setFieldErrors] = useState<ClientContactErrors>({});
   const [showPreview, setShowPreview] = useState(false);
   const [printTheme, setPrintTheme] = useState<QuotationPrintTheme>("classic");
+  const [leaveArmed, setLeaveArmed] = useState(true);
+
+  const hasDraftContent =
+    Boolean(
+      form.clientName.trim() ||
+        form.clientPhone.trim() ||
+        form.clientEmail.trim() ||
+        form.clientAddress.trim() ||
+        form.projectTitle.trim() ||
+        form.notes.trim(),
+    ) ||
+    (form.discountType !== "none" && Number(form.discountValue) > 0) ||
+    form.sections.some(
+      (section) =>
+        section.roomType.trim() ||
+        section.items.some(
+          (item) =>
+            item.product.trim() ||
+            item.description.trim() ||
+            Number(item.ratePerSft) > 0 ||
+            Number(item.totalSft) > 0 ||
+            Number(item.price) > 0,
+        ),
+    );
+
+  const leaveGuard = useDraftLeaveGuard({
+    active: !quotation && leaveArmed && hasDraftContent,
+    saveUrl: "/api/admin/quotations",
+    fallbackHref: "/admin/quotations",
+    label: "quotation",
+    getBody: () => {
+      const totalAmount = manualTotal ? form.totalAmount : sumLineItems(form.sections);
+      return {
+        ...form,
+        sections: form.sections.map((section) => ({
+          ...section,
+          items: section.items.map((item) => ({
+            ...item,
+            price: lineItemAmount(item),
+          })),
+        })),
+        status: "draft",
+        allowIncomplete: true,
+        totalAmount,
+        discountValue: form.discountType === "none" ? 0 : form.discountValue,
+      };
+    },
+  });
 
   useEffect(() => {
     if (quotation) {
@@ -213,6 +262,7 @@ export function QuotationBuilder({
   async function save(status: QuotationStatus) {
     if (!validateBeforeSave()) return;
 
+    setLeaveArmed(false);
     setSaving(true);
     setError(null);
     const totalAmount = manualTotal ? form.totalAmount : lineItemsTotal;
@@ -245,6 +295,7 @@ export function QuotationBuilder({
 
       if (!res.ok) {
         const body = await res.json().catch(() => null);
+        setLeaveArmed(true);
         setError(body?.error || "Couldn't save quotation. Please try again.");
         return;
       }
@@ -252,6 +303,7 @@ export function QuotationBuilder({
       const saved = await res.json();
       onSaved(saved, status === "finalized");
     } catch {
+      setLeaveArmed(true);
       setError("Couldn't reach the server. Check your connection and try again.");
     } finally {
       setSaving(false);
@@ -265,6 +317,7 @@ export function QuotationBuilder({
 
   return (
     <>
+      {leaveGuard.dialog}
       <div className="print:hidden grid gap-5 xl:grid-cols-[minmax(0,1fr)_300px]">
         <div className="space-y-5">
           <section className="rounded-2xl border border-[#d7dde8] bg-white p-4 shadow-sm sm:p-6 md:p-8">
@@ -347,7 +400,7 @@ export function QuotationBuilder({
                 )}
               </div>
 
-              <div className="mb-2 hidden grid-cols-[1.1fr_1.6fr_0.9fr_0.8fr_0.9fr_auto] gap-2 px-1 text-[12px] font-bold uppercase tracking-[0.06em] text-[#64748b] lg:grid">
+              <div className="mb-2 hidden grid-cols-[1.1fr_1.6fr_0.9fr_0.8fr_0.9fr_auto] gap-2 px-1 text-[12px] font-bold uppercase tracking-[0.06em] text-[#334155] lg:grid">
                 <span>Product</span>
                 <span>Description</span>
                 <span>Per SFT rate</span>
@@ -443,13 +496,21 @@ export function QuotationBuilder({
                 })}
               </div>
 
-              <AdminButton variant="secondary" className="mt-4" onClick={() => addLineItem(section.id)}>
+              <AdminButton
+                variant="secondary"
+                className="mt-4 border-2 border-[#cbd5e1] bg-white text-[#0f172a] hover:border-[#2563eb] hover:bg-[#eff6ff] hover:text-[#1d4ed8]"
+                onClick={() => addLineItem(section.id)}
+              >
                 + Add product line
               </AdminButton>
             </section>
           ))}
 
-          <AdminButton variant="secondary" onClick={addSection}>
+          <AdminButton
+            variant="secondary"
+            className="border-2 border-[#cbd5e1] bg-white text-[#0f172a] hover:border-[#2563eb] hover:bg-[#eff6ff] hover:text-[#1d4ed8]"
+            onClick={addSection}
+          >
             + Add room
           </AdminButton>
 
@@ -552,14 +613,14 @@ export function QuotationBuilder({
             </div>
 
             {(discountAmt > 0 || form.discountType !== "none") && (
-              <div className="mt-4 rounded-lg bg-[#f9fafb] px-4 py-3 text-[14px]">
-                <div className="flex justify-between text-[#6b7280]">
+              <div className="mt-4 rounded-xl border border-[#e2e8f0] bg-[#f8fafc] px-4 py-3 text-[14px]">
+                <div className="flex justify-between font-medium text-[#475569]">
                   <span>Discount</span>
-                  <span className="tabular-nums text-[#b45309]">
+                  <span className="tabular-nums font-bold text-[#b45309]">
                     {discountAmt > 0 ? `− ${formatCurrency(discountAmt)}` : "—"}
                   </span>
                 </div>
-                <div className="mt-1 flex justify-between font-semibold text-[#111318]">
+                <div className="mt-1.5 flex justify-between border-t border-[#e2e8f0] pt-1.5 text-[15px] font-bold text-[#0f172a]">
                   <span>Grand total</span>
                   <span className="tabular-nums">{formatCurrency(grandTotal)}</span>
                 </div>
@@ -567,30 +628,30 @@ export function QuotationBuilder({
             )}
           </div>
 
-          <div className="space-y-2 rounded-2xl border border-[#d7dde8] bg-[#0b1220] p-4 shadow-sm">
-            <p className="mb-2 text-[13px] font-bold uppercase tracking-[0.1em] text-[#94a3b8]">Actions</p>
-            <div className="rounded-xl bg-white/5 p-2.5">
-              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#94a3b8]">
+          <div className="space-y-3 rounded-2xl border border-[#d7dde8] bg-white p-5 shadow-sm">
+            <p className="text-[13px] font-bold uppercase tracking-[0.1em] text-[#475569]">Actions</p>
+            <div className="rounded-xl border border-[#e2e8f0] bg-[#f8fafc] p-3">
+              <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#475569]">
                 Print theme
               </p>
               <PrintThemeChips value={printTheme} onChange={setPrintTheme} />
             </div>
             {error && (
-              <p className="rounded-lg border border-[#fca5a5] bg-[#fef2f2] px-3 py-2 text-[13px] font-medium text-[#b91c1c]">
+              <p className="rounded-lg border border-[#fca5a5] bg-[#fef2f2] px-3 py-2 text-[13px] font-bold text-[#b91c1c]">
                 {error}
               </p>
             )}
             <button
               type="button"
               onClick={handlePrint}
-              className="flex min-h-12 w-full items-center justify-center rounded-xl border-2 border-white/20 bg-transparent px-4 py-3 text-[15px] font-bold text-white hover:bg-white/10"
+              className="flex min-h-11 w-full items-center justify-center rounded-xl border-2 border-[#cbd5e1] bg-white px-4 py-2.5 text-[15px] font-bold text-[#0f172a] shadow-xs transition-colors hover:border-[#64748b] hover:bg-[#f8fafc]"
             >
               Print quotation
             </button>
             <button
               type="button"
               onClick={() => setShowPreview((v) => !v)}
-              className="flex min-h-12 w-full items-center justify-center rounded-xl border-2 border-white/20 bg-white px-4 py-3 text-[15px] font-bold text-[#0f172a] hover:bg-[#f8fafc]"
+              className="flex min-h-11 w-full items-center justify-center rounded-xl border-2 border-[#cbd5e1] bg-white px-4 py-2.5 text-[15px] font-bold text-[#0f172a] shadow-xs transition-colors hover:border-[#64748b] hover:bg-[#f8fafc]"
             >
               {showPreview ? "Hide preview" : "Show print preview"}
             </button>
@@ -598,7 +659,7 @@ export function QuotationBuilder({
               type="button"
               disabled={saving}
               onClick={() => save("draft")}
-              className="flex min-h-12 w-full items-center justify-center rounded-xl border-2 border-white/20 bg-white px-4 py-3 text-[15px] font-bold text-[#0f172a] hover:bg-[#f8fafc] disabled:opacity-50"
+              className="flex min-h-11 w-full items-center justify-center rounded-xl border-2 border-[#cbd5e1] bg-white px-4 py-2.5 text-[15px] font-bold text-[#0f172a] shadow-xs transition-colors hover:border-[#64748b] hover:bg-[#f8fafc] disabled:opacity-50"
             >
               {saving ? "Saving…" : "Save draft"}
             </button>
@@ -606,13 +667,13 @@ export function QuotationBuilder({
               type="button"
               disabled={saving}
               onClick={() => save("finalized")}
-              className="flex min-h-12 w-full items-center justify-center rounded-xl border-2 border-[#2563eb] bg-[#2563eb] px-4 py-3 text-[15px] font-bold text-white hover:bg-[#1d4ed8] disabled:opacity-50"
+              className="flex min-h-11 w-full items-center justify-center rounded-xl border-2 border-[#2563eb] bg-[#2563eb] px-4 py-2.5 text-[15px] font-bold text-white shadow-xs transition-colors hover:bg-[#1d4ed8] disabled:opacity-50"
             >
               Finalize quotation
             </button>
             <Link
               href="/admin/quotations"
-              className="block pt-1 text-center text-[15px] font-semibold text-[#94a3b8] hover:text-white"
+              className="block pt-1 text-center text-[15px] font-semibold text-[#475569] transition-colors hover:text-[#0f172a]"
             >
               Cancel
             </Link>

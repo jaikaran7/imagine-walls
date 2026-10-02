@@ -18,13 +18,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const clientName = String(body.clientName || "").trim();
+  const allowIncomplete = body.allowIncomplete === true && body.status !== "finalized";
+  let clientName = String(body.clientName || "").trim();
   const clientPhone = String(body.clientPhone || "").trim();
-  const contactError = firstClientContactError(
-    validateClientContact({ clientName, clientPhone }),
-  );
-  if (contactError) {
-    return NextResponse.json({ error: contactError }, { status: 400 });
+  if (!allowIncomplete) {
+    const contactError = firstClientContactError(
+      validateClientContact({ clientName, clientPhone }),
+    );
+    if (contactError) {
+      return NextResponse.json({ error: contactError }, { status: 400 });
+    }
+  } else if (!clientName) {
+    clientName = "Untitled draft";
   }
 
   const quotation = await addQuotation({

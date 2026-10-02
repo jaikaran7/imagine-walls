@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import {
   AdminButton,
-  AdminLinkButton,
   AdminSelect,
   EmptyState,
   StatusBadge,
@@ -65,12 +64,7 @@ export function LeadsPanel({ initialLeads }: { initialLeads: Enquiry[] }) {
     return (
       <EmptyState
         title="No leads yet"
-        description="When someone fills out the contact form on the website, their enquiry will appear here."
-        action={
-          <AdminLinkButton href="/contact" variant="secondary">
-            Open contact form
-          </AdminLinkButton>
-        }
+        description="When someone sends a project enquiry from the website, it will appear here."
       />
     );
   }
@@ -113,57 +107,57 @@ export function LeadsPanel({ initialLeads }: { initialLeads: Enquiry[] }) {
       {selected && (
         <aside className="w-full shrink-0 rounded-2xl border border-[#d7dde8] bg-white p-5 shadow-sm lg:w-96 lg:p-6">
           <div className="flex items-start justify-between gap-2">
-            <h2 className="text-[1.25rem] font-semibold text-[#111318]">{selected.name}</h2>
+            <h2 className="text-[1.25rem] font-bold text-[#0f172a]">{selected.name}</h2>
             <button
               type="button"
               onClick={() => setSelected(null)}
-              className="rounded-lg p-1 text-[#9ca3af] hover:bg-[#f3f4f6] hover:text-[#111318]"
+              className="rounded-lg p-1.5 text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#0f172a]"
             >
-              ×
+              ✕
             </button>
           </div>
 
           <dl className="mt-6 space-y-4">
             <div>
-              <dt className="text-[13px] font-medium text-[#6b7280]">Phone</dt>
-              <dd className="mt-1 text-[15px] text-[#111318]">{selected.phone}</dd>
+              <dt className="text-[12px] font-bold uppercase tracking-[0.06em] text-[#475569]">Phone</dt>
+              <dd className="mt-1 text-[15px] font-semibold text-[#0f172a]">{selected.phone}</dd>
             </div>
             {selected.email && (
               <div>
-                <dt className="text-[13px] font-medium text-[#6b7280]">Email</dt>
-                <dd className="mt-1 text-[15px] text-[#111318]">{selected.email}</dd>
+                <dt className="text-[12px] font-bold uppercase tracking-[0.06em] text-[#475569]">Email</dt>
+                <dd className="mt-1 text-[15px] font-semibold text-[#0f172a]">{selected.email}</dd>
               </div>
             )}
             <div>
-              <dt className="text-[13px] font-medium text-[#6b7280]">Location</dt>
-              <dd className="mt-1 text-[15px] text-[#111318]">{selected.location}</dd>
+              <dt className="text-[12px] font-bold uppercase tracking-[0.06em] text-[#475569]">Location</dt>
+              <dd className="mt-1 text-[15px] font-semibold text-[#0f172a]">{selected.location}</dd>
             </div>
             <div>
-              <dt className="text-[13px] font-medium text-[#6b7280]">Project type</dt>
-              <dd className="mt-1 text-[15px] text-[#111318]">{selected.projectType}</dd>
+              <dt className="text-[12px] font-bold uppercase tracking-[0.06em] text-[#475569]">Project type</dt>
+              <dd className="mt-1 text-[15px] font-semibold text-[#0f172a]">{selected.projectType}</dd>
             </div>
             {selected.projectSize && (
               <div>
-                <dt className="text-[13px] font-medium text-[#6b7280]">Size</dt>
-                <dd className="mt-1 text-[15px] text-[#111318]">{selected.projectSize}</dd>
+                <dt className="text-[12px] font-bold uppercase tracking-[0.06em] text-[#475569]">Size</dt>
+                <dd className="mt-1 text-[15px] font-semibold text-[#0f172a]">{selected.projectSize}</dd>
               </div>
             )}
             {selected.budgetRange && (
               <div>
-                <dt className="text-[13px] font-medium text-[#6b7280]">Budget</dt>
-                <dd className="mt-1 text-[15px] text-[#111318]">{selected.budgetRange}</dd>
+                <dt className="text-[12px] font-bold uppercase tracking-[0.06em] text-[#475569]">Budget</dt>
+                <dd className="mt-1 text-[15px] font-semibold text-[#0f172a]">{selected.budgetRange}</dd>
               </div>
             )}
             {selected.timeline && (
               <div>
-                <dt className="text-[13px] font-medium text-[#6b7280]">Timeline</dt>
-                <dd className="mt-1 text-[15px] text-[#111318]">{selected.timeline}</dd>
+                <dt className="text-[12px] font-bold uppercase tracking-[0.06em] text-[#475569]">Timeline</dt>
+                <dd className="mt-1 text-[15px] font-semibold text-[#0f172a]">{selected.timeline}</dd>
               </div>
             )}
             {selected.message && (
               <div>
-                <dt className="text-[13px] font-medium text-[#6b7280]">Message</dt>
-                <dd className="mt-1 whitespace-pre-wrap text-[15px] leading-relaxed text-[#6b7280]">
+                <dt className="text-[12px] font-bold uppercase tracking-[0.06em] text-[#475569]">Message</dt>
+                <dd className="mt-1 whitespace-pre-wrap rounded-xl border border-[#e2e8f0] bg-[#f8fafc] p-3 text-[14px] leading-relaxed text-[#0f172a]">
                   {selected.message}
                 </dd>
               </div>

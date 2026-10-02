@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { MediaImage } from "@/components/media-image";
 import type { ProjectImage } from "@/lib/types";
+import { useScrollLock } from "@/lib/use-scroll-lock";
 
 function editorialSpan(index: number) {
   const pattern = index % 5;
@@ -35,12 +36,9 @@ export function GalleryLightbox({ images }: { images: ProjectImage[] }) {
       if (e.key === "ArrowLeft") step(-1);
     }
     window.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [openIndex, close, step]);
+  useScrollLock(openIndex !== null);
 
   let touchStartX = 0;
 
