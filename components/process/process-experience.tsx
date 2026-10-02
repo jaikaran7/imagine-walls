@@ -180,7 +180,7 @@ function ProcessProgressList({
                 onClick={() => onStepClick(i)}
                 className="group flex items-baseline gap-3 text-left transition-colors hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
               >
-                <span className="font-display text-sm tabular-nums text-ink-faint">{step.number}</span>
+                <span className="numeral text-sm text-ink-faint">{step.number}</span>
                 <span className={`${compact ? "text-xs uppercase tracking-editorial" : "font-display text-base lg:text-lg"} ${isActive ? "font-medium" : ""}`}>
                   {step.title}
                 </span>

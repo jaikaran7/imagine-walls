@@ -18,7 +18,7 @@ export function AboutProcessSection() {
           <ol className="md:col-span-8">
             {processSteps.map((step) => (
               <li key={step.number} className="grid gap-4 border-t border-line py-8 md:grid-cols-[5rem_1fr] md:gap-8 md:py-10">
-                <span className="font-display text-[clamp(1.5rem,3vw,2rem)] text-ink-faint">{step.number}</span>
+                <span className="numeral text-[clamp(1.5rem,3vw,2rem)] font-medium text-ink-faint">{step.number}</span>
                 <div>
                   <p className="label mb-2 text-ink-faint">{step.verb}</p>
                   <h3 className="font-display text-xl md:text-2xl">{step.title}</h3>

@@ -72,7 +72,7 @@ function ProcessStepRow({
   return (
     <div className="group grid gap-8 border-t border-line py-10 md:grid-cols-12 md:py-12">
       <div className="flex items-baseline gap-6 md:col-span-4">
-        <span className="font-display text-[clamp(2rem,4vw,3rem)] text-ink-faint">{step.number}</span>
+        <span className="numeral text-[clamp(2rem,4vw,3rem)] font-medium text-ink-faint">{step.number}</span>
         <h3 className="display-sm">{step.title}</h3>
       </div>
       <p className="body-text max-w-body md:col-span-4 md:self-center">{step.description}</p>

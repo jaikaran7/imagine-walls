@@ -73,7 +73,7 @@ export function ProcessScroller({ steps }: { steps: ProcessStep[] }) {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, ease: easeEditorial }}
-              className="font-display text-[clamp(2.5rem,5vw,4rem)] font-medium"
+              className="numeral text-[clamp(2.5rem,5vw,4rem)] font-medium"
             >
               {activeStep.number}
             </motion.span>
@@ -123,7 +123,7 @@ export function ProcessScroller({ steps }: { steps: ProcessStep[] }) {
             }`}
           >
             <div className="flex items-baseline gap-4 md:hidden">
-              <span className="font-display text-3xl">{step.number}</span>
+              <span className="numeral text-3xl font-medium">{step.number}</span>
               <h3 className="font-display text-2xl">{step.title}</h3>
             </div>
             <p className="mt-2 max-w-md body-text md:hidden">{step.description}</p>

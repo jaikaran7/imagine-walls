@@ -11,6 +11,23 @@ const links = [
   { href: "/about", label: "About" },
 ];
 
+function InstagramIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-[1.05em] w-[1.05em] shrink-0"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      aria-hidden
+    >
+      <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.4" cy="6.6" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 export function Footer() {
   const { open: openEnquiry } = useEnquiry();
 
@@ -55,7 +72,7 @@ export function Footer() {
             <ul className="flex flex-col gap-3 body-text">
               <li>
                 <a href={siteSettings.whatsappHref} className="transition-colors hover:text-ink" target="_blank" rel="noreferrer">
-                  WhatsApp {siteSettings.phone}
+                  {siteSettings.phone}
                 </a>
               </li>
               <li>
@@ -74,7 +91,13 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href={siteSettings.instagramHref} className="transition-colors hover:text-ink" target="_blank" rel="noreferrer">
+                <a
+                  href={siteSettings.instagramHref}
+                  className="inline-flex items-center gap-2 transition-colors hover:text-ink"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <InstagramIcon />
                   {siteSettings.instagram}
                 </a>
               </li>
