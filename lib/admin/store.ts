@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import { Prisma } from "@/src/generated/prisma/client";
 import { normalizeQuotationSections } from "./format";
+import { normalizeMaterialSpecs } from "./material-specs";
 import { generateId } from "./id";
 import type {
   AdminProject,
@@ -128,6 +129,7 @@ function mapQuotation(record: {
   discountType?: string | null;
   discountValue?: number | null;
   notes: string;
+  materialSpecs?: unknown;
   createdAt: Date;
   updatedAt: Date;
   finalizedAt: Date | null;
@@ -150,6 +152,7 @@ function mapQuotation(record: {
     discountType,
     discountValue: Number(record.discountValue) || 0,
     notes: record.notes,
+    materialSpecs: normalizeMaterialSpecs(record.materialSpecs),
     createdAt: toIso(record.createdAt),
     updatedAt: toIso(record.updatedAt),
     finalizedAt: record.finalizedAt ? toIso(record.finalizedAt) : undefined,
@@ -360,6 +363,7 @@ export async function addQuotation(
       discountType: quotation.discountType || "none",
       discountValue: quotation.discountValue || 0,
       notes: quotation.notes,
+      materialSpecs: normalizeMaterialSpecs(quotation.materialSpecs) as unknown as Prisma.InputJsonValue,
       finalizedAt: quotation.finalizedAt ? new Date(quotation.finalizedAt) : null,
     },
   });
@@ -383,6 +387,10 @@ export async function updateQuotation(id: string, patch: Partial<Quotation>): Pr
         discountType: patch.discountType,
         discountValue: patch.discountValue,
         notes: patch.notes,
+        materialSpecs:
+          patch.materialSpecs === undefined
+            ? undefined
+            : (normalizeMaterialSpecs(patch.materialSpecs) as unknown as Prisma.InputJsonValue),
         finalizedAt:
           patch.finalizedAt === undefined
             ? undefined

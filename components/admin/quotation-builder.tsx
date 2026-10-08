@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   AdminButton,
@@ -30,6 +30,11 @@ import {
   sumLineItems,
 } from "@/lib/admin/format";
 import { generateId } from "@/lib/admin/id";
+import {
+  emptyMaterialSpec,
+  materialSpecsMatchStandard,
+  standardMaterialSpecs,
+} from "@/lib/admin/material-specs";
 import type {
   InvoiceDiscountType,
   Quotation,
@@ -79,6 +84,7 @@ function emptyQuotation(): Omit<Quotation, "id" | "createdAt" | "updatedAt"> {
     discountType: "none",
     discountValue: 0,
     notes: "",
+    materialSpecs: standardMaterialSpecs(),
   };
 }
 
@@ -87,6 +93,7 @@ function hydrateQuotation(q: Quotation): Quotation {
     ...q,
     discountType: q.discountType || "none",
     discountValue: q.discountValue || 0,
+    materialSpecs: q.materialSpecs?.length ? q.materialSpecs : [],
     sections: q.sections.map((section) => ({
       ...section,
       items: section.items.map((item) => normalizeQuotationLineItem(item)),
@@ -111,6 +118,9 @@ export function QuotationBuilder({
   const [showPreview, setShowPreview] = useState(false);
   const [printTheme, setPrintTheme] = useState<QuotationPrintTheme>("classic");
   const [leaveArmed, setLeaveArmed] = useState(true);
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [overIndex, setOverIndex] = useState<number | null>(null);
+  const dragFrom = useRef<number | null>(null);
 
   const hasDraftContent =
     Boolean(
@@ -121,6 +131,8 @@ export function QuotationBuilder({
         form.projectTitle.trim() ||
         form.notes.trim(),
     ) ||
+    (form.materialSpecs.some((row) => row.material.trim() || row.specification.trim()) &&
+      !materialSpecsMatchStandard(form.materialSpecs)) ||
     (form.discountType !== "none" && Number(form.discountValue) > 0) ||
     form.sections.some(
       (section) =>
@@ -211,6 +223,15 @@ export function QuotationBuilder({
       "sections",
       form.sections.filter((s) => s.id !== sectionId),
     );
+  }
+
+  function reorderSections(from: number, to: number) {
+    if (from === to || from < 0 || to < 0 || to >= form.sections.length) return;
+    const next = [...form.sections];
+    const [moved] = next.splice(from, 1);
+    if (!moved) return;
+    next.splice(to, 0, moved);
+    updateField("sections", next);
   }
 
   function updateSection(sectionId: string, patch: Partial<QuotationSection>) {
@@ -377,27 +398,100 @@ export function QuotationBuilder({
           </section>
 
           {form.sections.map((section, sectionIndex) => (
-            <section key={section.id} className="rounded-2xl border border-[#d7dde8] bg-white p-4 shadow-sm sm:p-6">
+            <section
+              key={section.id}
+              onDragOver={(event) => {
+                if (dragFrom.current === null) return;
+                event.preventDefault();
+                event.dataTransfer.dropEffect = "move";
+                setOverIndex((current) => (current === sectionIndex ? current : sectionIndex));
+              }}
+              onDrop={(event) => {
+                event.preventDefault();
+                const from = dragFrom.current;
+                dragFrom.current = null;
+                setDragIndex(null);
+                setOverIndex(null);
+                if (from === null) return;
+                reorderSections(from, sectionIndex);
+              }}
+              className={`rounded-2xl border bg-white p-4 shadow-sm sm:p-6 ${
+                overIndex === sectionIndex && dragIndex !== sectionIndex
+                  ? "border-[#2563eb] ring-2 ring-[#2563eb]/30"
+                  : "border-[#d7dde8]"
+              } ${dragIndex === sectionIndex ? "opacity-60" : ""}`}
+            >
               <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <p className="text-[13px] font-bold uppercase tracking-[0.1em] text-[#2563eb]">
-                    Room {sectionIndex + 1}
-                  </p>
-                  <label className="mt-2 block">
-                    <span className="sr-only">Room type</span>
-                    <input
-                      value={section.roomType}
-                      onChange={(e) => updateSection(section.id, { roomType: e.target.value })}
-                      placeholder="e.g. Living Room, Master Bedroom, Kitchen"
-                      className="w-full rounded-xl border-2 border-[#cbd5e1] bg-[#f8fafc] px-4 py-3 text-[18px] font-bold uppercase text-[#0f172a] outline-none placeholder:font-semibold placeholder:normal-case placeholder:text-[#94a3b8] focus:border-[#2563eb] focus:bg-white focus:ring-4 focus:ring-[#2563eb]/15"
-                    />
-                  </label>
+                <div className="flex min-w-0 flex-1 items-start gap-2">
+                  <button
+                    type="button"
+                    draggable
+                    aria-label={`Drag room ${sectionIndex + 1}`}
+                    title="Drag to reorder"
+                    onDragStart={(event) => {
+                      dragFrom.current = sectionIndex;
+                      setDragIndex(sectionIndex);
+                      event.dataTransfer.effectAllowed = "move";
+                      event.dataTransfer.setData("text/plain", String(sectionIndex));
+                      const card = event.currentTarget.closest("section");
+                      if (card) event.dataTransfer.setDragImage(card, 28, 28);
+                    }}
+                    onDragEnd={() => {
+                      dragFrom.current = null;
+                      setDragIndex(null);
+                      setOverIndex(null);
+                    }}
+                    className="mt-0.5 inline-flex h-8 w-7 shrink-0 cursor-grab items-center justify-center rounded-md text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#0f172a] active:cursor-grabbing"
+                  >
+                    <svg viewBox="0 0 10 16" className="h-4 w-2.5" fill="currentColor" aria-hidden>
+                      <circle cx="2" cy="2" r="1.2" />
+                      <circle cx="8" cy="2" r="1.2" />
+                      <circle cx="2" cy="8" r="1.2" />
+                      <circle cx="8" cy="8" r="1.2" />
+                      <circle cx="2" cy="14" r="1.2" />
+                      <circle cx="8" cy="14" r="1.2" />
+                    </svg>
+                  </button>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[13px] font-bold uppercase tracking-[0.1em] text-[#2563eb]">
+                      Room {sectionIndex + 1}
+                    </p>
+                    <label className="mt-2 block">
+                      <span className="sr-only">Room type</span>
+                      <input
+                        value={section.roomType}
+                        onChange={(e) => updateSection(section.id, { roomType: e.target.value })}
+                        placeholder="e.g. Living Room, Master Bedroom, Kitchen"
+                        className="w-full rounded-xl border-2 border-[#cbd5e1] bg-[#f8fafc] px-4 py-3 text-[18px] font-bold uppercase text-[#0f172a] outline-none placeholder:font-semibold placeholder:normal-case placeholder:text-[#94a3b8] focus:border-[#2563eb] focus:bg-white focus:ring-4 focus:ring-[#2563eb]/15"
+                      />
+                    </label>
+                  </div>
                 </div>
-                {form.sections.length > 1 && (
-                  <AdminButton variant="ghost" onClick={() => removeSection(section.id)}>
-                    Remove room
-                  </AdminButton>
-                )}
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    aria-label={`Move room ${sectionIndex + 1} up`}
+                    disabled={sectionIndex === 0}
+                    onClick={() => reorderSections(sectionIndex, sectionIndex - 1)}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[16px] font-bold text-[#334155] hover:bg-[#f1f5f9] disabled:cursor-not-allowed disabled:opacity-30"
+                  >
+                    ↑
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={`Move room ${sectionIndex + 1} down`}
+                    disabled={sectionIndex === form.sections.length - 1}
+                    onClick={() => reorderSections(sectionIndex, sectionIndex + 1)}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[16px] font-bold text-[#334155] hover:bg-[#f1f5f9] disabled:cursor-not-allowed disabled:opacity-30"
+                  >
+                    ↓
+                  </button>
+                  {form.sections.length > 1 && (
+                    <AdminButton variant="ghost" onClick={() => removeSection(section.id)}>
+                      Remove room
+                    </AdminButton>
+                  )}
+                </div>
               </div>
 
               <div className="mb-2 hidden grid-cols-[1.1fr_1.6fr_0.9fr_0.8fr_0.9fr_auto] gap-2 px-1 text-[12px] font-bold uppercase tracking-[0.06em] text-[#334155] lg:grid">
@@ -515,12 +609,101 @@ export function QuotationBuilder({
           </AdminButton>
 
           <section className="rounded-2xl border border-[#d7dde8] bg-white p-4 shadow-sm sm:p-6">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-[13px] font-bold uppercase tracking-[0.1em] text-[#334155]">
+                Material specification
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                <AdminButton variant="secondary" onClick={() => updateField("materialSpecs", standardMaterialSpecs())}>
+                  Use standard list
+                </AdminButton>
+                <AdminButton
+                  variant="secondary"
+                  onClick={() => updateField("materialSpecs", [...form.materialSpecs, emptyMaterialSpec()])}
+                >
+                  + Add row
+                </AdminButton>
+              </div>
+            </div>
+            <div className="overflow-x-auto rounded-xl border border-[#d7dde8]">
+              <table className="w-full min-w-[640px] border-collapse text-left">
+                <thead>
+                  <tr className="bg-[#f8fafc] text-[12px] font-bold uppercase tracking-[0.08em] text-[#475569]">
+                    <th className="w-[28%] border-b border-[#e2e8f0] px-3 py-2.5">Material</th>
+                    <th className="border-b border-[#e2e8f0] px-3 py-2.5">Specification</th>
+                    <th className="w-16 border-b border-[#e2e8f0] px-2 py-2.5">
+                      <span className="sr-only">Remove</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {form.materialSpecs.length === 0 ? (
+                    <tr>
+                      <td colSpan={3} className="px-3 py-6 text-center text-[14px] font-medium text-[#64748b]">
+                        No material rows yet. Add a row, or use the standard list.
+                      </td>
+                    </tr>
+                  ) : (
+                    form.materialSpecs.map((row) => (
+                      <tr key={row.id} className="border-t border-[#e2e8f0]">
+                        <td className="align-top p-2">
+                          <input
+                            value={row.material}
+                            onChange={(e) =>
+                              updateField(
+                                "materialSpecs",
+                                form.materialSpecs.map((item) =>
+                                  item.id === row.id ? { ...item, material: e.target.value } : item,
+                                ),
+                              )
+                            }
+                            placeholder="Plywood"
+                            className="w-full rounded-lg border border-[#cbd5e1] bg-white px-3 py-2 text-[13px] font-bold uppercase text-[#0f172a] outline-none focus:border-[#2563eb]"
+                          />
+                        </td>
+                        <td className="align-top p-2">
+                          <textarea
+                            value={row.specification}
+                            rows={Math.max(2, row.specification.split("\n").length)}
+                            onChange={(e) =>
+                              updateField(
+                                "materialSpecs",
+                                form.materialSpecs.map((item) =>
+                                  item.id === row.id ? { ...item, specification: e.target.value } : item,
+                                ),
+                              )
+                            }
+                            placeholder="Grade, finish, brand…"
+                            className="w-full resize-y rounded-lg border border-[#cbd5e1] bg-white px-3 py-2 text-[13px] font-semibold uppercase leading-relaxed text-[#0f172a] outline-none focus:border-[#2563eb]"
+                          />
+                        </td>
+                        <td className="align-top p-2 text-right">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              updateField(
+                                "materialSpecs",
+                                form.materialSpecs.filter((item) => item.id !== row.id),
+                              )
+                            }
+                            className="min-h-10 px-2 text-[13px] font-semibold text-[#dc2626]"
+                          >
+                            Remove
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
             <AdminTextarea
               label="Notes / terms"
               rows={3}
               value={form.notes}
               onChange={(e) => updateField("notes", e.target.value)}
               placeholder="Payment terms, validity, exclusions…"
+              className="mt-5"
             />
           </section>
 

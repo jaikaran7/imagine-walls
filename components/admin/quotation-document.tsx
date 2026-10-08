@@ -31,6 +31,7 @@ type QuotationDocData = Pick<
   | "discountType"
   | "discountValue"
   | "notes"
+  | "materialSpecs"
   | "createdAt"
   | "updatedAt"
 >;
@@ -193,6 +194,37 @@ export function QuotationDocument({
           </tbody>
         </table>
       </div>
+
+      {(quotation.materialSpecs ?? []).some((row) => row.material.trim() || row.specification.trim()) && (
+        <div className="relative z-10 mt-6">
+          <table className={`w-full border-collapse text-[12px] leading-snug ${t.notesBody}`}>
+            <thead>
+              <tr>
+                <th
+                  colSpan={2}
+                  className={`border ${t.border} px-2 py-2.5 text-center text-[13px] font-bold uppercase tracking-[0.08em] ${t.notesTitle}`}
+                >
+                  Material specification
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {(quotation.materialSpecs ?? [])
+                .filter((row) => row.material.trim() || row.specification.trim())
+                .map((row) => (
+                  <tr key={row.id}>
+                    <td className={`w-[32%] border ${t.border} px-2 py-2 align-top font-bold uppercase`}>
+                      {row.material || "—"}
+                    </td>
+                    <td className={`border ${t.border} px-2 py-2 align-top font-semibold uppercase whitespace-pre-wrap`}>
+                      {row.specification || "—"}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {quotation.notes?.trim() && (
         <div

@@ -85,6 +85,12 @@ export interface QuotationSection {
   items: QuotationLineItem[];
 }
 
+export interface MaterialSpec {
+  id: string;
+  material: string;
+  specification: string;
+}
+
 export interface Quotation {
   id: string;
   clientName: string;
@@ -100,6 +106,7 @@ export interface Quotation {
   discountType: InvoiceDiscountType;
   discountValue: number;
   notes: string;
+  materialSpecs: MaterialSpec[];
   createdAt: string;
   updatedAt: string;
   finalizedAt?: string;

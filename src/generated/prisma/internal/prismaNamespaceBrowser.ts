@@ -130,6 +130,7 @@ export const QuotationScalarFieldEnum = {
   discountType: 'discountType',
   discountValue: 'discountValue',
   notes: 'notes',
+  materialSpecs: 'materialSpecs',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   finalizedAt: 'finalizedAt'

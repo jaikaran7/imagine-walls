@@ -3,6 +3,7 @@ import {
   firstClientContactError,
   validateClientContact,
 } from "@/lib/admin/client-contact";
+import { normalizeMaterialSpecs } from "@/lib/admin/material-specs";
 import { addQuotation, getQuotations } from "@/lib/admin/store";
 
 export async function GET() {
@@ -46,6 +47,7 @@ export async function POST(request: Request) {
       body.discountType === "amount" || body.discountType === "percent" ? body.discountType : "none",
     discountValue: Number(body.discountValue) || 0,
     notes: String(body.notes || "").trim(),
+    materialSpecs: normalizeMaterialSpecs(body.materialSpecs),
     finalizedAt: body.status === "finalized" ? new Date().toISOString() : undefined,
   });
 

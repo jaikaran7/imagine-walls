@@ -1,0 +1,1 @@
+ALTER TABLE "quotations" ADD COLUMN IF NOT EXISTS "material_specs" JSONB NOT NULL DEFAULT '[]';

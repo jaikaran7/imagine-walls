@@ -62,6 +62,7 @@ model Quotation {
   discountType  String    @default("none") @map("discount_type")
   discountValue Float     @default(0) @map("discount_value")
   notes         String    @default("")
+  materialSpecs Json      @default("[]") @map("material_specs")
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
   finalizedAt   DateTime? @map("finalized_at")
