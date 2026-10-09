@@ -47,13 +47,14 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      return NextResponse.json({ error: error.message || "Upload failed" }, { status: 500 });
+      console.error(error);
+      return NextResponse.json({ error: "Upload failed. Please try again." }, { status: 500 });
     }
 
     const { data } = supabase.storage.from(PROJECT_IMAGES_BUCKET).getPublicUrl(path);
     return NextResponse.json({ url: data.publicUrl, path });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Upload failed";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error(error);
+    return NextResponse.json({ error: "Upload failed. Please try again." }, { status: 500 });
   }
 }

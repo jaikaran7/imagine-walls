@@ -30,19 +30,27 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Please enter a valid email address." }, { status: 422 });
   }
 
-  await addEnquiry({
-    name: String(body.name).trim(),
-    phone: String(body.phone).trim(),
-    email: typeof email === "string" ? email.trim() : "",
-    projectType: String(body.projectType).trim(),
-    location: String(body.location).trim(),
-    projectSize: typeof body.projectSize === "string" ? body.projectSize.trim() : "",
-    budgetRange: typeof body.budgetRange === "string" ? body.budgetRange.trim() : "",
-    timeline: typeof body.timeline === "string" ? body.timeline.trim() : "",
-    message: typeof body.message === "string" ? body.message.trim() : "",
-    status: "New",
-    submittedAt: new Date().toISOString(),
-  });
+  try {
+    await addEnquiry({
+      name: String(body.name).trim(),
+      phone: String(body.phone).trim(),
+      email: typeof email === "string" ? email.trim() : "",
+      projectType: String(body.projectType).trim(),
+      location: String(body.location).trim(),
+      projectSize: typeof body.projectSize === "string" ? body.projectSize.trim() : "",
+      budgetRange: typeof body.budgetRange === "string" ? body.budgetRange.trim() : "",
+      timeline: typeof body.timeline === "string" ? body.timeline.trim() : "",
+      message: typeof body.message === "string" ? body.message.trim() : "",
+      status: "New",
+      submittedAt: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "We couldn't send your enquiry. Please try again." },
+      { status: 500 },
+    );
+  }
 
   return NextResponse.json({ ok: true });
 }
